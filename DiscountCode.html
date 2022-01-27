@@ -1,0 +1,218 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>کد تخفیف</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+
+    <!-- CSS
+	============================================ -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+
+    <!-- Icon Font CSS -->
+    <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/vendor/cryptocurrency-icons.css">
+
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/css/plugins/plugins.css">
+
+    <!-- Helper CSS -->
+    <link rel="stylesheet" href="assets/css/helper.css">
+
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Custom Style CSS Only For Demo Purpose -->
+    <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
+
+    <link rel="stylesheet" href="/assets/css/persianDatepicker-default.css">
+</head>
+
+<body dir="rtl" data-page="DiscountCode">
+
+    <div class="main-wrapper">
+
+
+        <!-- Header Section Start -->
+        <div class="header-section">
+            <div class="container-fluid">
+                <div class="row justify-content-between align-items-center">
+
+                    <!-- Header Logo (Header Left) Start -->
+                    <div class="header-logo col-auto">
+                        <a href="index.html">
+                            <img src="assets/images/logo/logo.png" alt="">
+                            <!-- <img src="assets/images/logo/logo-light.png" class="logo-light" alt=""> -->
+                        </a>
+                    </div>
+                    <!-- Header Logo (Header Left) End -->
+
+                    <!-- Header Right Start -->
+                    <div class="header-right flex-grow-1 col-auto">
+                        <div class="row justify-content-between align-items-center">
+
+                            <!-- Side Header Toggle & Search Start -->
+                            <div class="col-auto">
+                                <div class="row align-items-center">
+
+                                    <!--Side Header Toggle-->
+                                    <div class="col-auto"><button class="side-header-toggle"><i class="zmdi zmdi-menu"></i></button></div>
+
+                                </div>
+                            </div>
+                            <!-- Side Header Toggle & Search End -->
+                        </div>
+                    </div>
+                    <!-- Header Right End -->
+
+                </div>
+            </div>
+        </div>
+        <!-- Header Section End -->
+        <!-- Side Header Start -->
+        <div class="side-header show">
+            <button class="side-header-close"><i class="zmdi zmdi-close"></i></button>
+            <!-- Side Header Inner Start -->
+            <div class="side-header-inner custom-scroll">
+
+                <nav class="side-header-menu" id="side-header-menu">
+
+                </nav>
+
+            </div>
+            <!-- Side Header Inner End -->
+        </div>
+        <!-- Side Header End -->
+
+        <!-- Content Body Start -->
+        <div class="content-body">
+
+            <!-- Page Headings Start -->
+            <div class="row justify-content-between align-items-center mb-10">
+
+                <!-- Page Heading Start -->
+                <div class="col-12 col-lg-auto mb-20">
+                    <div class="page-heading">
+                        <h3 class="title">کد تخفیف</h3>
+                    </div>
+                </div>
+                <!-- Page Heading End -->
+
+            </div>
+            <!-- Page Headings End -->
+            <div class="box col-lg-12 pt-20 pb-20">
+                <form id="form-submit" class="mb-30" onsubmit="return false;">
+                    <div class="input-group mb-3">
+                        <input id="discount-code" type="text" placeholder="کد تخفیف" class="form-control" required="" minlength="8">
+                        <button id="generator" class="btn btn-info mr-10" onclick="return false">تولید
+                            کد</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input id="discount-percent" type="number" placeholder="درصد تخفیف" class="form-control" required="" minlength="1">
+                    </div>
+                    <input id="pdpGregorian" type="text" placeholder="تاریخ فعال بودن(لطفا از انتخاب گر استفاده کنید)" class=" form-control pwt-datepicker-input-element" required="" minlength="1">
+                    <div class="alert alert-dark d-flex justify-content mt-30" role="alert" style="width: 100%;">
+                        <button id="discount-submit" class="btn btn-success m-auto col-lg-1">ثبت</button>
+                    </div>
+                </form>
+
+                <hr style="border:2px solid whitesmoke ;">
+
+                <div class="box-head">
+                    <h3 class="title">کد های تخفیف</h3>
+                </div>
+                <div class="box-body mt-30" style="overflow: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr class="footable-header">
+                                <th>ردیف</th>
+                                <th>درصد تخفیف</th>
+                                <th>کد تخفیف</th>
+                                <th>شروع</th>
+                                <th>پایان</th>
+                                <th>مبلغ کف سفارش</th>
+                                <th>مبلغ سقف سفارش</th>
+                                <th>حذف</th>
+                            </tr>
+                        </thead>
+                        <tbody id="discount-table">
+                            <tr>
+                                <td>1</td>
+                                <td>10</td>
+                                <td>2qla3z9i</td>
+                                <td>1400-10-27 </td>
+                                <td>۱۴۰۰/۰۹/۲۵</td>
+                                <td>50,000</td>
+                                <td>250,000</td>
+                                <td>
+                                    <div class="table-action-buttons">
+                                        <a class="delete button button-box button-xs button-danger" href="#"><i class="zmdi zmdi-delete delete-discount" id="61e57723c18f84dd83c4b3c3"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+
+            </div>
+        </div>
+        <!-- Content Body End -->
+
+        <!-- Footer Section Start -->
+        <div class="footer-section">
+            <div class="container-fluid">
+
+                <div class="footer-copyright text-center">
+                    <p class="text-body-light">1400 &copy; <a href="https://platinco.ir/">استدیو طراحی پلاتین</a></p>
+                </div>
+
+            </div>
+        </div>
+        <!-- Footer Section End -->
+
+    </div>
+
+    <!-- JS
+============================================ -->
+    <script src="assets/scripts/script.js?v=1.0.0"></script>
+    <script src="assets/scripts/components.js?v=1.0.0"></script>
+    <script src="assets/scripts/persianDatepicker.min.js"></script>
+    <!-- Global Vendor, plugins & Activation JS -->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/popper.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <!--Plugins JS-->
+    <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/plugins/tippy4.min.js.js"></script>
+    <!--Main JS-->
+    <script src="assets/js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#pdpGregorian").persianDatepicker();
+
+        })
+    </script>
+</body>
+
+
+</html>
