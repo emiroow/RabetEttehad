@@ -135,7 +135,6 @@
                                     <th>ردیف</th>
                                     <th>نام کابر</th>
                                     <th>شماره همراه</th>
-                                    <th>ساعت</th>
                                     <th>تاریخ </th>
                                     <th>تعداد</th>
                                     <th>شناسه خرید </th>
@@ -143,29 +142,14 @@
                                     <th class="d-flex justify-content-center">مشاهده | حذف</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>جعفر عباسی</td>
-                                    <td>09142369599</td>
-                                    <td>22:22</td>
-                                    <td>2011/04/25</td>
-                                    <td>4</td>
-                                    <td>354131345</td>
-                                    <td>مشاهده شده</td>
-                                    <td class="d-flex justify-content-center">
-                                        <a href="OrderInformation.html">
-                                            <button class="accept-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
-                                            <i class="accept-advertise zmdi fa fa-eye" id=${item._id}></i>
-                                        </button></a>
-                                        <button class="reject-adver remove button button-box button-xs button-danger">
-                                            <i class="reject-adver fa fa-trash-o"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="users-table">
+
                             </tbody>
                         </table>
 
+                    </div>
+                    <div class="pagination pb-20 d-flex justify-content-center">
+                        <div id="pagination"></div>
                     </div>
                 </div>
             </div>

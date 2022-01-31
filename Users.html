@@ -36,6 +36,8 @@
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <link rel="stylesheet" href="assets/css/j-pagination.css" />
+
     <!-- Custom Style CSS Only For Demo Purpose -->
     <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
 
@@ -140,27 +142,14 @@
                                     <th class="d-flex justify-content-center">ویرایش</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>جعفر عباسی</td>
-                                    <td>معماری سیستم</td>
-                                    <td>ارومیه</td>
-                                    <td>2011/04/25</td>
-                                    <td>آدرس</td>
-                                    <td class="d-flex justify-content-center">
-                                        <a href="User.html">
-                                            <button class="accept-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
-                                            <i class="accept-advertise zmdi fa fa-pencil-square-o" id=${item._id}></i>
-                                        </button></a>
-                                        <button class="reject-adver remove button button-box button-xs button-danger">
-                                            <i class="reject-adver fa fa-trash-o"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="users-table">
+
                             </tbody>
                         </table>
 
+                    </div>
+                    <div class="pagination pb-20 d-flex justify-content-center">
+                        <div id="pagination"></div>
                     </div>
                 </div>
             </div>
@@ -198,6 +187,8 @@
     <!-- Plugins & Activation JS For Only This Page -->
     <script src="assets/js/plugins/datatables/datatables.min.js"></script>
     <script src="assets/js/plugins/datatables/datatables.active.js"></script>
+    <script src="assets/js/pagination.min.js"></script>
+
 </body>
 
 

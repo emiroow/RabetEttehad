@@ -1,4 +1,5 @@
 const mainAddress = `https://divarfori-backend.iran.liara.run/`;
+const elpinoApi = `https://elpino.liara.run/`
 const Body = document.querySelector("body");
 
 if (Body.getAttribute("data-page") === "Index") {
@@ -37,11 +38,129 @@ if (Body.getAttribute("data-page") === "Index") {
 
 if (Body.getAttribute("data-page") === "Dashboard") {
 
+    document.addEventListener("DOMContentLoaded", function() {
+
+
+        fetch(`${elpinoApi}api/admin/dashboard`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Token-Auth": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                },
+            })
+            .then((respone) => respone.json())
+            .then((result) => {
+                console.log(result);
+                $("#numofproducts").html(result.adv);
+                $("#numofperson").html(result.bill);
+                $("#numofseal").html(result.bime)
+                $("#pmofpersson").html(result.charge)
+                $("#numofAgent").html(result.internet)
+            });
+    });
+
+
 }
 
 
 if (Body.getAttribute("data-page") === "Users") {
+    let usersCount;
+    let page = 1;
+    const showProductTable = function(data) {
+        let result = "";
+        let radif = 1;
+        data.forEach((item) => {
 
+            result += `
+
+      <tr>
+      <td>${radif}</td>
+      <td>${item.name}</td>
+      <td>${item.phoneNumber}</td>
+      <td>ارومیه</td>
+      <td>${item.dateTime.slice(0 , 16).split(" ").join("&nbsp;|&nbsp;")}</td>
+      <td>آدرس</td>
+      <td class="d-flex justify-content-center">
+          <a href="User.html">
+              <button class="accept-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
+              <i class="accept-advertise zmdi fa fa-pencil-square-o" id=${item._id}></i>
+          </button></a>
+          <button class="reject-adver remove button button-box button-xs button-danger">
+              <i class="reject-adver fa fa-trash-o"></i>
+          </button>
+      </td>
+  </tr>
+
+      `;
+            radif++;
+        });
+        document.getElementById("users-table").innerHTML = result;
+    };
+
+    const getUserFromServer = () => {
+        fetch(`https://elpino-api.liara.run/api/admin/fetchalluser/number=${page}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                },
+            })
+            .then((response) => response.json())
+            .then((result) => {
+                usersCount = result.user_count;
+                $('#loading').hide();
+                console.log(result);
+                showProductTable(result.data);
+            })
+            .then(() => {
+                (function(containerID, usersCount) {
+                    var container = $(`#${containerID}`);
+                    var sources = (function() {
+                        var result = [];
+                        for (var i = 1; i < usersCount; i++) {
+                            result.push(i);
+                        }
+                        return result;
+                    })();
+                    var options = {
+                        dataSource: sources,
+                        showGoInput: true,
+                        showGoButton: true,
+                        goButtonText: "برو",
+                        pageSize: 12,
+                        pageNumber: page,
+                        prevText: "&raquo;",
+                        nextText: "&laquo;",
+                        callback: function(response, pagination) {
+                            var dataHtml = "<ul>";
+                            $.each(response, function(index, item) {
+                                dataHtml += "<li>" + item + "</li>";
+                            });
+                            dataHtml += "</ul>";
+                            container.prev().html(dataHtml);
+                        },
+                    };
+                    container.pagination(options);
+                    container.addHook("afterPageOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getUserFromServer();
+                    });
+                    container.addHook("afterGoButtonOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getUserFromServer();
+                    });
+                    container.addHook("afterPreviousOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getUserFromServer();
+                    });
+                    container.addHook("afterNextOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getUserFromServer();
+                    });
+                })("pagination", usersCount);
+            });
+    };
+    getUserFromServer();
 }
 
 
@@ -78,6 +197,9 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
 
 }
 
+if (Body.getAttribute("data-page") === "Orders") {
+
+}
 
 if (Body.getAttribute("data-page") === "Settings") {
     const Showpass = document.querySelector("#showpass");
