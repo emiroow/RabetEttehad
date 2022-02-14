@@ -4,8 +4,8 @@ const menu = `
 <li><a href="Users.html"><i class="fa fa-user-o"></i> <span>کاربران</span></a></li>
 <li class="has-sub-menu"><a ><i class="fa fa-shopping-bag"></i> <span>فروشگاه</span></a>
 <ul class="side-header-sub-menu">
-<li><a href="AddProduct.html"><i class="fa fa-plus"></i> <span>افزودن محصول</span></a>
-<li><a href="ViewProduct.html"><i class="fa fa-shopping-basket"></i> <span>مشاهده محصولات </span></a>
+<li><a href="Product.html"><i class="fa fa-plus"></i> <span>افزودن محصول</span></a>
+<li><a href="Products.html"><i class="fa fa-shopping-basket"></i> <span>مشاهده محصولات </span></a>
 <li><a href="category.html"><i class="fa fa-building-o"></i> <span> دسته بندی </span></a>
 </ul>
 </li>

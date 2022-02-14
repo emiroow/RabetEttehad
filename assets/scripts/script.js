@@ -18,6 +18,11 @@ const toast = function (event, color) {
     }).showToast();
 
 }
+
+const sliceNumber = function (number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+};
+
 const toastRedColor = '#e52e2e';
 const toastGreenColor = '#70e52e';
 
@@ -56,6 +61,7 @@ const fetchApi = async (url, body) => {
     return lastResult;
 };
 
+// ========== login page ==========
 if (Body.getAttribute("data-page") === "Index") {
     document.getElementById("submit").addEventListener("click", async function () {
 
@@ -88,8 +94,7 @@ if (Body.getAttribute("data-page") === "Index") {
             })
     });
 }
-
-
+// ========== Dashboard page ==========
 if (Body.getAttribute("data-page") === "Dashboard") {
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -114,8 +119,7 @@ if (Body.getAttribute("data-page") === "Dashboard") {
 
 
 }
-
-
+// ========== Users page ==========
 if (Body.getAttribute("data-page") === "Users") {
     let usersCount;
     let page = 1;
@@ -265,8 +269,7 @@ if (Body.getAttribute("data-page") === "Users") {
 
     })
 }
-
-
+// ========== User page ==========
 if (Body.getAttribute("data-page") === "User") {
 
     let userId = document.URL.split('?')[1]
@@ -326,22 +329,203 @@ if (Body.getAttribute("data-page") === "User") {
     })
 
 }
+// ========== Products page ==========
+if (Body.getAttribute("data-page") === "Products") {
+    let page = 1;
+    let productCount = 0;
+    let categoryFilter = 'all';
 
+    // fetch to get Products
+    const getProducts = () => {
 
-if (Body.getAttribute("data-page") === "AddProduct") {
+        fetchApi('api/admin/shop/fetch_products', { page, cat: categoryFilter })
+            .then(data => {
+                if (data.status_code === 200) {
+                    productCount = data.product_count;
+                    showProductTable(data);
+                }
+                return data;
+            })
+            .then(data => {
+                // delete product
+                $('.delete-product').click(function (e) {
+                    e.preventDefault();
+                    fetchApi('api/admin/shop/del_product', { id: e.target.id })
+                        .then(res => {
+                            if (res.status_code === 200) {
+                                toast('محصول با موفقیت حذف شد', toastGreenColor);
+                                getProducts();
+                            } else if (res.status_code === 402) {
+                                toast(res.description_fa, toastRedColor);
+                            };
+                        });
+                });
+            })
+        // pagination control
+        // .then(() => {
+        //     (function (containerID, productCount) {
+        //         var container = $(`#${containerID}`);
+        //         var sources = function () {
+        //             var result = [];
+        //             for (var i = 1; i < productCount; i++) {
+        //                 result.push(i);
+        //             }
+        //             return result;
+        //         }();
+        //         var options = {
+        //             dataSource: sources,
+        //             showGoInput: true,
+        //             showGoButton: true,
+        //             goButtonText: 'برو',
+        //             pageSize: 12,
+        //             pageNumber: page,
+        //             prevText: '&raquo;',
+        //             nextText: '&laquo;',
+        //             callback: function (response, pagination) {
+        //                 var dataHtml = '<ul>';
+        //                 $.each(response, function (index, item) {
+        //                     dataHtml += '<li>' + item + '</li>';
+        //                 });
+        //                 dataHtml += '</ul>';
+        //                 container.prev().html(dataHtml);
+        //             }
+        //         };
+        //         container.pagination(options);
+        //         container.addHook('afterPageOnClick', (response, pagination) => {
+        //             loaderIn();
+        //             page = parseInt(pagination);
+        //             localStorage.setItem('page', page);
+        //             getProducts();
+        //         })
+        //         container.addHook('afterGoButtonOnClick', (response, pagination) => {
+        //             loaderIn();
+        //             page = parseInt(pagination);
+        //             localStorage.setItem('page', page);
+        //             getProducts();
+        //         })
+        //         container.addHook('afterPreviousOnClick', (response, pagination) => {
+        //             loaderIn();
+        //             page = parseInt(pagination);
+        //             localStorage.setItem('page', page);
+        //             getProducts();
+        //         })
+        //         container.addHook('afterNextOnClick', (response, pagination) => {
+        //             loaderIn();
+        //             page = parseInt(pagination);
+        //             localStorage.setItem('page', page);
+        //             getProducts();
+        //         })
+
+        //     })('pagination', productCount);
+        // })
+    }
+    // show Products on Table
+    const showProductTable = function (data) {
+        let result = '';
+        data.data.forEach((item, idx) => {
+            result +=
+                `
+            <tr>
+                <td>${idx + 1}</td>
+                <td><img src="${item.pics[0]}" alt="" width="100" class="product-image"></td>
+                <td>${item.title}</td>
+                <td>${item.subtitle}</td>
+                <td>${item.isSpecial ? 'بله' : 'خیر'}</td>
+                <td>${sliceNumber(item.price)}</td>
+                <td>${sliceNumber(item.priceoff)}</td>
+                <td>${sliceNumber(item.priceagent)}</td>
+                <td>${sliceNumber(item.priceagentoff)}</td>
+                <td>${item.sell_count}</td>
+                <td style="color: ${item.status ? 'green' : 'red'}">${item.status ? 'فعال' : 'غیرفعال'}</td>
+                <td>
+                    <div class="table-action-buttons">
+                        <a class="edit button button-box button-xs button-info" href="Product.html?${item._id}">
+                            <i class="zmdi zmdi-edit show-product" id="${item._id}"></i>
+                        </a>
+                        <button class="delete button button-box button-xs button-danger delete-product" id="${item._id}">
+                            <i class="zmdi zmdi-delete" id="${item._id}"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            `;
+            $('#Products-table').html(result)
+        });
+    };
+    // get categories 
+    const getCategories = () => {
+        fetchApi('api/admin/shop/fetch_cat', { page: 1 })
+            .then(res => {
+                res.data.forEach(item => {
+                    $('#categories').append(`<option value="${item._id}" data-title="${item.title}" data-description="${item.dis}" data-img="${item.img}">${item.title}</option>`);
+                });
+            })
+
+    };
+    // page load
+    $(document).ready(() => {
+        getProducts();
+        getCategories();
+    })
+    // get products by category filter
+    $('#categories').on('change', () => {
+        $('#Products-table').html('');
+        categoryFilter = $('#categories option:selected').val();
+        getProducts();
+    })
+    // search product
+    $('#search-form').on('submit', (e) => {
+        // loaderIn();
+        e.preventDefault();
+        $('#Products-table').html('');
+        fetchApi(`api/admin/shop/search_product`, { data: $('#search-text').val() })
+            .then(data => {
+                if (data.status_code == 200) {
+                    showProductTable(data);
+                };
+            })
+            .then(() => {
+                // delete product
+                $('.delete-product').click(function (e) {
+                    e.preventDefault();
+                    fetchApi('api/admin/shop/del_product', { id: e.target.id })
+                        .then(res => {
+                            if (res.status_code === 200) {
+                                toast('محصول با موفقیت حذف شد', toastGreenColor);
+                                getProducts();
+                            } else if (res.status_code === 402) {
+                                toast(res.description_fa, toastRedColor);
+                            };
+                        });
+                });
+            })
+    });
+    // cancel search 
+    $('#search-form').on('reset', () => {
+        page = 1;
+        $('#Products-table').html('');
+        getProducts();
+    })
+}
+// ========== Product page ==========
+if (Body.getAttribute("data-page") === "Product") {
+
+    const productID = document.URL.split('?')[1];
 
     FilePond.registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,
         FilePondPluginImageValidateSize, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+    const createFilePond = count => {
+        FilePond.create($('#file-pond')[0], {
+            imagePreviewHeight: 140,
+            imageValidateSizeMaxWidth: 500,
+            imageValidateSizeMaxHeight: 500,
+            imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
+            acceptedFileTypes: ['image/png'],
+            maxFileSize: '500KB',
+            maxFiles: count,
+        });
+    }
 
-    FilePond.create($('#file-pond')[0], {
-        imagePreviewHeight: 140,
-        imageValidateSizeMaxWidth: 500,
-        imageValidateSizeMaxHeight: 500,
-        imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
-        acceptedFileTypes: ['image/png'],
-        maxFileSize: '500KB',
-        maxFiles: 3,
-    });
 
 
     let picurl = [];
@@ -371,7 +555,7 @@ if (Body.getAttribute("data-page") === "AddProduct") {
                         error('oh no');
                     }
                 };
-                let result = await request.open('POST', `${RabetApi}/api/admin/shop/upload_pro_img`,);
+                request.open('POST', `${RabetApi}api/admin/shop/upload_pro_img`,);
                 request.send(formData);
             },
             revert: async (uniqueFileId, load, error) => {
@@ -396,44 +580,142 @@ if (Body.getAttribute("data-page") === "AddProduct") {
         }
     });
 
-    $("#AddProductBtn").on("submit", (e) => {
-        e.preventDefault();
-        console.log(picurl)
-        fetch(`${RabetApi}/api/admin/shop/add_product`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'Auth-Token': localStorage.getItem('token'),
-
-            },
-            body: JSON.stringify({
-                title: $("#AddProductTitle").val(),
-                subtitle: $("#AddProductSubTitle").val(),
-                price: $("#AddProductPrice").val(),
-                priceoff: $("#AddProductPriceOff").val(),
-                details: $("#AddProductDis").val(),
-                category: $('.select option:selected').val(),
-                pics: picurl,
-                priceagent: $('#AddProductPriceOff').val(),
-                priceagentoff: $('#AddProductPriceagrntOff').val(),
+    // get categories 
+    const getCategories = async () => {
+        await fetchApi('api/admin/shop/fetch_cat', { page: 1 })
+            .then(res => {
+                res.data.forEach(item => {
+                    $('#categories').append(`<option value="${item._id}">${item.title}</option>`);
+                });
             })
-
+    };
+    // render uploaded images
+    const renderUploadedImages = () => {
+        picurl.map(item => {
+            $('#uploaded-images').append(
+                `<img src="${item}" class="uploaded-image" id="${item.split('/').slice(-1)[0]}" style="margin: 0 10px;" width="140" alt="">`
+            );
         })
-            .then((response) => response.json())
-            .then((result) => {
-                console.log(result);
-                if (result.status_code === 200) {
-                    toast("با موفقیت ذخیره شد", "#11ff00");
-                    setTimeout(() => {
-                        window.location.href = "users.html";
-                    }, 2000);
-                } else {
-                    toast("ثبت نشد", "#ff0000")
-                }
-            })
+    }
+    // page load
+    $(document).ready(() => {
+        if (productID) {
+            fetchApi(`api/admin/shop/fetch_one_product`, { id: productID })
+                .then(data => {
+                    $('#status-select').css({ display: '' });
+                    data = data.data[0];
+                    $("#ProductTitle").val(data.title);
+                    $("#ProductSubTitle").val(data.subtitle);
+                    $("#ProductPrice").val(data.price);
+                    $("#ProductPriceOff").val(data.priceoff);
+                    $("#ProductDis").val(data.details);
+                    $('#categories option:selected').val(data.category);
+                    $('#ProductPriceOff').val(data.priceoff);
+                    $('#ProductPriceagrntOff').val(data.priceagentoff);
+                    $('#ProductPriceagrnt').val(data.priceagent);
+
+                    $('#Producttotal').val(data.Producttotal);
+                    $('#special-offer').prop('checked', data.isSpecial);
+                    picurl = [...data.pics];
+
+                    renderUploadedImages();
+                    createFilePond(3 - picurl.length);
+
+                    $($('#status-select option')[data.status ? 0 : 1]).prop('selected', true)
+
+                    return data
+                })
+                .then(async (data) => {
+                    await getCategories();
+                    [...$('#categories option')].map(item => {
+                        if ($(item).val() === data.category) {
+                            $(item).prop('selected', true);
+                        }
+                    })
+                })
+                .then(() => {
+                    $('.uploaded-image').on('click', e => {
+                        picurl.map(item => {
+                            if (item.split('/').slice(-1)[0] === e.target.id) {
+                                picurl.splice(picurl.indexOf(item), 1);
+                                $(e.target).remove();
+                                renderUploadedImages();
+                                $('#file-pond').remove();
+                                $('#file-pond-container').append(`<input id="file-pond" type="file" multiple>`)
+                                createFilePond(3 - picurl.length);
+                            }
+                        })
+                    })
+                })
+        } else {
+            getCategories();
+            createFilePond(3);
+        };
+    });
+
+    $("#product-form").on("submit", (e) => {
+        e.preventDefault();
+
+        if (productID) {
+            const body = {
+                title: $("#ProductTitle").val(),
+                subtitle: $("#ProductSubTitle").val(),
+                price: $("#ProductPrice").val(),
+                priceoff: $("#ProductPriceOff").val(),
+                details: $("#ProductDis").val(),
+                category: $('#categories option:selected').val(),
+                pics: picurl,
+                priceagent: $('#ProductPriceOff').val(),
+                priceagentoff: $('#ProductPriceagrntOff').val(),
+                Producttotal: $('#Producttotal').val(),
+                isSpecial: $('#special-offer').prop('checked'),
+                status: $('#status-select option:selected').val() === 'true' ? true : false,
+                product_id: productID,
+            };
+            console.log(body)
+            fetchApi('api/admin/shop/update_product', body)
+                .then((res) => {
+                    console.log(res);
+                    if (res.status_code === 200) {
+                        toast("با موفقیت ثبت شد", toastGreenColor);
+                        setTimeout(() => {
+                            // window.location.href = "users.html";
+                        }, 2000);
+                    } else if (res.status_code === 402) {
+                        toast(res.description_fa, toastRedColor);
+                    }
+                })
+        } else {
+            const body = {
+                title: $("#ProductTitle").val(),
+                subtitle: $("#ProductSubTitle").val(),
+                price: $("#ProductPrice").val(),
+                priceoff: $("#ProductPriceOff").val(),
+                details: $("#ProductDis").val(),
+                category: $('#categories option:selected').val(),
+                pics: picurl,
+                priceagent: $('#ProductPriceOff').val(),
+                priceagentoff: $('#ProductPriceagrntOff').val(),
+                Producttotal: $('#Producttotal').val(),
+                isSpecial: $('#special-offer').prop('checked'),
+            };
+            console.log(body)
+            fetchApi('api/admin/shop/add_product', body)
+                .then((res) => {
+                    console.log(res);
+                    if (res.status_code === 200) {
+                        toast("با موفقیت ثبت شد", toastGreenColor);
+                        setTimeout(() => {
+                            // window.location.href = "users.html";
+                        }, 2000);
+                    } else if (res.status_code === 402) {
+                        toast(res.description_fa, toastRedColor);
+                    }
+                })
+        }
     })
 }
-
+// ========== category page ==========
 if (Body.getAttribute('data-page') === 'category') {
     // get categories 
     const getCategories = () => {
@@ -485,12 +767,7 @@ if (Body.getAttribute('data-page') === 'category') {
             })
     })
 }
-
-if (Body.getAttribute("data-paeg") === "ViewProduct") {
-
-}
-
-
+// ========== DiscountCode page ==========
 if (Body.getAttribute("data-page") === "DiscountCode") {
     const DiscountCodeShowontable = function (data) {
         radif = 1;
@@ -601,8 +878,7 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
 
 
 }
-
-
+// ========== Orders page ==========
 if (Body.getAttribute("data-page") === "Orders") {
 
     const Showproductintable = function (data) {
@@ -678,8 +954,7 @@ if (Body.getAttribute("data-page") === "Orders") {
 
 
 }
-
-
+// ========== Settings page ==========
 if (Body.getAttribute("data-page") === "Settings") {
     const Showpass = document.querySelector("#showpass");
     const PassInput = document.querySelector("#admin-password");
@@ -744,7 +1019,7 @@ if (Body.getAttribute("data-page") === "Settings") {
     })
 
 }
-
+// ========== QRCode page ==========
 if (Body.getAttribute("QRCode") === "QRCode") {
 
 

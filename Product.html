@@ -62,7 +62,7 @@
 
 </head>
 
-<body dir="rtl" data-page="AddProduct">
+<body dir="rtl" data-page="Product">
 
     <div class="main-wrapper">
 
@@ -135,31 +135,31 @@
                 <div class="add-edit-product-wrap col-12">
 
                     <div class="add-edit-product-form">
-                        <form id="AddProductBtn">
+                        <form id="product-form">
 
                             <div class="row">
                                 <div class="col-lg-6 col-12 mb-30">
-                                    <input class="form-control" type="text" id="AddProductTitle" required
+                                    <input class="form-control" type="text" id="ProductTitle" required
                                         placeholder="نام محصول / عنوان*">
                                 </div>
                                 <div class="col-lg-6 col-12 mb-30">
-                                    <input class="form-control" type="text" id="AddProductSubTitle" required
+                                    <input class="form-control" type="text" id="ProductSubTitle" required
                                         placeholder="زیرعنوان">
                                 </div>
                                 <div class="col-lg-6 col-12 mb-30">
-                                    <input class="form-control" type="number" id="AddProductPrice" required
+                                    <input class="form-control" type="number" id="ProductPrice" required
                                         placeholder="قیمت محصول برای کابران">
                                 </div>
                                 <div class="col-lg-6 col-12 mb-30">
-                                    <input class="form-control" type="number" id="AddProductPriceOff" required
+                                    <input class="form-control" type="number" id="ProductPriceOff" required
                                         placeholder="قیمت با تخفیف  برای کابران(در صورت نبود قیمت ، 1- درج کنید) *">
                                 </div>
                                 <div class="col-lg-6 col-12 mb-30">
-                                    <input class="form-control" type="number" id="AddProductPriceagrnt" required
+                                    <input class="form-control" type="number" id="ProductPriceagrnt" required
                                         placeholder="قیمت محصول برای نمایندگان">
                                 </div>
                                 <div class="col-lg-6 col-12 mb-30">
-                                    <input class="form-control" type="number" id="AddProductPriceagrntOff" required
+                                    <input class="form-control" type="number" id="ProductPriceagrntOff" required
                                         placeholder="قیمت با تخفیف برای نمایندگان(در صورت نبود قیمت ، 1- درج کنید) *">
                                 </div>
                                 <div class="col-lg-6 col-12 mb-30">
@@ -167,16 +167,15 @@
                                         placeholder="تعداد *">
                                 </div>
                                 <div class="col-lg-6 col-12 mb-30">
-                                    <select class="form-control select">
-                                        <option value="status">دسته بندی</option>
-                                        <option value="publish">تست</option>
-                                        <option value="draft">تست</option>
+                                    <select id="categories" required class="form-control select">
+                                        <option value=""> دسته بندی را انتخاب کنید</option>
+
                                     </select>
                                 </div>
                                 <div class="col-12 mb-30">
-                                    <textarea class="form-control" id="AddProductDis" required
-                                        placeholder="توضیحات محصول*">
-                                    </textarea>
+
+                                    <textarea class="form-control" id="ProductDis" required cols="30"
+                                        rows="10"></textarea>
                                 </div>
 
                                 <div class="col-lg-2 col-12 mb-30 mt-14 d-flex align-items-center">
@@ -189,23 +188,32 @@
                             <h4 class="title">گالری محصول</h4>
 
                             <div class="product-upload-gallery row flex-wrap">
-                                <div class="col-12 mb-30">
-                                    <p class="form-help-text mt-0">آپلود حداکثر 800 × 800 پیکسل و حداکثر اندازه 2
-                                        مگابایت.</p>
+                                <div class="col-12 mb-30" id="file-pond-container">
+                                    <p class="form-help-text mt-0">آپلود حداکثر 500 × 500 پیکسل و حداکثر اندازه 500
+                                        کلیوبایت.</p>
                                     <input id="file-pond" type="file" multiple>
+                                </div>
+                            </div>
+                            <div class="product-upload-gallery row flex-wrap">
+                                <p class="form-help-text mt-0">عکس های آپلود شده(برای حذف عکس روی آن کلیک کنید)</p>
+                                <div class="col-12 mb-30" id="uploaded-images">
+
                                 </div>
                             </div>
 
                             <!-- Button Group Start -->
-                            <div class="row">
-                                <div class="d-flex flex-wrap justify-content-end col mbn-10">
-                                    <button type="submit"
-                                        class="button button-outline button-primary mb-10 ml-10 mr-0">ذخیره و
-                                        انتشار</button>
-                                    <button type="button"
-                                        class="button button-outline button-danger mb-10 ml-10 mr-0">حذف
-                                        محصول</button>
-                                </div>
+                            <div class=" row d-flex flex-wrap justify-content-end align-items-center col mbn-10">
+                                <button type="submit"
+                                    class="button button-outline button-primary mb-10 ml-10 mr-0">ذخیره و
+                                    انتشار</button>
+                                <button type="button" class="button button-outline button-danger mb-10 ml-10 mr-0">حذف
+                                    محصول</button>
+
+                                <select style="display: none;" id="status-select" required
+                                    class="form-control pb-5 col-3 mb-10 select">
+                                    <option value="true">فعال</option>
+                                    <option value="false">غیرفعال</option>
+                                </select>
                             </div>
                             <!-- Button Group End -->
 
