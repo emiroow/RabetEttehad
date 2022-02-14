@@ -121,38 +121,27 @@
                         <h4 class="title">افزودن محصول</h4>
 
                         <div class="row">
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="نام محصول / عنوان*"></div>
-                            <div class="col-lg-3 col-12 mb-30">
+                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" id="AddProductTitle" required placeholder="نام محصول / عنوان*"></div>
+                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" id="AddProductSubTitle" required placeholder="زیرعنوان"></div>
+                            <h5 class="row col-lg-12">قیمت محصول برای کابران</h5>
+                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" id="AddProductPrice" required placeholder="قیمت محصول*"></div>
+                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" id="AddProductPriceOff" required placeholder="قیمت با تخفیف (در صورت نبود قیمت ، 1- درج کنید) *"></div>
+                            <h5 class="row col-lg-12">قیمت محصول برای نمایندگان</h5>
+                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" id="AddProductPrice" required placeholder="قیمت محصول*"></div>
+                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" id="AddProductPriceOff" required placeholder="قیمت با تخفیف (در صورت نبود قیمت ، 1- درج کنید) *"></div>
+                            <div class="col-12 mb-30"><textarea class="form-control" id="AddProductDis" required placeholder="توضیحات محصول*"></textarea></div>
+                            <div class="col-lg-4 col-12 mb-30">
                                 <select class="form-control select2">
                                 <option value="status">دسته بندی</option>
                                 <option value="publish">تست</option>
                                 <option value="draft">تست</option>
                             </select>
                             </div>
-                            <div class="col-lg-3 col-12 mb-30">
-                                <select class="form-control select2">
-                                <option value="status">زیر دسته بندی</option>
-                                <option value="publish">تست</option>
-                                <option value="draft">تست</option>
-                            </select>
-                            </div>
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="قیمت محصول*"></div>
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="قیمت با تخفیف (در صورت نبود قیمت ، 1- درج کنید) *"></div>
-                            <div class="col-12 mb-30"><textarea class="form-control" placeholder="توضیحات محصول*"></textarea></div>
-                            <div class="col-lg-6 col-12 mb-30">
-                                <select class="form-control select2">
-                                <option value="status">انتخواب به عنوان محصول</option>
-                                <option value="publish">ویژه</option>
-                                <option value="draft">معمولی</option>
-                            </select>
-                            </div>
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="سایز"></div>
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="وزن"></div>
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="رنگ"></div>
+                            <div class="col-lg-2 col-12 mb-30"><input class="form-control" type="text" id="Producttotal" required placeholder="تعداد *"></div>
+                            <div class="col-lg-2 col-12 mb-30 mt-10">وضعیت : <span class="text-white bg-danger p-1 pe-2 ps-2">فعال</span>   <span class="text-white bg-success p-1 ">غیر فعال</span></div>
                         </div>
 
                         <h4 class="title">گالری محصول</h4>
-
                         <div class="product-upload-gallery row flex-wrap">
                             <div class="col-12 mb-30">
                                 <p class="form-help-text mt-0">آپلود حداکثر 800 × 800 پیکسل و حداکثر اندازه 2 مگابایت.</p>
@@ -162,7 +151,7 @@
 
                         <!-- Button Group Start -->
                         <div class="row">
-                            <div class="d-flex flex-wrap justify-content-center col mbn-10">
+                            <div class="d-flex flex-wrap justify-content-end col mbn-10">
                                 <button class="button button-outline button-primary mb-10 ml-10 mr-0">ذخیره و انتشار</button>
                                 <button class="button button-outline button-danger mb-10 ml-10 mr-0">حذف محصول</button>
                             </div>
@@ -171,7 +160,6 @@
 
                     </form>
                 </div>
-
             </div>
             <!-- Add or Edit Product End -->
         </div>

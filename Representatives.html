@@ -40,6 +40,14 @@
     <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
 
 </head>
+<style>
+    th{
+        text-align: center;
+    }
+    td{
+        text-align: center;
+    }
+</style>
 
 <body dir="rtl">
 
@@ -129,18 +137,15 @@
                             </div>
                         </div>
 
-                        <table class="table table-bordered data-table ">
+                        <table class="table table-bordered data-table  mt-10">
                             <thead>
                                 <tr>
                                     <th>ردیف</th>
                                     <th>نام کابر</th>
                                     <th>شماره همراه</th>
-                                    <th>ساعت</th>
+                                    <th>شماره تلفن ثابت</th>
                                     <th>تاریخ </th>
-                                    <th>تعداد</th>
-                                    <th>شناسه خرید </th>
-                                    <th>وضعیت مشاهده</th>
-                                    <th class="d-flex justify-content-center">مشاده | حذف</th>
+                                    <th>مشاده | حذف</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -148,13 +153,9 @@
                                     <td>1</td>
                                     <td>جعفر عباسی</td>
                                     <td>09142369599</td>
-                                    <td>22:22</td>
+                                    <td>0413287</td>
                                     <td>2011/04/25</td>
-                                    <td>4</td>
-                                    <td>354131345</td>
-                                    <td>مشاهده شده</td>
-                                    <td class="d-flex justify-content-center">
-
+                                    <td >
                                         <a href="Representative.html" class="accept-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
                                             <i class="accept-advertise fa fa-eye" id=${item._id}></i>
                                         </a>

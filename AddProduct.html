@@ -14,13 +14,13 @@
     <meta http-equiv="Expires" content="0" />
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
-
+    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
     <!-- CSS
 	============================================ -->
-
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css">
     <link rel="stylesheet" href="assets/css/vendor/font-awesome.min.css">
@@ -69,7 +69,8 @@
                                 <div class="row align-items-center">
 
                                     <!--Side Header Toggle-->
-                                    <div class="col-auto"><button class="side-header-toggle"><i class="zmdi zmdi-menu"></i></button></div>
+                                    <div class="col-auto"><button class="side-header-toggle"><i
+                                                class="zmdi zmdi-menu"></i></button></div>
 
                                 </div>
                             </div>
@@ -113,55 +114,58 @@
                 <div class="add-edit-product-wrap col-12">
 
                     <div class="add-edit-product-form">
-                        <form action="#">
-
-                            <h4 class="title">افزودن محصول</h4>
+                        <form id="AddProductBtn">
 
                             <div class="row">
-                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="نام محصول / عنوان*"></div>
-                                <div class="col-lg-3 col-12 mb-30">
-                                    <select class="form-control select2">
-                                    <option value="status">دسته بندی</option>
-                                    <option value="publish">تست</option>
-                                    <option value="draft">تست</option>
-                                </select>
-                                </div>
-                                <div class="col-lg-3 col-12 mb-30">
-                                    <select class="form-control select2">
-                                    <option value="status">زیر دسته بندی</option>
-                                    <option value="publish">تست</option>
-                                    <option value="draft">تست</option>
-                                </select>
-                                </div>
-                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="قیمت محصول*"></div>
-                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="قیمت با تخفیف (در صورت نبود قیمت ، 1- درج کنید) *"></div>
-                                <div class="col-12 mb-30"><textarea class="form-control" placeholder="توضیحات محصول*"></textarea></div>
-                                <div class="col-lg-6 col-12 mb-30">
-                                    <select class="form-control select2">
-                                    <option value="status">انتخواب به عنوان محصول</option>
-                                    <option value="publish">ویژه</option>
-                                    <option value="draft">معمولی</option>
-                                </select>
-                                </div>
-                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="سایز"></div>
-                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="وزن"></div>
-                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text" placeholder="رنگ"></div>
-                            </div>
+                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
+                                        id="AddProductTitle" required placeholder="نام محصول / عنوان*"></div>
+                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
+                                        id="AddProductSubTitle" required placeholder="زیرعنوان"></div>
+                                <h5 class="row col-lg-12">قیمت محصول برای کابران</h5>
+                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
+                                        id="AddProductPrice" required placeholder="قیمت محصول*"></div>
+                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
+                                        id="AddProductPriceOff" required
+                                        placeholder="قیمت با تخفیف (در صورت نبود قیمت ، 1- درج کنید) *"></div>
+                                <h5 class="row col-lg-12">قیمت محصول برای نمایندگان</h5>
+                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
+                                        id="AddProductPriceagrnt" required placeholder="قیمت محصول*"></div>
+                                <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
+                                        id="AddProductPriceagrntOff" required
+                                        placeholder="قیمت با تخفیف (در صورت نبود قیمت ، 1- درج کنید) *"></div>
+                                <div class="col-12 mb-30"><textarea class="form-control" id="AddProductDis" required
+                                        placeholder="توضیحات محصول*"></textarea></div>
 
+
+                                <div class="col-lg-4 col-12 mb-30">
+                                    <select class="form-control select">
+                                        <option value="status">دسته بندی</option>
+                                        <option value="publish">تست</option>
+                                        <option value="draft">تست</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-12 mb-30"><input class="form-control" type="text" id="Producttotal" required placeholder="تعداد *"></div>
+                                <div class="col-lg-2 col-12 mb-30 mt-14">وضعیت : <input type="checkbox" style="margin-top: 10px;" id=""></div>
+
+                            </div>
+                            
                             <h4 class="title">گالری محصول</h4>
 
                             <div class="product-upload-gallery row flex-wrap">
                                 <div class="col-12 mb-30">
-                                    <p class="form-help-text mt-0">آپلود حداکثر 800 × 800 پیکسل و حداکثر اندازه 2 مگابایت.</p>
+                                    <p class="form-help-text mt-0">آپلود حداکثر 800 × 800 پیکسل و حداکثر اندازه 2
+                                        مگابایت.</p>
                                     <input class="file-pond" type="file" multiple>
                                 </div>
                             </div>
 
                             <!-- Button Group Start -->
                             <div class="row">
-                                <div class="d-flex flex-wrap justify-content-center col mbn-10">
-                                    <button class="button button-outline button-primary mb-10 ml-10 mr-0">ذخیره و انتشار</button>
-                                    <button class="button button-outline button-danger mb-10 ml-10 mr-0">حذف محصول</button>
+                                <div class="d-flex flex-wrap justify-content-end col mbn-10">
+                                    <button type="submit" class="button button-outline button-primary mb-10 ml-10 mr-0"
+                                    >ذخیره و انتشار</button>
+                                    <button type="button" class="button button-outline button-danger mb-10 ml-10 mr-0">حذف
+                                        محصول</button>
                                 </div>
                             </div>
                             <!-- Button Group End -->
@@ -193,11 +197,16 @@
 
     <!-- JS
 ============================================ -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="assets/js/plugins/filepond/filepond.min.js"></script>
+    <script src="assets/js/plugins/filepond/filepond-plugin-image-exif-orientation.min.js"></script>
+    <script src="assets/js/plugins/filepond/filepond-plugin-image-preview.min.js"></script>
+    <script src="assets/js/plugins/filepond/filepond.active.js"></script>
     <script src="assets/scripts/script.js?v=1.0.0"></script>
     <script src="assets/scripts/components.js?v=1.0.0"></script>
     <!-- Global Vendor, plugins & Activation JS -->
+
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/vendor/bootstrap.min.js"></script>
     <!--Plugins JS-->

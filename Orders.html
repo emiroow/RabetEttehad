@@ -14,6 +14,7 @@
     <meta http-equiv="Expires" content="0" />
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
 
     <!-- CSS
 	============================================ -->
@@ -122,9 +123,9 @@
                     <div class="box-body">
 
                         <div class="input-group row col-lg-3">
-                            <input type="text" class="form-control" style="border-radius: 0em 0.4em 0.4em 0em;" placeholder="شماره همراه مورد نظر خودرا جستجو کنید" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" id="dataSearch" style="border-radius: 0em 0.4em 0.4em 0em;" placeholder="شماره همراه مورد نظر خودرا جستجو کنید" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" style="border-radius: 0em 0em 0em 0em;"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-primary" id="searchBtn" style="border-radius: 0em 0em 0em 0em;"><i class="fa fa-search"></i></button>
                                 <button class="btn btn-danger" style="border-radius: 0.4em 0em 0em 0.4em;"><i class="fa fa-times"></i></button>
                             </div>
                         </div>
@@ -176,7 +177,6 @@
     <script src="assets/scripts/components.js?v=1.0.0"></script>
     <!-- Global Vendor, plugins & Activation JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/vendor/bootstrap.min.js"></script>
     <!--Plugins JS-->

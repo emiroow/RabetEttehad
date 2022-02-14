@@ -12,14 +12,14 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
 
     <!-- CSS
 	============================================ -->
-
+    <link rel="stylesheet" href="assets/css/persian-datepicker.min.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
 
@@ -40,8 +40,6 @@
 
     <!-- Custom Style CSS Only For Demo Purpose -->
     <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
-
-    <link rel="stylesheet" href="/assets/css/persianDatepicker-default.css">
 </head>
 
 <body dir="rtl" data-page="DiscountCode">
@@ -126,7 +124,7 @@
                     <div class="input-group mb-3">
                         <input id="discount-percent" type="number" placeholder="درصد تخفیف" class="form-control" required="" minlength="1">
                     </div>
-                    <input id="pdpGregorian" type="text" placeholder="تاریخ فعال بودن(لطفا از انتخاب گر استفاده کنید)" class=" form-control pwt-datepicker-input-element" required="" minlength="1">
+                    <input id="datePicker" type="text" placeholder="تاریخ فعال بودن(لطفا از انتخاب گر استفاده کنید)" class=" form-control pwt-datepicker-input-element" required="" minlength="1">
                     <div class="alert alert-dark d-flex justify-content mt-30" role="alert" style="width: 100%;">
                         <button id="discount-submit" class="btn btn-success m-auto col-lg-1">ثبت</button>
                     </div>
@@ -146,26 +144,12 @@
                                 <th>کد تخفیف</th>
                                 <th>شروع</th>
                                 <th>پایان</th>
-                                <th>مبلغ کف سفارش</th>
-                                <th>مبلغ سقف سفارش</th>
+
                                 <th>حذف</th>
                             </tr>
                         </thead>
                         <tbody id="discount-table">
-                            <tr>
-                                <td>1</td>
-                                <td>10</td>
-                                <td>2qla3z9i</td>
-                                <td>1400-10-27 </td>
-                                <td>۱۴۰۰/۰۹/۲۵</td>
-                                <td>50,000</td>
-                                <td>250,000</td>
-                                <td>
-                                    <div class="table-action-buttons">
-                                        <a class="delete button button-box button-xs button-danger" href="#"><i class="zmdi zmdi-delete delete-discount" id="61e57723c18f84dd83c4b3c3"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
+
 
                         </tbody>
 
@@ -194,9 +178,10 @@
 
     <!-- JS
 ============================================ -->
+    <script src="assets/scripts/persian-date.min.js"></script>
+    <script src="assets/scripts/persian-datepicker.min.js"></script>
     <script src="assets/scripts/script.js?v=1.0.0"></script>
     <script src="assets/scripts/components.js?v=1.0.0"></script>
-    <script src="assets/scripts/persianDatepicker.min.js"></script>
     <!-- Global Vendor, plugins & Activation JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>
@@ -205,13 +190,11 @@
     <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="assets/js/plugins/tippy4.min.js.js"></script>
     <!--Main JS-->
+
     <script src="assets/js/main.js"></script>
     <script>
-        $(document).ready(function() {
-            $("#pdpGregorian").persianDatepicker();
-
-        })
     </script>
+
 </body>
 
 
