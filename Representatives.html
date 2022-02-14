@@ -20,6 +20,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/jquery-spinner.css">
 
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css">
@@ -36,6 +37,8 @@
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <link rel="stylesheet" href="assets/css/j-pagination.css" />
+
     <!-- Custom Style CSS Only For Demo Purpose -->
     <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
 
@@ -49,7 +52,7 @@
     }
 </style>
 
-<body dir="rtl">
+<body dir="rtl" data-page="Representatives">
 
     <div class="main-wrapper">
 
@@ -132,8 +135,8 @@
                         <div class="input-group row col-lg-3">
                             <input type="text" class="form-control" style="border-radius: 0em 0.4em 0.4em 0em;" placeholder="شماره همراه مورد نظر خودرا جستجو کنید" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" style="border-radius: 0em 0em 0em 0em;"><i class="fa fa-search"></i></button>
-                                <button class="btn btn-danger" style="border-radius: 0.4em 0em 0em 0.4em;"><i class="fa fa-times"></i></button>
+                                <button class="btn btn-primary" style="border-radius: 0em 0em 0em 0em;" id="searchBtn"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-danger" style="border-radius: 0.4em 0em 0em 0.4em;" id="reloadtable"><i class="fa fa-times"></i></button>
                             </div>
                         </div>
 
@@ -148,22 +151,8 @@
                                     <th>مشاده | حذف</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>جعفر عباسی</td>
-                                    <td>09142369599</td>
-                                    <td>0413287</td>
-                                    <td>2011/04/25</td>
-                                    <td >
-                                        <a href="Representative.html" class="accept-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
-                                            <i class="accept-advertise fa fa-eye" id=${item._id}></i>
-                                        </a>
-                                        <button class="reject-adver remove button button-box button-xs button-danger">
-                                            <i class="reject-adver fa fa-times"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="table-show">
+                                
                             </tbody>
                         </table>
 
@@ -189,18 +178,21 @@
 
     <!-- JS
 ============================================ -->
-    <script src="assets/scripts/script.js?v=1.0.0"></script>
-    <script src="assets/scripts/components.js?v=1.0.0"></script>
     <!-- Global Vendor, plugins & Activation JS -->
-    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/pagination.min.js"></script>
+    <script src="assets/scripts/jquery-spinner.js"></script>
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/vendor/bootstrap.min.js"></script>
     <!--Plugins JS-->
     <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="assets/js/plugins/tippy4.min.js.js"></script>
     <!--Main JS-->
+
     <script src="assets/js/main.js"></script>
+    <script src="assets/scripts/components.js?v=1.0.0"></script>
+    <script src="assets/scripts/script.js?v=1.0.0"></script>
 
 </body>
 
