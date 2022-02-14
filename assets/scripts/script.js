@@ -1,6 +1,14 @@
 const RabetApi = `https://rabetettehad.herokuapp.com/`
 const Body = document.querySelector("body");
 
+const spinner = new jQuerySpinner({
+    parentId: 'spiner',
+    duration: 1000
+    //     spinner.show();
+    //     spinner.hide();
+});
+
+
 const toast = function (event, color) {
     Toastify({
         text: event,
@@ -80,6 +88,7 @@ if (Body.getAttribute("data-page") === "Dashboard") {
 
 
 if (Body.getAttribute("data-page") === "Users") {
+    spinner.show();
     let usersCount;
     let page = 1;
     const showProductTable = function (data) {
@@ -123,6 +132,7 @@ if (Body.getAttribute("data-page") === "Users") {
                 usersCount = result.user_count;
                 console.log(result);
                 showProductTable(result.data);
+                spinner.hide();
             })
             .then(() => {
                 (function (containerID, usersCount) {
@@ -686,6 +696,150 @@ if (Body.getAttribute("QRCode") === "QRCode") {
     getfromserver()
 }
 
+if (Body.getAttribute("data-page") === "Representatives") {
+    var usersCount;
+    var page = 1;
+    const showontable = function showontable(data) {
+        radif = 1;
+        result = "";
+        data.forEach((item) => {
+            result += `
+            <tr>
+                <td>${radif}(</td>
+                <td>جعفر عباسی</td>
+                <td>09142369599</td>
+                <td>0413287</td>
+                <td>2011/04/25</td>
+                <td >
+                    <a href="Representative.html" class="accept-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
+                        <i class="accept-advertise fa fa-eye" id=${item._id}></i>
+                    </a>
+                    <button class="reject-adver remove button button-box button-xs button-danger">
+                        <i class="reject-adver fa fa-times"></i>
+                    </button>
+                </td>
+            </tr>
+            `;
+            radif++;
+        })
+        document.getElementById("table-show").innerHTML = result;
+    }
+    const getfromserver = function () {
+        fetch(`${RabetApi}/api/agent/admin/fetch_agent`, {
+                method: "POST",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    number: page,
+                })
+            })
+            .then((response => response.json()))
+            .then((result => {
+                console.log(result);
+                showontable(result.data);
+                usersCount = result.agent_count;
+            }))
+            .then(() => {
+                (function (containerID, usersCount) {
+                    var container = $(`#${containerID}`);
+                    var sources = (function () {
+                        var result = [];
+                        for (var i = 1; i < usersCount; i++) {
+                            result.push(i);
+                        }
+                        return result;
+                    })();
+                    var options = {
+                        dataSource: sources,
+                        showGoInput: true,
+                        showGoButton: true,
+                        goButtonText: "برو",
+                        pageSize: 12,
+                        pageNumber: page,
+                        prevText: "&raquo;",
+                        nextText: "&laquo;",
+                        callback: function (response, pagination) {
+                            var dataHtml = "<ul>";
+                            $.each(response, function (index, item) {
+                                dataHtml += "<li>" + item + "</li>";
+                            });
+                            dataHtml += "</ul>";
+                            container.prev().html(dataHtml);
+                        },
+                    };
+                    container.pagination(options);
+                    container.addHook("afterPageOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getfromserver();
+                    });
+                    container.addHook("afterGoButtonOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getfromserver();
+                    });
+                    container.addHook("afterPreviousOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getfromserver();
+                    });
+                    container.addHook("afterNextOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getfromserver();
+                    });
+                })("pagination", usersCount);
+            })
+    }
+    getfromserver();
+
+
+    const Showsearchtable = function (data) {
+        let result = "";
+        let radif = 1;
+        data.forEach((item) => {
+            result += `
+            <tr>
+                <td>${radif}(</td>
+                <td>جعفر عباسی</td>
+                <td>09142369599</td>
+                <td>0413287</td>
+                <td>2011/04/25</td>
+                <td >
+                    <a href="Representative.html" class="accept-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
+                        <i class="accept-advertise fa fa-eye" id=${item._id}></i>
+                    </a>
+                    <button class="reject-adver remove button button-box button-xs button-danger">
+                        <i class="reject-adver fa fa-times"></i>
+                    </button>
+                </td>
+            </tr>
+            `;
+        })
+        document.getElementById("table-show").innerHTML = result;
+    }
+
+    $("#searchBtn").click(() => {
+        $("#table-show").html("");
+        $("#pagination").html("");
+        fetch(`${RabetApi}`, {
+                method: "GET",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                Showsearchtable(result.data)
+            })
+    })
+
+    $("#reloadtable").click(()=>{
+        window.location.reload();
+    })
+
+}
+
 $('#log-out').click(function () {
     localStorage.clear();
-}); 
+});

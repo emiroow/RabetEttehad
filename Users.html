@@ -17,11 +17,10 @@
 
     <!-- CSS
 	============================================ -->
-    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
-
+    <link rel="stylesheet" href="assets/css/jquery-spinner.css">
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css">
     <link rel="stylesheet" href="assets/css/vendor/font-awesome.min.css">
@@ -45,12 +44,13 @@
 </head>
 
 <body dir="rtl" data-page="Users">
-
     <div class="main-wrapper">
+    <div id="spiner" style="z-index: 10000;"></div>
 
 
         <!-- Header Section Start -->
         <div class="header-section">
+
             <div class="container-fluid">
                 <div class="row justify-content-between align-items-center">
 
@@ -72,7 +72,8 @@
                                 <div class="row align-items-center">
 
                                     <!--Side Header Toggle-->
-                                    <div class="col-auto"><button class="side-header-toggle"><i class="zmdi zmdi-menu"></i></button></div>
+                                    <div class="col-auto"><button class="side-header-toggle"><i
+                                                class="zmdi zmdi-menu"></i></button></div>
 
                                 </div>
                             </div>
@@ -125,9 +126,11 @@
                     <div class="box-body">
 
                         <div class="input-group row col-lg-3">
-                            <input type="text" class="form-control" id="SearchText" placeholder="شماره مورد نظر خودرا جستجو کنید" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" id="SearchText"
+                                placeholder="شماره مورد نظر خودرا جستجو کنید" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" id="SearchBtn" style="border-radius: 0.4em 0em 0em 0.4em;"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-primary" id="SearchBtn"
+                                    style="border-radius: 0.4em 0em 0em 0.4em;"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
 
@@ -173,8 +176,8 @@
 
     <!-- JS
 ============================================ -->
-    <script src="assets/scripts/script.js?v=1.0.0"></script>
-    <script src="assets/scripts/components.js?v=1.0.0"></script>
+    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="assets/scripts/jquery-spinner.js"></script>
     <!-- Global Vendor, plugins & Activation JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>
@@ -188,6 +191,9 @@
     <script src="assets/js/plugins/datatables/datatables.min.js"></script>
     <script src="assets/js/plugins/datatables/datatables.active.js"></script>
     <script src="assets/js/pagination.min.js"></script>
+    <script src="assets/scripts/components.js?v=1.0.0"></script>
+    <script src="assets/scripts/script.js?v=1.0.0"></script>
+
 
 </body>
 
