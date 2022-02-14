@@ -18,6 +18,43 @@ const toast = function (event, color) {
     }).showToast();
 
 }
+const toastRedColor = '#e52e2e';
+const toastGreenColor = '#70e52e';
+
+// api call function
+const fetchApi = async (url, body) => {
+    let lastResult;
+    try {
+        if (body) {
+            await fetch(`${RabetApi}${url}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Auth-Token': localStorage.getItem('token')
+                },
+                body: JSON.stringify(body),
+            })
+                .then(respone => respone.json())
+                .then(result => lastResult = result)
+                .catch(err => toast(err, '#b90000'))
+        } else {
+            await fetch(`${endPoint}${url}`, {
+                method: 'GET',
+                headers: {
+                    'Auth-Token': localStorage.getItem('token')
+                },
+            })
+                .then(respone => respone.json())
+                .then(result => { lastResult = result })
+                .catch(err => toast(err, '#b90000'))
+        }
+
+    } catch (err) {
+        toast(err, '#b90000');
+        lastResult = err;
+    };
+    return lastResult;
+};
 
 if (Body.getAttribute("data-page") === "Index") {
     document.getElementById("submit").addEventListener("click", async function () {
@@ -293,20 +330,19 @@ if (Body.getAttribute("data-page") === "User") {
 
 if (Body.getAttribute("data-page") === "AddProduct") {
 
-    $(document).ready(() => {
-        FilePond.registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,
-            FilePondPluginImageValidateSize, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
-        const inputElement = document.querySelector('.file-pond');
-        FilePond.create(inputElement, {
-            imagePreviewHeight: 140,
-            imageValidateSizeMaxWidth: 500,
-            imageValidateSizeMaxHeight: 500,
-            imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
-            acceptedFileTypes: ['image/png'],
-            maxFileSize: '500KB',
-            maxFiles: 3,
-        });
-    })
+    FilePond.registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,
+        FilePondPluginImageValidateSize, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+
+    FilePond.create($('#file-pond')[0], {
+        imagePreviewHeight: 140,
+        imageValidateSizeMaxWidth: 500,
+        imageValidateSizeMaxHeight: 500,
+        imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
+        acceptedFileTypes: ['image/png'],
+        maxFileSize: '500KB',
+        maxFiles: 3,
+    });
+
 
     let picurl = [];
 
@@ -359,9 +395,10 @@ if (Body.getAttribute("data-page") === "AddProduct") {
             }
         }
     });
-    
+
     $("#AddProductBtn").on("submit", (e) => {
         e.preventDefault();
+        console.log(picurl)
         fetch(`${RabetApi}/api/admin/shop/add_product`, {
             method: "POST",
             headers: {
@@ -379,8 +416,6 @@ if (Body.getAttribute("data-page") === "AddProduct") {
                 pics: picurl,
                 priceagent: $('#AddProductPriceOff').val(),
                 priceagentoff: $('#AddProductPriceagrntOff').val(),
-
-
             })
 
         })
@@ -390,7 +425,7 @@ if (Body.getAttribute("data-page") === "AddProduct") {
                 if (result.status_code === 200) {
                     toast("با موفقیت ذخیره شد", "#11ff00");
                     setTimeout(() => {
-                        // window.location.href = "users.html";
+                        window.location.href = "users.html";
                     }, 2000);
                 } else {
                     toast("ثبت نشد", "#ff0000")
@@ -399,6 +434,57 @@ if (Body.getAttribute("data-page") === "AddProduct") {
     })
 }
 
+if (Body.getAttribute('data-page') === 'category') {
+    // get categories 
+    const getCategories = () => {
+        fetchApi('api/admin/shop/fetch_cat', { page: 1 })
+            .then(res => {
+                res.data.forEach(item => {
+                    $('#category-select').append(`<option value="${item._id}" data-title="${item.title}" data-description="${item.dis}" data-img="${item.img}">${item.title}</option>`);
+                });
+            })
+            .then(() => {
+                changeCategoryImage();
+            })
+
+    };
+
+    // submit category
+    $('#category-form').on('submit', e => {
+        e.preventDefault();
+        fetchApi('api/admin/shop/add_cat', { title: $('#title').val() })
+            .then(res => {
+                if (res.status_code === 200) {
+                    toast('دسته بندی با موفقیت افزوده شد', toastGreenColor);
+                }
+            })
+    });
+
+    // on load
+    $(document).ready(() => {
+        getCategories();
+    });
+
+    // edit category
+    $('#edit-category').on('click', () => {
+        const selectedOption = $('#category-select option:selected');
+        $('#title').val(selectedOption.data('title'));
+        $('#description').val(selectedOption.data('description'));
+        $('#submit-market-cat').html('ثبت')
+    })
+
+    //delete category 
+    $('#delete-category').on('click', () => {
+        const selectedCategoryId = $('#category-select option:selected').val();
+
+        fetchApi('api/admin/shop/del_cat', { id: selectedCategoryId })
+            .then(res => {
+                if (res.status_code === 200) {
+                    toast('دسته بندی با موفقیت حذف شد', toastGreenColor);
+                }
+            })
+    })
+}
 
 if (Body.getAttribute("data-paeg") === "ViewProduct") {
 

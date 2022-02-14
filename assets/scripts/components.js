@@ -6,7 +6,7 @@ const menu = `
 <ul class="side-header-sub-menu">
 <li><a href="AddProduct.html"><i class="fa fa-plus"></i> <span>افزودن محصول</span></a>
 <li><a href="ViewProduct.html"><i class="fa fa-shopping-basket"></i> <span>مشاهده محصولات </span></a>
-<li><a href="Grouping.html"><i class="fa fa-building-o"></i> <span> دسته بندی </span></a>
+<li><a href="category.html"><i class="fa fa-building-o"></i> <span> دسته بندی </span></a>
 </ul>
 </li>
 <li><a href="LotteryCode.html"><i class="fa fa-gavel"></i> <span>کد های ارسالی ( قرعه کشی )</span></a></li>
