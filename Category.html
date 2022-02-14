@@ -39,9 +39,10 @@
     <!-- Custom Style CSS Only For Demo Purpose -->
     <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 
-<body dir="rtl">
+<body dir="rtl" data-page="category">
 
     <div class="main-wrapper">
 
@@ -118,50 +119,33 @@
             <div class="add-edit-product-wrap col-12">
 
                 <div class="add-edit-product-form">
-                    <form action="#">
+                    <form id="category-form">
 
                         <h4 class="title">افزودن دسته بندی</h4>
 
                         <div class="row">
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
-                                    placeholder="نام محصول / عنوان*"></div>
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
-                                    placeholder="عنوان زیر محصول"></div>
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" type="text"
-                                    placeholder="قیمت محصول*"></div>
-                            <div class="col-lg-6 col-12 mb-30"><input class="form-control" ty pe="text"
-                                    placeholder="تخفیف محصول"></div>
-
-                        </div>
-                        <h4 class="title">گالری محصول : </h4>
-                        <p class="form-help-text mt-0 d-flex justify-content-center">آپلود حداکثر 800 × 800 پیکسل و
-                            حداکثر اندازه 2 مگابایت.</p>
-                        <div class="d-flex justify-content-center">
-                            <div class="product-upload-gallery row  ">
-                                <div class="col-12 mb-30">
-                                    <input class="file-pond" type="file" multiple>
-                                </div>
+                            <div class="col-12 mb-30 d-flex justify-content-center align-items-center">
+                                <input class="form-control col-6" required id="title" type="text"
+                                    placeholder="نام دسته بندی*">
                             </div>
                         </div>
+  
                         <div class="col-12 d-flex justify-content-center">
                             <button type="submit" class="button button-success col-3"
                                 id="submit-market-cat">افزودن</button>
                         </div>
-                        <div class="col-lg-12"
+                        <div class="col-lg-12 mt-30"
                             style="display: flex; align-items: center; justify-content: center; height: 10vh;">
-                            <img class="img-fluid img-thumbnail d-flex justify-content-center align-content-center"
-                                src="assets/images/product/list-product-2.jpg">
                             <div class="col-lg-4 col-12  d-flex justify-content-center align-content-center ">
-                                <select class="form-control select2 ">
-                                    <option value="status">لوازم جانبی</option>
-                                    <option value="publish">قطعات</option>
+                                <select id="category-select" class="form-control select2 ">
+
                                 </select>
                             </div>
                             <div class="table-action-buttons">
-                                <a class="edit button button-box button-xs button-info" href="#"><i
-                                        class="zmdi zmdi-edit"></i></a>
-                                <a class="delete button button-box button-xs button-danger" href="#"><i
-                                        class="zmdi zmdi-delete"></i></a>
+                                <button class="edit button button-box button-xs button-info" id="edit-category"><i
+                                        class="zmdi zmdi-edit"></i></button>
+                                <button class="delete button button-box button-xs button-danger" id="delete-category"><i
+                                        class="zmdi zmdi-delete"></i></button>
                             </div>
                         </div>
                     </form>
@@ -188,8 +172,7 @@
 
     <!-- JS
 ============================================ -->
-    <script src="assets/scripts/script.js?v=1.0.0"></script>
-    <script src="assets/scripts/components.js?v=1.0.0"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!-- Global Vendor, plugins & Activation JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
@@ -203,10 +186,10 @@
     <!-- Plugins & Activation JS For Only This Page -->
     <script src="assets/js/plugins/nice-select/jquery.nice-select.min.js"></script>
     <script src="assets/js/plugins/nice-select/niceSelect.active.js"></script>
-    <script src="assets/js/plugins/filepond/filepond.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond-plugin-image-exif-orientation.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond-plugin-image-preview.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond.active.js"></script>
+
+    <script src="assets/scripts/components.js?v=1.0.0"></script>
+    <script src="assets/scripts/script.js?v=1.0.0"></script>
+
 </body>
 
 
