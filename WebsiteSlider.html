@@ -14,12 +14,14 @@
     <meta http-equiv="Expires" content="0" />
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     <!-- CSS
 	============================================ -->
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/jquery-spinner.css">
 
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css">
@@ -41,7 +43,7 @@
 
 </head>
 <style>
-    th{
+    th {
 
         text-align: center;
     }
@@ -75,7 +77,8 @@
                                 <div class="row align-items-center">
 
                                     <!--Side Header Toggle-->
-                                    <div class="col-auto"><button class="side-header-toggle"><i class="zmdi zmdi-menu"></i></button></div>
+                                    <div class="col-auto"><button class="side-header-toggle"><i
+                                                class="zmdi zmdi-menu"></i></button></div>
 
                                 </div>
                             </div>
@@ -132,17 +135,17 @@
                                 <input class="file-pond" type="file" multiple>
                             </div>
 
-                            
+
                         </div>
                     </div>
                     <!--FilePond End-->
-                    
+
                     <div class="box-body">
 
                         <table class="table   data-table table-bordered">
                             <thead>
                                 <tr class="bg-gray">
-                                    <th >ردیف</th>
+                                    <th>ردیف</th>
                                     <th>QR</th>
                                     <th>امکانات</th>
 
@@ -150,9 +153,10 @@
                             </thead>
                             <tbody id="users-table">
                                 <tr class="bg-gray">
-                                    <th >1</th>
-                                    <th ><a href="#" target="_blanck"><img src="assets/images/product/download.png" max-width="200px" alt="QR-Code"></a></th>
-                                    <th >
+                                    <th>1</th>
+                                    <th><a href="#" target="_blanck"><img src="assets/images/product/download.png"
+                                                max-width="200px" alt="QR-Code"></a></th>
+                                    <th>
                                         <button class="reject-adver remove button button-box button-xs button-danger">
                                             <i class="reject-adver fa fa-trash-o"></i>
                                         </button>
@@ -183,9 +187,10 @@
 
     <!-- JS
 ============================================ -->
-    <script src="assets/scripts/script.js?v=1.0.0"></script>
-    <script src="assets/scripts/components.js?v=1.0.0"></script>
+
     <!-- Global Vendor, plugins & Activation JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="assets/scripts/jquery-spinner.js"></script>
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>
@@ -202,7 +207,8 @@
     <script src="assets/js/plugins/filepond/filepond.active.js"></script>
     <script src="assets/js/plugins/dropify/dropify.min.js"></script>
     <script src="assets/js/plugins/dropify/dropify.active.js"></script>
-
+    <script src="assets/scripts/script.js?v=1.0.0"></script>
+    <script src="assets/scripts/components.js?v=1.0.0"></script>
 
 </body>
 

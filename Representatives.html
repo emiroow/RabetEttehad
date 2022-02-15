@@ -14,6 +14,7 @@
     <meta http-equiv="Expires" content="0" />
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     <!-- CSS
 	============================================ -->
@@ -31,6 +32,7 @@
     <!-- Plugins CSS -->
     <link rel="stylesheet" href="assets/css/plugins/plugins.css">
 
+
     <!-- Helper CSS -->
     <link rel="stylesheet" href="assets/css/helper.css">
 
@@ -44,21 +46,22 @@
 
 </head>
 <style>
-    th{
+    th {
         text-align: center;
     }
-    td{
+
+    td {
         text-align: center;
     }
 </style>
 
 <body dir="rtl" data-page="Representatives">
+    <div id="spiner" style="background-color: aqua !important;"></div>
 
     <div class="main-wrapper">
-
-
         <!-- Header Section Start -->
         <div class="header-section">
+
             <div class="container-fluid">
                 <div class="row justify-content-between align-items-center">
 
@@ -80,7 +83,8 @@
                                 <div class="row align-items-center">
 
                                     <!--Side Header Toggle-->
-                                    <div class="col-auto"><button class="side-header-toggle"><i class="zmdi zmdi-menu"></i></button></div>
+                                    <div class="col-auto"><button class="side-header-toggle"><i
+                                                class="zmdi zmdi-menu"></i></button></div>
 
                                 </div>
                             </div>
@@ -124,62 +128,111 @@
 
             </div>
             <!-- Page Headings End -->
-            <div class="col-12 mb-30">
+
+            <div class="col-lg-12 col-12 mb-30">
                 <div class="box">
-                    <div class="box-head">
+                    <div class="box-head d-flex flex-column">
                         <h3 class="title">گزارش کاربران</h3>
+                        <ul class="nav nav-pills mb-15 d-flex justify-content-end">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#home5">تایید
+                                    شده</a></li>
+                            <li class="nav-item"><a class="nav-link " data-toggle="pill" href="#profile5">در انتظار
+                                    تایید</a></li>
+                        </ul>
                     </div>
+                    <div class="box-body ">
 
-                    <div class="box-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="home5">
+                                <div class="col-12 mb-30">
 
-                        <div class="input-group row col-lg-3">
-                            <input type="text" class="form-control" style="border-radius: 0em 0.4em 0.4em 0em;" placeholder="شماره همراه مورد نظر خودرا جستجو کنید" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" style="border-radius: 0em 0em 0em 0em;" id="searchBtn"><i class="fa fa-search"></i></button>
-                                <button class="btn btn-danger" style="border-radius: 0.4em 0em 0em 0.4em;" id="reloadtable"><i class="fa fa-times"></i></button>
+                                    <div class="box-body p-0">
+
+                                        <div class="input-group row col-lg-3">
+                                            <input type="text" class="form-control" id="mobilenum"
+                                                style="border-radius: 0em 0.4em 0.4em 0em;"
+                                                placeholder="شماره همراه مورد نظر خودرا جستجو کنید"
+                                                aria-describedby="basic-addon2">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" style="border-radius: 0em 0em 0em 0em;"
+                                                    id="searchBtn"><i class="fa fa-search"></i></button>
+                                                <button class="btn btn-danger"
+                                                    style="border-radius: 0.4em 0em 0em 0.4em;" id="reloadtable"><i
+                                                        class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <table class="table table-bordered data-table  mt-10">
+                                            <thead>
+                                                <tr>
+                                                    <th>ردیف</th>
+                                                    <th>نام کابر</th>
+                                                    <th>شماره همراه</th>
+                                                    <th>شماره تلفن ثابت</th>
+                                                    <th>تاریخ </th>
+                                                    <th>مشاهده</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-show">
+
+                                            </tbody>
+                                        </table>
+                                        <div class="pagination pb-20 d-flex justify-content-center">
+                                            <div id="pagination"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade " id="profile5">
+                                <div class="col-12 mb-30">
+                                    <table class="table table-bordered data-table  mt-10">
+                                        <thead>
+                                            <tr>
+                                                <th>ردیف</th>
+                                                <th>نام کابر</th>
+                                                <th>شماره همراه</th>
+                                                <th>شماره تلفن ثابت</th>
+                                                <th>تاریخ </th>
+                                                <th>تایید | رد</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-show-inprossess">
+
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination pb-20 d-flex justify-content-center">
+                                        <div id="paginationinprossess"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <table class="table table-bordered data-table  mt-10">
-                            <thead>
-                                <tr>
-                                    <th>ردیف</th>
-                                    <th>نام کابر</th>
-                                    <th>شماره همراه</th>
-                                    <th>شماره تلفن ثابت</th>
-                                    <th>تاریخ </th>
-                                    <th>مشاده | حذف</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-show">
-                                
-                            </tbody>
-                        </table>
-
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Content Body End -->
+    </div>
+    <!-- Content Body End -->
 
-        <!-- Footer Section Start -->
-        <div class="footer-section">
-            <div class="container-fluid">
+    <!-- Footer Section Start -->
+    <div class="footer-section">
+        <div class="container-fluid">
 
-                <div class="footer-copyright text-center">
-                    <p class="text-body-light">1400 &copy; <a href="https://platinco.ir/">استدیو طراحی پلاتین</a></p>
-                </div>
-
+            <div class="footer-copyright text-center">
+                <p class="text-body-light">1400 &copy; <a href="https://platinco.ir/">استدیو طراحی پلاتین</a></p>
             </div>
+
         </div>
-        <!-- Footer Section End -->
+    </div>
+    <!-- Footer Section End -->
 
     </div>
 
     <!-- JS
 ============================================ -->
     <!-- Global Vendor, plugins & Activation JS -->
+
     <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="assets/js/pagination.min.js"></script>
     <script src="assets/scripts/jquery-spinner.js"></script>
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>

@@ -17,6 +17,7 @@
 
     <!-- CSS
 	============================================ -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
@@ -26,6 +27,7 @@
     <link rel="stylesheet" href="assets/css/vendor/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/vendor/themify-icons.css">
     <link rel="stylesheet" href="assets/css/vendor/cryptocurrency-icons.css">
+    <link rel="stylesheet" href="assets/css/jquery-spinner.css">
 
     <!-- Plugins CSS -->
     <link rel="stylesheet" href="assets/css/plugins/plugins.css">
@@ -41,7 +43,7 @@
 
 </head>
 
-<body dir="rtl">
+<body dir="rtl" data-page="Representative">
 
     <div class="main-wrapper">
 
@@ -121,51 +123,50 @@
                     <form action="#">
                         <div class="row">
                             <div class="col-lg-6 col-12 mb-45">
-                                <h4>استان :<span class="h6" id="title">
+                                <h4>استان :<span class="h6" id="state">
                                     </span></h4>
                             </div>
                             <div class="col-lg-3 col-12 mb-30">
-                                <h4>شهر :<span class="h6" id="price">
+                                <h4>شهر :<span class="h6" id="city">
                                     </span>
-                                    <span>تومان</span>
                                 </h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
                                 <h4>نام و نام انوادگی
-                                    :<span class="h6" id="type">
+                                    :<span class="h6" id="name">
                                     </span></h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>نام پدر :<span class="h6" id="category">
+                                <h4>نام پدر :<span class="h6" id="fatherName">
                                     </span></h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>کد ملی :<span class="h6" id="category">
+                                <h4>کد ملی :<span class="h6" id="meliCode">
                                     </span></h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>تاریخ تولد :<span class="h6" id="category">
+                                <h4>تاریخ تولد :<span class="h6" id="birthday">
                                     </span></h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>میزان تحصیلات :<span class="h6" id="category">
+                                <h4>میزان تحصیلات :<span class="h6" id="education">
                                     </span></h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>ایمیل :<span class="h6" id="category">
+                                <h4>ایمیل :<span class="h6" id="email">
                                     </span></h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>شماره تلفن ثابت :<span class="h6" id="subCategory">
+                                <h4>شماره تلفن ثابت :<span class="h6" id="tell">
                                     </span></h4>
                             </div>
 
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>شماره تلفن همراه :<span class="h6" id="city">
+                                <h4>شماره تلفن همراه :<span class="h6" id="mobile">
                                     </span></h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>آدرس محل سکونت :<span class="h6" id="city">
+                                <h4>آدرس محل سکونت :<span class="h6" id="address">
                                     </span></h4>
                             </div>
                     </form>
@@ -175,30 +176,30 @@
                     <form action="#">
                         <div class="row">
                             <div class="col-lg-6 col-12 mb-45">
-                                <h4>آدرس محل فروشگاه :<span class="h6" id="title">
+                                <h4>آدرس محل فروشگاه :<span class="h6" id="shopAddress">
                                     </span></h4>
                             </div>
                             <div class="col-lg-3 col-12 mb-30">
-                                <h4>نوع مالکیت :<span class="h6" id="price">
+                                <h4>نوع مالکیت :<span class="h6" id="shopType">
                                     </span>
                                 </h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>مساحت:<span class="h6" id="type">
+                                <h4>مساحت:<span class="h6" id="shopArea">
                                     </span></h4>
                             </div>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>نوع جواز :<span class="h6" id="category">
+                                <h4>نوع جواز :<span class="h6" id="certificate">
                                     </span></h4>
                             </div>
                             
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>سرمایه نقدی :<span class="h6" id="category">
+                                <h4>سرمایه نقدی :<span class="h6" id="money">
                                     </span></h4>
                             </div>
                             <br>
                             <div class="col-lg-6 col-12 mb-30">
-                                <h4>توضیحات :<span class="h6" id="city">
+                                <h4>توضیحات :<span class="h6" id="description">
                                     </span></h4>
                             </div>
                     </form>
@@ -211,9 +212,10 @@
     </div>
 
 
-    <script src="assets/scripts/script.js?v=1.0.0"></script>
-    <script src="assets/scripts/components.js?v=1.0.0"></script>
+
     <!-- Global Vendor, plugins & Activation JS -->
+    <script src="assets/scripts/jquery-spinner.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>
@@ -223,7 +225,8 @@
     <script src="assets/js/plugins/tippy4.min.js.js"></script>
     <!--Main JS-->
     <script src="assets/js/main.js"></script>
-
+    <script src="assets/scripts/script.js?v=1.0.0"></script>
+    <script src="assets/scripts/components.js?v=1.0.0"></script>
 </body>
 
 
