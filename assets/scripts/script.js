@@ -1,12 +1,12 @@
 const RabetApi = `https://rabetettehad.herokuapp.com/`
 const Body = document.querySelector("body");
 
-// const spinner = new jQuerySpinner({
-//     parentId: 'spiner',
-//     duration: 1000
-//     //     spinner.show();
-//     //     spinner.hide();
-// });
+const spinner = new jQuerySpinner({
+    parentId: 'spiner',
+    duration: 1000
+    //     spinner.show();
+    //     spinner.hide();
+});
 
 
 const toast = function (event, color) {
@@ -52,11 +52,11 @@ const fetchApi = async (url, body) => {
                 .catch(err => toast(err, '#b90000'))
         } else {
             await fetch(`${RabetApi}${url}`, {
-                method: 'GET',
-                headers: {
-                    'Auth-Token': localStorage.getItem('token')
-                },
-            })
+                    method: 'GET',
+                    headers: {
+                        'Auth-Token': localStorage.getItem('token')
+                    },
+                })
                 .then(respone => respone.json())
                 .then(result => {
                     lastResult = result
@@ -150,9 +150,6 @@ if (Body.getAttribute("data-page") === "Users") {
               <button class="Edite-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
               <i class="Edite-advertise zmdi fa fa-pencil-square-o" id=${item._id}></i>
           </button>
-          <button class="reject-adver remove button button-box button-xs button-danger">
-              <i class="reject-adver fa fa-trash-o"></i>
-          </button>
       </td>
   </tr>
 
@@ -234,7 +231,6 @@ if (Body.getAttribute("data-page") === "Users") {
     getUserFromServer();
 
 
-
     // serach fetch api
     const searchtable = function (data) {
         let result = "";
@@ -267,11 +263,12 @@ if (Body.getAttribute("data-page") === "Users") {
         $("#users-table").html("");
         $("#pagination").html("");
         let phoneNumber = $("#SearchText").val();
-        fetch(`https://elpino-api.liara.run/api/admin/fetchuser/search/number=${phoneNumber}`, {
+        fetch(`${RabetApi}api/admin/fetchuser/search/number=${phoneNumber}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                    'Auth-Token': localStorage.getItem('token'),
+
                 }
             })
             .then((response) => response.json())
@@ -285,60 +282,32 @@ if (Body.getAttribute("data-page") === "Users") {
 if (Body.getAttribute("data-page") === "User") {
 
     let userId = document.URL.split('?')[1]
-    fetch(`https://elpino-api.liara.run/api/admin/fetchuser/one/id=${userId}`, {
+    fetch(`${RabetApi}api/admin/fetchuser/one/id=${userId}`, {
             method: "GET",
             headers: {
+                'Auth-Token': localStorage.getItem('token'),
                 "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
             },
         })
         .then((response) => response.json())
         .then((result) => {
-            $("#user-name").val(result.data[0].name);
-            $('#user-phone').val(result.data[0].phoneNumber);
-            result.data[0].adress.forEach(item => {
+            console.log(result);
+            $("#user-name").html(result.data[0].name);
+            $('#user-phone').html(result.data[0].phoneNumber);
+            $('#user-date').html(result.data[0].dateTime.slice(0, 11));
+            $('#user-description').html(result.data[0].dis);
+            $('#user-name-right').html(result.data[0].name);
+            let radif = 1;
+            result.data[0].adress.forEach(item => {                
                 $('.info-address').append(`
-            <input type="text" class="form-control mb-20 mt-0 user-address" placeholder="آدرس"
-                class="form-control mb-20 mt-0" aria-label="Default" value="${item}"
-                aria-describedby="inputGroup-sizing-default">
-        `);
-                $('#user-date').val(result.data[0].dateTime.slice(0, 11));
-                $('#user-description').val(result.data[0].dis);
-                $('#user-name-right').html(result.data[0].name);
-                // $('#user-coin-right').html(`${sliceNumber(result.data[0].coin)} ریال`);
+                <h4>آدرس ${radif}: ${item}</h4>
 
+                `);
+                radif++;
             });
         })
 
 
-    $("#user-form").on("submit", () => {
-        let userAddresses = [];
-        [...document.querySelectorAll('.user-address')].map(item => userAddresses.push(item.value));
-
-        fetch(`https://elpino-api.liara.run/api/admin/user/update`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-                },
-                body: JSON.stringify({
-                    id: userId,
-                    name: $('#user-name').val(),
-                    dis: $('#user-description').val(),
-                    mony: parseInt($('#user-coin-right').val()),
-                    adress: userAddresses,
-                })
-            })
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.status_code === 200) {
-                    toast();
-                    setTimeout(() => {
-                        window.location.href = "users.html";
-                    }, 2000);
-                }
-            })
-    })
 
 }
 // ========== Products page ==========
@@ -587,7 +556,7 @@ if (Body.getAttribute("data-page") === "Product") {
                 let lastPoint = picUrlDel.link.lastIndexOf('.');
                 let firtPoint = picUrlDel.link.lastIndexOf('/');
                 let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
-                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`, );
                 request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
                 request.send();
                 request.onreadystatechange = function () {
@@ -836,7 +805,9 @@ if (Body.getAttribute('data-page') === 'Sliders') {
             })
             .then(() => {
                 $('.delete-slider').on('click', e => {
-                    fetchApi('api/slider/admin/delet_slider', { id: e.target.id })
+                    fetchApi('api/slider/admin/delet_slider', {
+                            id: e.target.id
+                        })
                         .then(res => {
                             if (res.status_code === 200) {
                                 toast('اسلایدر با موفقیت افزوده شد', toastGreenColor);
@@ -917,7 +888,7 @@ if (Body.getAttribute('data-page') === 'Slider') {
                 let lastPoint = picUrlDel.link.lastIndexOf('.');
                 let firtPoint = picUrlDel.link.lastIndexOf('/');
                 let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
-                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`, );
                 request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
                 request.send();
                 request.onreadystatechange = function () {
@@ -967,7 +938,7 @@ if (Body.getAttribute('data-page') === 'Slider') {
                 let lastPoint = picUrlDel.link.lastIndexOf('.');
                 let firtPoint = picUrlDel.link.lastIndexOf('/');
                 let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
-                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`, );
                 request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
                 request.send();
                 request.onreadystatechange = function () {
@@ -1449,15 +1420,15 @@ if (Body.getAttribute("data-page") === "Representatives") {
     // accepted
     const getfromserver = function () {
         fetch(`${RabetApi}/api/agent/admin/fetch_agent`, {
-            method: "POST",
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                number: page,
+                method: "POST",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    number: page,
+                })
             })
-        })
             .then((response => response.json()))
             .then((result => {
                 spinner.hide();
@@ -1547,12 +1518,12 @@ if (Body.getAttribute("data-page") === "Representatives") {
         $("#table-show").html("");
         $("#pagination").html("");
         fetch(`${RabetApi}`, {
-            method: "GET",
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-        })
+                method: "GET",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+            })
             .then((response) => response.json())
             .then((result) => {
                 console.log(result);
@@ -1686,7 +1657,7 @@ if (Body.getAttribute("data-page") === "Representatives") {
                 console.log(result);
                 if (result.status_code === 200) {
                     window.location.reload();
-                } 
+                }
             })
     }
     // access
