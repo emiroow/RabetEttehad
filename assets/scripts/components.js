@@ -15,10 +15,10 @@ const menu = `
 <li><a href="Representatives.html"><i class="fa fa-user-circle-o"></i> <span> نمایندگان </span></a></li>
 
 <li class="has-sub-menu"><a ><i class="fa fa-pencil-square-o"></i> <span> اسلایدر ها </span></a>
-<ul class="side-header-sub-menu">
-<li><a href="WebsiteSlider.html"><i class="fa fa-laptop"></i> <span> اسلایدر های وبسایت </span></a>
-<li><a href="MobileSlider.html"><i class="fa fa-mobile"></i> <span> اسلایدر های موبایل </span></a>
-</ul>
+    <ul class="side-header-sub-menu">
+        <li><a href="Sliders.html"><i class="fa fa-laptop"></i> <span> اسلایدر ها </span></a>
+        <li><a href="Slider.html"><i class="fa fa-mobile"></i> <span> تعریف اسلایدر </span></a>
+    </ul>
 </li>
 
 <li><a href="QRcode.html"><i class="fa fa-shopping-basket"></i> <span>QR کد</span></a></li>
@@ -27,7 +27,7 @@ const menu = `
 
 <li class="has-sub-menu"><a ><i class="fa fa-window-maximize"></i> <span>صفحات</span></a>
 <ul class="side-header-sub-menu">
-<li><a href="about.html"><i class="fa fa-weixin"></i> <span>درباره ما</span></a>
+<li><a href="About.html"><i class="fa fa-weixin"></i> <span>درباره ما</span></a>
 </ul>
 
 <li id="log-out" ><a href="index.html"><i class="fa fa-sign-out"></i> <span>خروج</span></a></li>
