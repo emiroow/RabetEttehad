@@ -1,12 +1,12 @@
 const RabetApi = `https://rabetettehad.herokuapp.com/`
 const Body = document.querySelector("body");
 
-const spinner = new jQuerySpinner({
-    parentId: 'spiner',
-    duration: 1000
-    //     spinner.show();
-    //     spinner.hide();
-});
+// const spinner = new jQuerySpinner({
+//     parentId: 'spiner',
+//     duration: 1000
+//     //     spinner.show();
+//     //     spinner.hide();
+// });
 
 
 const toast = function (event, color) {
@@ -51,12 +51,12 @@ const fetchApi = async (url, body) => {
                 .then(result => lastResult = result)
                 .catch(err => toast(err, '#b90000'))
         } else {
-            await fetch(`${endPoint}${url}`, {
-                    method: 'GET',
-                    headers: {
-                        'Auth-Token': localStorage.getItem('token')
-                    },
-                })
+            await fetch(`${RabetApi}${url}`, {
+                method: 'GET',
+                headers: {
+                    'Auth-Token': localStorage.getItem('token')
+                },
+            })
                 .then(respone => respone.json())
                 .then(result => {
                     lastResult = result
@@ -587,8 +587,8 @@ if (Body.getAttribute("data-page") === "Product") {
                 let lastPoint = picUrlDel.link.lastIndexOf('.');
                 let firtPoint = picUrlDel.link.lastIndexOf('/');
                 let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
-                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`, );
-                request.setRequestHeader('Auth-Token', localStorage.getItem('TK'))
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
                 request.send();
                 request.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
@@ -689,13 +689,13 @@ if (Body.getAttribute("data-page") === "Product") {
             const body = {
                 title: $("#ProductTitle").val(),
                 subtitle: $("#ProductSubTitle").val(),
-                price: $("#ProductPrice").val(),
-                priceoff: $("#ProductPriceOff").val(),
+                price: parseInt($("#ProductPrice").val()),
+                priceoff: parseInt($("#ProductPriceOff").val()),
                 details: $("#ProductDis").val(),
                 category: $('#categories option:selected').val(),
                 pics: picurl,
-                priceagent: $('#ProductPriceOff').val(),
-                priceagentoff: $('#ProductPriceagrntOff').val(),
+                priceagent: parseInt($('#ProductPriceOff').val()),
+                priceagentoff: parseInt($('#ProductPriceagrntOff').val()),
                 Producttotal: $('#Producttotal').val(),
                 isSpecial: $('#special-offer').prop('checked'),
                 status: $('#status-select option:selected').val() === 'true' ? true : false,
@@ -718,13 +718,13 @@ if (Body.getAttribute("data-page") === "Product") {
             const body = {
                 title: $("#ProductTitle").val(),
                 subtitle: $("#ProductSubTitle").val(),
-                price: $("#ProductPrice").val(),
-                priceoff: $("#ProductPriceOff").val(),
+                price: parseInt($("#ProductPrice").val()),
+                priceoff: parseInt($("#ProductPriceOff").val()),
                 details: $("#ProductDis").val(),
                 category: $('#categories option:selected').val(),
                 pics: picurl,
-                priceagent: $('#ProductPriceOff').val(),
-                priceagentoff: $('#ProductPriceagrntOff').val(),
+                priceagent: parseInt($('#ProductPriceOff').val()),
+                priceagentoff: parseInt($('#ProductPriceagrntOff').val()),
                 Producttotal: $('#Producttotal').val(),
                 isSpecial: $('#special-offer').prop('checked'),
             };
@@ -801,6 +801,345 @@ if (Body.getAttribute('data-page') === 'category') {
                 }
             })
     })
+}
+// ========== Sliders page ==========
+if (Body.getAttribute('data-page') === 'Sliders') {
+
+    const showSlidersOnTable = function (data) {
+        let result = "";
+        let radif = 1;
+        data.forEach((item) => {
+            result += `
+        <tr>
+            <td>${radif}</td>
+            <td><img src="${item.mobile_img}" alt="" width="100" height="100" class="product-image"></td>
+            <td><img src="${item.site_img}" alt="" width="100" height="100" class="product-image"></td>
+            <td>${item.url}</td>
+            <td class="d-flex justify-content-center">
+                <button id="${item._id}" class="delete-slider remove button button-box button-xs button-danger">
+                    <i class="delete-slider fa fa-trash-o" id="${item._id}"></i>
+                </button>
+            </td>
+        </tr>
+
+      `;
+            radif++;
+        });
+        document.getElementById("sliders-table").innerHTML = result;
+    };
+
+    const getSlidersFromServer = () => {
+        fetchApi('api/slider/admin/fetch_slider')
+            .then(res => {
+                showSlidersOnTable(res.data);
+                console.log(res)
+            })
+            .then(() => {
+                $('.delete-slider').on('click', e => {
+                    fetchApi('api/slider/admin/delet_slider', { id: e.target.id })
+                        .then(res => {
+                            if (res.status_code === 200) {
+                                toast('اسلایدر با موفقیت افزوده شد', toastGreenColor);
+                                getSlidersFromServer();
+                            } else if (res.status_code === 402) {
+                                toast(res.description_fa, toastRedColor);
+                            };
+                        })
+                })
+            })
+    };
+
+    getSlidersFromServer();
+}
+// ========== Slider page ==========
+if (Body.getAttribute('data-page') === 'Slider') {
+
+    let mobileSlider = 'https://www.seoptimer.com/blog/wp-content/uploads/2020/05/website-header-size.png';
+    let webSlider = 'https://static.vecteezy.com/system/resources/thumbnails/002/294/181/small/welcome-to-university-web-banner-design-free-vector.jpg';
+
+    const MobileSliderPond = FilePond;
+    const WebSliderPond = FilePond;
+
+    MobileSliderPond.registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,
+        FilePondPluginImageValidateSize, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+    WebSliderPond.registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,
+        FilePondPluginImageValidateSize, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+
+    MobileSliderPond.create($('#mobile-slider-file-pond')[0], {
+        imagePreviewHeight: 140,
+        imageValidateSizeMaxWidth: 500,
+        imageValidateSizeMaxHeight: 500,
+        imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
+        acceptedFileTypes: ['image/png', 'image/jpeg'],
+        maxFileSize: '500KB',
+    });
+    WebSliderPond.create($('#web-slider-file-pond')[0], {
+        imagePreviewHeight: 140,
+        imageValidateSizeMaxWidth: 500,
+        imageValidateSizeMaxHeight: 500,
+        imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
+        acceptedFileTypes: ['image/png'],
+        maxFileSize: '500KB',
+    });
+
+    MobileSliderPond.setOptions({
+        server: {
+            process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+                const formData = new FormData();
+                formData.append('file', file);
+                const request = new XMLHttpRequest();
+                request.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        let picReqJson = JSON.parse(request.responseText);
+                        console.log(request.responseText)
+                        mobileSlider = picReqJson.link;
+                    }
+                };
+                request.upload.onprogress = (e) => {
+                    progress(e.lengthComputable, e.loaded, e.total);
+                };
+                request.onload = function () {
+                    if (request.status >= 200 && request.status < 300) {
+                        // the load method accepts either a string (id) or an object
+                        load(request.responseText);
+                    } else {
+                        // Can call the error method if something is wrong, should exit after
+                        error('oh no');
+                    }
+                };
+                // request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
+                request.open('POST', `${RabetApi}api/admin/fileUpload/d=page`, true);
+                request.send(formData);
+            },
+            revert: async (uniqueFileId, load, error) => {
+                const request = new XMLHttpRequest();
+                let picUrlDel = JSON.parse(uniqueFileId);
+                let lastPoint = picUrlDel.link.lastIndexOf('.');
+                let firtPoint = picUrlDel.link.lastIndexOf('/');
+                let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
+                request.send();
+                request.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        picurl.splice(picurl.indexOf(picUrlDel.link), 1);
+                    }
+                };
+                // Can call the error method if something is wrong, should exit after
+                error('oh my goodness');
+                // Should call the load method when done, no parameters required
+                load();
+            }
+        }
+    });
+    WebSliderPond.setOptions({
+        server: {
+            process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+                const formData = new FormData();
+                formData.append('file', file);
+                const request = new XMLHttpRequest();
+                request.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        let picReqJson = JSON.parse(request.responseText);
+                        console.log(request.responseText)
+                        webSlider = picReqJson.link;
+
+                    }
+                };
+                request.upload.onprogress = (e) => {
+                    progress(e.lengthComputable, e.loaded, e.total);
+                };
+                request.onload = function () {
+                    if (request.status >= 200 && request.status < 300) {
+                        // the load method accepts either a string (id) or an object
+                        load(request.responseText);
+                    } else {
+                        // Can call the error method if something is wrong, should exit after
+                        error('oh no');
+                    }
+                };
+                request.open('POST', `${RabetApi}api/admin/fileUpload/d=page`, true);
+                request.send(formData);
+            },
+            revert: async (uniqueFileId, load, error) => {
+                const request = new XMLHttpRequest();
+                let picUrlDel = JSON.parse(uniqueFileId);
+                let lastPoint = picUrlDel.link.lastIndexOf('.');
+                let firtPoint = picUrlDel.link.lastIndexOf('/');
+                let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
+                request.send();
+                request.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        picurl.splice(picurl.indexOf(picUrlDel.link), 1);
+                    }
+                };
+                // Can call the error method if something is wrong, should exit after
+                error('oh my goodness');
+                // Should call the load method when done, no parameters required
+                load();
+            }
+        }
+    });
+
+    $('#slider-form').on('submit', e => {
+        e.preventDefault();
+        console.log(mobileSlider, webSlider)
+
+        if (mobileSlider && webSlider) {
+            const body = {
+                title: $('#title').val(),
+                url: $('#url').val(),
+                site_img: webSlider,
+                mobile_img: mobileSlider,
+            };
+            fetchApi('api/slider/admin/add_slider', body)
+                .then(res => {
+                    if (res.status_code === 200) {
+                        toast('اسلایدر با موفقیت افزوده شد', toastGreenColor);
+                        setTimeout(() => {
+                            window.location.href = 'Sliders.html';
+                        }, 2000);
+                    }
+                })
+
+        } else {
+            toast('عکس های اسلایدر الزامی می باشد', toastRedColor);
+        };
+    });
+};
+// ========== category page ==========
+if (Body.getAttribute('data-page') === 'About') {
+    const editor = new EditorJS({
+        holder: 'editor',
+        tunes: ['anyTuneName'],
+        tools: {
+            raw: RawTool,
+
+            header: {
+
+                class: Header,
+                config: {
+                    placeholder: 'Enter a header',
+                    levels: [2, 3, 4],
+                    defaultLevel: 3
+                },
+            },
+            image: {
+                class: ImageTool,
+                config: {
+                    /**
+                     * Custom uploader
+                     */
+                    uploader: {
+                        /**
+                         * Upload file to the server and return an uploaded image data
+                         * @param {File} file - file selected from the device or pasted by drag-n-drop
+                         * @return {Promise.<{success, file: {url}}>}
+                         */
+                        async uploadByFile(file) {
+                            let link;
+                            const formData = new FormData();
+                            formData.append('file', file);
+
+
+                            const request = await fetch(`${RabetApi}api/admin/fileUpload/d=page`, {
+                                method: 'POST',
+                                body: formData,
+                            })
+                            const res = await request.json();
+                            console.log(res)
+
+                            return {
+                                success: 1,
+                                file: {
+                                    url: res.URL,
+                                }
+                            }
+                        },
+                    }
+                }
+            },
+            Color: {
+                class: ColorPlugin, // if load from CDN, please try: window.ColorPlugin
+                config: {
+                    colorCollections: ['#000000', '#FF1300', '#EC7878', '#9C27B0', '#673AB7', '#3F51B5', '#0070FF', '#03A9F4', '#00BCD4', '#4CAF50', '#8BC34A', '#CDDC39', '#FFF'],
+                    defaultColor: '#FF1300',
+                    type: 'text',
+                }
+            },
+            Marker: {
+                class: ColorPlugin, // if load from CDN, please try: window.ColorPlugin
+                config: {
+                    defaultColor: '#FFBF00',
+                    type: 'marker',
+                }
+            },
+            anyTuneName: {
+
+                class: AlignmentBlockTune,
+                config: {
+                    default: "right",
+                    blocks: {
+                        header: 'center',
+                        list: 'right'
+                    }
+                },
+            },
+            list: {
+                class: List,
+                inlineToolbar: true,
+            },
+        }
+    });
+
+    const convertDataToHtml = (blocks) => {
+        console.log(blocks)
+        var convertedHtml = "";
+        blocks.map(block => {
+
+            switch (block.type) {
+                case "header":
+                    convertedHtml += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
+                    break;
+                case "embded":
+                    convertedHtml += `<div><iframe width="560" height="315" src="${block.data.embed}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
+                    break;
+                case "paragraph":
+                    convertedHtml += `<p>${block.data.text}</p>`;
+                    break;
+                case "delimiter":
+                    convertedHtml += "<hr />";
+                    break;
+                case "raw":
+                    convertedHtml += block.data.html
+                    break;
+                case "image":
+                    convertedHtml += `<img class="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+                    break;
+                case "list":
+                    convertedHtml += "<ul>";
+                    block.data.items.forEach(function (li) {
+                        convertedHtml += `<li>${li}</li>`;
+                    });
+                    convertedHtml += "</ul>";
+                    break;
+                default:
+                    console.log("Unknown block type", block.type);
+                    break;
+            }
+        });
+        return convertedHtml;
+    }
+
+    $('#submit-editor').on('click', () => {
+        editor.save().then((outputData) => {
+            console.log('Article data: ', convertDataToHtml(outputData.blocks))
+        }).catch((error) => {
+            console.log('Saving failed: ', error)
+        });
+    });
 }
 // ========== DiscountCode page ==========
 if (Body.getAttribute("data-page") === "DiscountCode") {
@@ -1110,15 +1449,15 @@ if (Body.getAttribute("data-page") === "Representatives") {
     // accepted
     const getfromserver = function () {
         fetch(`${RabetApi}/api/agent/admin/fetch_agent`, {
-                method: "POST",
-                headers: {
-                    'Auth-Token': localStorage.getItem('token'),
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    number: page,
-                })
+            method: "POST",
+            headers: {
+                'Auth-Token': localStorage.getItem('token'),
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                number: page,
             })
+        })
             .then((response => response.json()))
             .then((result => {
                 spinner.hide();
@@ -1207,16 +1546,13 @@ if (Body.getAttribute("data-page") === "Representatives") {
         let mobileNum = $("#mobilenum").val()
         $("#table-show").html("");
         $("#pagination").html("");
-        fetch(`${RabetApi}api/agent/admin/fetch_agent_serach`, {
-                method: "POST",
-                headers: {
-                    'Auth-Token': localStorage.getItem('token'),
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    mobile: mobileNum,
-                })
-            })
+        fetch(`${RabetApi}`, {
+            method: "GET",
+            headers: {
+                'Auth-Token': localStorage.getItem('token'),
+                "Content-Type": "application/json",
+            },
+        })
             .then((response) => response.json())
             .then((result) => {
                 console.log(result);
@@ -1228,7 +1564,6 @@ if (Body.getAttribute("data-page") === "Representatives") {
                 })
             })
     })
-    // reload
     $("#reloadtable").click(() => {
         window.location.reload();
     })
