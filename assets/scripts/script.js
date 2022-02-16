@@ -1121,7 +1121,6 @@ if (Body.getAttribute('data-page') === 'About') {
     });
 
     const convertDataToHtml = (blocks) => {
-        console.log(blocks)
         var convertedHtml = "";
         blocks.map(block => {
 
@@ -1161,7 +1160,17 @@ if (Body.getAttribute('data-page') === 'About') {
 
     $('#submit-editor').on('click', () => {
         editor.save().then((outputData) => {
-            console.log('Article data: ', convertDataToHtml(outputData.blocks))
+            fetchApi('api/page/admin/update_page', { data: outputData.blocks, html: convertDataToHtml(outputData.blocks) })
+                .then(res => {
+                    console.log(res)
+                    if (res.status_code === 200) {
+
+                        toast('با موفقیت ثبت شد', toastGreenColor);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                })
         }).catch((error) => {
             console.log('Saving failed: ', error)
         });
@@ -1171,6 +1180,23 @@ if (Body.getAttribute('data-page') === 'About') {
         fetchApi('api/page/admin/fetch_page_about')
             .then(res => {
                 console.log(res)
+                res.data.data.map(item => {
+
+                    if (item.type === 'image') {
+                        editor.blocks.insert('image', {
+                            file: {
+                                url: item.data.file.url
+                            },
+                            caption: item.data.caption,
+                            withBorder: item.data.withBorder,
+                            withBackground: item.data.withBackground,
+                            stretched: item.data.stretched
+                        })
+                    } else {
+                        editor.blocks.insert(item.type, item.data)
+                    }
+                })
+
             })
     })
 }
