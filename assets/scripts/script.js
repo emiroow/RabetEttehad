@@ -33,6 +33,18 @@ const sliceNumber = function (number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 };
 
+// convert persian digits to english digits
+const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g]
+const arabicNumbers = [/٠/g, /١/g, /٢/g, /٣/g, /٤/g, /٥/g, /٦/g, /٧/g, /٨/g, /٩/g]
+const fixNumbers = function (str) {
+    if (typeof str === 'string') {
+        for (var i = 0; i < 10; i++) {
+            str = str.replace(persianNumbers[i], i).replace(arabicNumbers[i], i);
+        }
+    }
+    return str;
+};
+
 const toastRedColor = '#e52e2e';
 const toastGreenColor = '#70e52e';
 
@@ -320,12 +332,10 @@ if (Body.getAttribute("data-page") === "Products") {
 
     // fetch to get Products
     const getProducts = () => {
-
-        fetchApi('api/admin/shop/fetch_products', {
-            page,
-            cat: categoryFilter
-        })
+        loaderIn();
+        fetchApi('api/admin/shop/fetch_products', { page, cat: categoryFilter })
             .then(data => {
+                loaderOut();
                 if (data.status_code === 200) {
                     productCount = data.product_count;
                     showProductTable(data);
@@ -335,11 +345,13 @@ if (Body.getAttribute("data-page") === "Products") {
             .then(data => {
                 // delete product
                 $('.delete-product').click(function (e) {
+                    loaderIn();
                     e.preventDefault();
                     fetchApi('api/admin/shop/del_product', {
                         id: e.target.id
                     })
                         .then(res => {
+                            loaderOut();
                             if (res.status_code === 200) {
                                 toast('محصول با موفقیت حذف شد', toastGreenColor);
                                 getProducts();
@@ -349,63 +361,59 @@ if (Body.getAttribute("data-page") === "Products") {
                         });
                 });
             })
-        // pagination control
-        // .then(() => {
-        //     (function (containerID, productCount) {
-        //         var container = $(`#${containerID}`);
-        //         var sources = function () {
-        //             var result = [];
-        //             for (var i = 1; i < productCount; i++) {
-        //                 result.push(i);
-        //             }
-        //             return result;
-        //         }();
-        //         var options = {
-        //             dataSource: sources,
-        //             showGoInput: true,
-        //             showGoButton: true,
-        //             goButtonText: 'برو',
-        //             pageSize: 12,
-        //             pageNumber: page,
-        //             prevText: '&raquo;',
-        //             nextText: '&laquo;',
-        //             callback: function (response, pagination) {
-        //                 var dataHtml = '<ul>';
-        //                 $.each(response, function (index, item) {
-        //                     dataHtml += '<li>' + item + '</li>';
-        //                 });
-        //                 dataHtml += '</ul>';
-        //                 container.prev().html(dataHtml);
-        //             }
-        //         };
-        //         container.pagination(options);
-        //         container.addHook('afterPageOnClick', (response, pagination) => {
-        //             loaderIn();
-        //             page = parseInt(pagination);
-        //             localStorage.setItem('page', page);
-        //             getProducts();
-        //         })
-        //         container.addHook('afterGoButtonOnClick', (response, pagination) => {
-        //             loaderIn();
-        //             page = parseInt(pagination);
-        //             localStorage.setItem('page', page);
-        //             getProducts();
-        //         })
-        //         container.addHook('afterPreviousOnClick', (response, pagination) => {
-        //             loaderIn();
-        //             page = parseInt(pagination);
-        //             localStorage.setItem('page', page);
-        //             getProducts();
-        //         })
-        //         container.addHook('afterNextOnClick', (response, pagination) => {
-        //             loaderIn();
-        //             page = parseInt(pagination);
-        //             localStorage.setItem('page', page);
-        //             getProducts();
-        //         })
+            // pagination control
+            .then(() => {
+                (function (containerID, itemCount) {
+                    var container = $(`#${containerID}`);
+                    var sources = function () {
+                        var result = [];
+                        for (var i = 1; i < itemCount; i++) {
+                            result.push(i);
+                        }
+                        return result;
+                    }();
+                    var options = {
+                        dataSource: sources,
+                        showGoInput: true,
+                        showGoButton: true,
+                        goButtonText: 'برو',
+                        pageSize: 12,
+                        pageNumber: page,
+                        prevText: '&raquo;',
+                        nextText: '&laquo;',
+                        callback: function (response, pagination) {
+                            var dataHtml = '<ul>';
+                            $.each(response, function (index, item) {
+                                dataHtml += '<li>' + item + '</li>';
+                            });
+                            dataHtml += '</ul>';
+                            container.prev().html(dataHtml);
+                        }
+                    };
+                    container.pagination(options);
+                    container.addHook('afterPageOnClick', (response, pagination) => {
+                        loaderIn();
+                        page = parseInt(pagination);
+                        getProducts();
+                    })
+                    container.addHook('afterGoButtonOnClick', (response, pagination) => {
+                        loaderIn();
+                        page = parseInt(pagination);
+                        getProducts();
+                    })
+                    container.addHook('afterPreviousOnClick', (response, pagination) => {
+                        loaderIn();
+                        page = parseInt(pagination);
+                        getProducts();
+                    })
+                    container.addHook('afterNextOnClick', (response, pagination) => {
+                        loaderIn();
+                        page = parseInt(pagination);
+                        getProducts();
+                    })
 
-        //     })('pagination', productCount);
-        // })
+                })('pagination', productCount);
+            })
     }
     // show Products on Table
     const showProductTable = function (data) {
@@ -514,7 +522,7 @@ if (Body.getAttribute("data-page") === "Product") {
             imageValidateSizeMaxWidth: 500,
             imageValidateSizeMaxHeight: 500,
             imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
-            acceptedFileTypes: ['image/png'],
+            acceptedFileTypes: ['image/png', 'image/jpeg'],
             maxFileSize: '500KB',
             maxFiles: count,
         });
@@ -576,10 +584,12 @@ if (Body.getAttribute("data-page") === "Product") {
 
     // get categories 
     const getCategories = async () => {
+        loaderIn();
         await fetchApi('api/admin/shop/fetch_cat', {
             page: 1
         })
             .then(res => {
+                loaderOut();
                 res.data.forEach(item => {
                     $('#categories').append(`<option value="${item._id}">${item.title}</option>`);
                 });
@@ -595,11 +605,14 @@ if (Body.getAttribute("data-page") === "Product") {
     }
     // page load
     $(document).ready(() => {
+        loaderIn();
         if (productID) {
+
             fetchApi(`api/admin/shop/fetch_one_product`, {
                 id: productID
             })
                 .then(data => {
+                    loaderOut();
                     $('#status-select').css({
                         display: ''
                     });
@@ -655,7 +668,7 @@ if (Body.getAttribute("data-page") === "Product") {
 
     $("#product-form").on("submit", (e) => {
         e.preventDefault();
-
+        loaderIn();
         if (productID) {
             const body = {
                 title: $("#ProductTitle").val(),
@@ -675,11 +688,12 @@ if (Body.getAttribute("data-page") === "Product") {
             console.log(body)
             fetchApi('api/admin/shop/update_product', body)
                 .then((res) => {
+                    loaderOut();
                     console.log(res);
                     if (res.status_code === 200) {
                         toast("با موفقیت ثبت شد", toastGreenColor);
                         setTimeout(() => {
-                            // window.location.href = "users.html";
+                            window.location.href = "Products.html";
                         }, 2000);
                     } else if (res.status_code === 402) {
                         toast(res.description_fa, toastRedColor);
@@ -703,10 +717,11 @@ if (Body.getAttribute("data-page") === "Product") {
             fetchApi('api/admin/shop/add_product', body)
                 .then((res) => {
                     console.log(res);
+                    loaderOut();
                     if (res.status_code === 200) {
                         toast("با موفقیت ثبت شد", toastGreenColor);
                         setTimeout(() => {
-                            // window.location.href = "users.html";
+                            window.location.href = "Products.html";
                         }, 2000);
                     } else if (res.status_code === 402) {
                         toast(res.description_fa, toastRedColor);
@@ -1136,6 +1151,13 @@ if (Body.getAttribute('data-page') === 'About') {
             console.log('Saving failed: ', error)
         });
     });
+
+    $(document).ready(() => {
+        fetchApi('api/page/admin/fetch_page_about')
+            .then(res => {
+                console.log(res)
+            })
+    })
 }
 // ========== DiscountCode page ==========
 if (Body.getAttribute("data-page") === "DiscountCode") {
@@ -1157,7 +1179,9 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
 
                 <td>
                     <div class="table-action-buttons">
-                        <a class="delete button button-box button-xs button-danger" href="#"><i class="zmdi zmdi-delete delete-discount" id="61e57723c18f84dd83c4b3c3"></i></a>
+                        <button class="delete-discount button button-box button-xs button-danger" id="${item._id}">
+                            <i class="zmdi zmdi-delete delete-discount" id="${item._id}"></i>
+                        </button>
                     </div>
                 </td>
             </tr>
@@ -1167,41 +1191,44 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
         $("#discount-table").html(result);
     }
     const DiscountCodeFetch = function () {
-        fetch(`https://elpino-api.liara.run/api/discode/fetch`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                number: 500,
-            })
-        })
-            .then((response) => response.json())
+        loaderIn();
+        fetchApi(`api/discode/fetch`, { number: 500 })
             .then((result) => {
+                loaderOut();
                 DiscountCodeShowontable(result.data);
             })
-
+            .then(() => {
+                $('.delete-discount').on('click', e => {
+                    loaderIn();
+                    fetchApi('api/clubcode/delet', { code_id: e.target.id })
+                        .then(() => {
+                            loaderOut();
+                            if (data.status_code == 200) {
+                                toast('کد با موفقیت حذف شد', toastGreenColor);
+                                DiscountCodeFetch();
+                            }
+                        })
+                })
+            })
     }
 
 
 
     $("#discount-submit").on("click", () => {
-        fetch(`https://elpino.liara.run/api/discode/add`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                code: $("#discount-code").val(),
-                date: $("#discount-percent").val(),
-                per: $("#datePicker").val(),
-            })
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                console.log(result);
+        const body = {
+            code: $("#discount-code").val(),
+            date: $("#discount-percent").val(),
+            per: fixNumbers($("#datePicker").val()),
+        }
+        loaderIn();
+        fetchApi(`api/discode/add`, body)
+            .then(res => {
+                loaderOut();
+                if (res.status_code === 200) {
+                    toast('کد تخفیف با موفقیت ثبت شد', toastGreenColor);
+                    DiscountCodeFetch();
+                }
+
             })
     })
 
@@ -1250,6 +1277,7 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
 }
 // ========== Orders page ==========
 if (Body.getAttribute("data-page") === "Orders") {
+    let page = 1;
 
     const Showproductintable = function (data) {
         let radif = 1;
@@ -1258,22 +1286,22 @@ if (Body.getAttribute("data-page") === "Orders") {
             console.log(item);
             result += `
             <tr>
-      <td>${radif}</td>
-      <td>${item.username}</td>
-      <td>${item.phone_number}</td>
-      <td>${item.dateTime.slice(0, 16).split(" ").join("&nbsp;|&nbsp;")}</td>
-      <td>${item.product_list.length}</td>
-      <td>${item.localid}</td>
-      <td>${item.address}</td>
-      <td class="d-flex justify-content-center">
-              <button class="Edite-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
-              <i class="Edite-advertise zmdi fa fa-pencil-square-o" id=${item._id}></i>
-          </button>
-          <button class="reject-adver remove button button-box button-xs button-danger">
-              <i class="reject-adver fa fa-trash-o"></i>
-          </button>
-      </td>
-  </tr>
+                <td>${radif}</td>
+                <td>${item.username}</td>
+                <td>${item.phone_number}</td>
+                <td>${item.dateTime.slice(0, 16).split(" ").join("&nbsp;|&nbsp;")}</td>
+                <td>${item.product_list.length}</td>
+                <td>${item.localid}</td>
+                <td>${item.address}</td>
+                <td class="d-flex justify-content-center">
+                        <button class="Edite-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
+                        <i class="Edite-advertise zmdi fa fa-pencil-square-o" id=${item._id}></i>
+                    </button>
+                    <button class="reject-adver remove button button-box button-xs button-danger">
+                        <i class="reject-adver fa fa-trash-o"></i>
+                    </button>
+                </td>
+            </tr>
             `;
             radif++;
         })
@@ -1282,110 +1310,85 @@ if (Body.getAttribute("data-page") === "Orders") {
     }
 
     const getUserFromServer = function () {
-        fetch('https://elpino-api.liara.run/api/admin/shop/fetch_order', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                type: "shop",
-                page: "1",
-            })
-        })
-            .then((respone) => respone.json())
+        loaderIn();
+        fetchApi('api/admin/shop/fetch_order', { type: "shop", page })
             .then((result) => {
+                loaderOut();
                 Showproductintable(result.data)
             })
-
     }
 
-    getUserFromServer();
-
-    document.getElementById("searchBtn").addEventListener("click", () => {
-        fetch(`https://elpino-api.liara.run/api/admin/shop/fetch_order_search`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                data: $("#dataSearch").val(),
-                type: "shop",
-                page: 1,
-            })
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                $("#users-table").html("")
-                Showproductintable(result.data)
-            })
+    $(document).ready(() => {
+        getUserFromServer();
     })
-
-
+    // search order by phone number
+    $("#searchBtn").on("click", () => {
+        loaderIn();
+        fetchApi('api/admin/shop/fetch_order_search', { data: $("#dataSearch").val(), type: "shop", page: 1 })
+            .then((result) => {
+                loaderOut();
+                $("#users-table").html("")
+                Showproductintable(result.data);
+            });
+    })
 }
 // ========== Settings page ==========
 if (Body.getAttribute("data-page") === "Settings") {
     const Showpass = document.querySelector("#showpass");
     const PassInput = document.querySelector("#admin-password");
-
+    // toggle password input to show and hide
     Showpass.addEventListener("click", () => {
         if (PassInput.type === "password") {
             PassInput.type = "text";
-
-
         } else {
             PassInput.type = "password";
         }
     })
-
-
-    const settingsedualtfetch = function () {
-        fetch(`https://elpino-api.liara.run/api/admin/seting/fetch`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-        })
-            .then((response) => response.json())
+    // default settings fetch function
+    const fetchDefaultSettings = function () {
+        loaderIn();
+        fetchApi('api/admin/seting/fetch')
             .then((result) => {
-                console.log(result);
-                $("#admin-username").val(result.admin[0].user)
-                $("#admin-password").val(result.admin[0].pass)
-
+                loaderOut();
+                $("#admin-username").val(result.admin[0].user);
+                $("#admin-password").val(result.admin[0].pass);
+                $("#send-price").val(result.shop.send_price);
             })
     }
-
-
-    const Settingsadminfetch = function () {
-        fetch(`https://elpino.liara.run/api/admin/seting/admin`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                user: $("#admin-username").val(),
-                pass: $("#admin-password").val(),
-            })
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.status_code === 200) {
-                    toast();
-                    setTimeout(() => {
-                        window.location.href = "users.html";
-                    }, 2000);
+    // fetch on load
+    $(document).ready(function () {
+        fetchDefaultSettings();
+    })
+    // submit user pass 
+    $('#user-pass-form').on('submit', e => {
+        e.preventDefault();
+        loaderIn();
+        fetchApi('api/admin/seting/admin', { user: $('#admin-username').val(), pass: $('#admin-password').val() })
+            .then(res => {
+                loaderOut();
+                if (res.status_code === 200) {
+                    toast('تنظیمات با موفقیت اعمال شد', toastGreenColor);
+                    fetchDefaultSettings();
                 }
             })
-    }
-    $(".btn ").on("click", () => {
-        Settingsadminfetch()
     })
+    // submit global settings
+    $('#global-settings-submit').on('submit', e => {
+        e.preventDefault();
+        loaderIn();
 
-    $(document).ready(function () {
-        settingsedualtfetch()
+        const body = {
+            send_price: $("#send-price").val(),
+        };
+
+        fetchApi('api/admin/seting/shop', body)
+            .then(res => {
+                loaderOut();
+                if (res.status_code === 200) {
+                    toast('تنظیمات با موفقیت اعمال شد', toastGreenColor);
+                    fetchDefaultSettings();
+                }
+            })
     })
 
 }

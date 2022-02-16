@@ -89,3 +89,7 @@ textarea {
     justify-content: center;
     align-items: center;
 }
+
+.cdx-notifies {
+    z-index: 999999999;
+}

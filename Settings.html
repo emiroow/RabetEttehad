@@ -125,50 +125,44 @@
             </div>
             <!-- Page Headings End -->
             <div class="box table-bordered pt-15 pb-25">
-                <div class="row col-12 mt-15">
-                    <form id="userpass-submit" class="col-12 d-flex flex-wrap" onsubmit="return false;">
-                        <div class="col-6">
-                            <p>نام کاربری مدیر</p>
-                            <div class="input-group mb-3">
-                                <input id="admin-username" type="text" placeholder="نام کاربری مدیر"
-                                    class="form-control" aria-label="Default"
-                                    aria-describedby="inputGroup-sizing-default" required="" minlength="5">
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <p>پسسورد مدیر</p>
-
-                            <input id="admin-password" type="password" placeholder="پسسورد مدیر" class="form-control"
+                <form id="user-pass-form" class="col-12 d-flex flex-wrap" onsubmit="return false;">
+                    <div class="col-6">
+                        <p>نام کاربری مدیر</p>
+                        <div class="input-group mb-3">
+                            <input id="admin-username" type="text" placeholder="نام کاربری مدیر" class="form-control"
                                 aria-label="Default" aria-describedby="inputGroup-sizing-default" required=""
-                                minlength="8">
-                            <div class="d-flex justify-content-start align-content-end mt-10">
-                                <input type="checkbox" name="" id="showpass">
-                                <p>نمایش گذرواژه </p>
-                            </div>
+                                minlength="5">
                         </div>
-                        <button class="col-lg-1 btn btn-success m-auto mt-20">ثبت</button>
-                    </form>
-                </div>
-            </div>
-            <div class=" row d-flex justify-content-around">
-                <div class="col-lg-6 box table-bordered pt-15 pb-25 mt-20">
-                    <div class="  mt-15">
-                        <form id="userpass-submit" class="col-12 d-flex flex-wrap" onsubmit="return false;">
-                            <div class="col-12 ">
-                                <p>هزینه ارسال</p>
-
-                                <div class="col-lg-12 d-flex justify-content-center">
-                                    <input type="text" placeholder="هزینه ارسال" class="form-control"
-                                        aria-label="Default" aria-describedby="inputGroup-sizing-default" required=""
-                                        minlength="8">
-                                </div>
-
-                            </div>
-
-                            <button class="col-lg-2 btn btn-success m-auto mt-20">ثبت</button>
-                        </form>
                     </div>
-                </div>
+                    <div class="col-6">
+                        <p>پسسورد مدیر</p>
+
+                        <input id="admin-password" type="password" placeholder="پسسورد مدیر" class="form-control"
+                            aria-label="Default" aria-describedby="inputGroup-sizing-default" required="" minlength="8">
+                        <div class="d-flex justify-content-start align-content-end mt-10">
+                            <input type="checkbox" name="" id="showpass">
+                            <label for="showpass">نمایش گذرواژه </label>
+                        </div>
+                    </div>
+                    <button class="col-lg-1 btn btn-success m-auto mt-20">ثبت</button>
+                </form>
+            </div>
+            <div class="col-lg-12 box table-bordered pt-15 pb-25 mt-20">
+                <form id="global-settings-submit"
+                    class="col-12 d-flex flex-column justify-content-center align-items-center"
+                    onsubmit="return false;">
+                    <div class="col-12">
+                        <p>هزینه ارسال</p>
+
+                        <div class="col-6 d-flex justify-content-center">
+                            <input type="text" id="send-price" placeholder="هزینه ارسال" class="form-control"
+                                required="">
+                        </div>
+
+                    </div>
+
+                    <button class="col-1 btn btn-success m-auto mt-20">ثبت</button>
+                </form>
             </div>
         </div>
         <!-- Content Body End -->
@@ -189,7 +183,7 @@
 
     <!-- JS
 ============================================ -->
-    
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script src="assets/scripts/toast.js"></script>
