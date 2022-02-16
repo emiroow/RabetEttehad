@@ -842,7 +842,6 @@ if (Body.getAttribute('data-page') === 'Sliders') {
 
     $(document).ready(() => {
         loaderIn();
-        console.log(spinner)
         getSlidersFromServer();
     })
 
@@ -850,7 +849,6 @@ if (Body.getAttribute('data-page') === 'Sliders') {
 }
 // ========== Slider page ==========
 if (Body.getAttribute('data-page') === 'Slider') {
-    loaderIn();
     let mobileSlider = 'https://www.seoptimer.com/blog/wp-content/uploads/2020/05/website-header-size.png';
     let webSlider = 'https://static.vecteezy.com/system/resources/thumbnails/002/294/181/small/welcome-to-university-web-banner-design-free-vector.jpg';
 
@@ -980,15 +978,11 @@ if (Body.getAttribute('data-page') === 'Slider') {
         }
     });
 
-    $(document).ready(() => {
-        loaderIn();
-    })
-
     $('#slider-form').on('submit', e => {
         e.preventDefault();
 
         if (mobileSlider && webSlider) {
-            // loaderIn();
+            loaderIn();
             const body = {
                 title: $('#title').val(),
                 url: $('#url').val(),
@@ -997,11 +991,11 @@ if (Body.getAttribute('data-page') === 'Slider') {
             };
             fetchApi('api/slider/admin/add_slider', body)
                 .then(res => {
-                    // loaderOut();
+                    loaderOut();
                     if (res.status_code === 200) {
                         toast('اسلایدر با موفقیت افزوده شد', toastGreenColor);
                         setTimeout(() => {
-                            // window.location.href = 'Sliders.html';
+                            window.location.href = 'Sliders.html';
                         }, 2000);
                     }
                 })
