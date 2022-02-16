@@ -24,7 +24,7 @@ const toast = function (event, color) {
         style: {
             background: `${color}`,
         },
-        onClick: function () { } // Callback after click
+        onClick: function () {} // Callback after click
     }).showToast();
 
 }
@@ -42,23 +42,23 @@ const fetchApi = async (url, body) => {
     try {
         if (body) {
             await fetch(`${RabetApi}${url}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Auth-Token': localStorage.getItem('token')
-                },
-                body: JSON.stringify(body),
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Auth-Token': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify(body),
+                })
                 .then(respone => respone.json())
                 .then(result => lastResult = result)
                 .catch(err => toast(err, '#b90000'))
         } else {
             await fetch(`${RabetApi}${url}`, {
-                method: 'GET',
-                headers: {
-                    'Auth-Token': localStorage.getItem('token')
-                },
-            })
+                    method: 'GET',
+                    headers: {
+                        'Auth-Token': localStorage.getItem('token')
+                    },
+                })
                 .then(respone => respone.json())
                 .then(result => {
                     lastResult = result
@@ -81,15 +81,15 @@ if (Body.getAttribute("data-page") === "Index") {
         let password = document.getElementById("password").value;
 
         await fetch(`${RabetApi}api/admin/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                user: username,
-                pass: password,
-            }),
-        })
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user: username,
+                    pass: password,
+                }),
+            })
             .then((respone) => respone.json())
             .then((result) => {
                 console.log(result);
@@ -113,9 +113,9 @@ if (Body.getAttribute("data-page") === "Dashboard") {
 
 
         fetch(`${RabetApi}api/admin/dashboard`, {
-            method: "POST",
+                method: "POST",
 
-        })
+            })
             .then((respone) => respone.json())
             .then((result) => {
                 $("#numofproducts").html(result.adv);
@@ -163,12 +163,12 @@ if (Body.getAttribute("data-page") === "Users") {
 
     const getUserFromServer = () => {
         fetch(`${RabetApi}api/admin/fetchalluser/number=${page}`, {
-            method: "GET",
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-        })
+                method: "GET",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+            })
             .then((response) => response.json())
             .then((result) => {
                 usersCount = result.user_count;
@@ -262,20 +262,23 @@ if (Body.getAttribute("data-page") === "Users") {
         document.getElementById("users-table").innerHTML = result;
     }
     $("#SearchBtn").on('click', () => {
+        loaderIn()
         $("#users-table").html("");
         $("#pagination").html("");
         let phoneNumber = $("#SearchText").val();
         fetch(`${RabetApi}api/admin/fetchuser/search/number=${phoneNumber}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                'Auth-Token': localStorage.getItem('token'),
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Auth-Token': localStorage.getItem('token'),
 
-            }
-        })
+                }
+            })
             .then((response) => response.json())
             .then((result) => {
                 searchtable(result.data);
+                loaderOut()
+
             })
 
     })
@@ -285,12 +288,12 @@ if (Body.getAttribute("data-page") === "User") {
 
     let userId = document.URL.split('?')[1]
     fetch(`${RabetApi}api/admin/fetchuser/one/id=${userId}`, {
-        method: "GET",
-        headers: {
-            'Auth-Token': localStorage.getItem('token'),
-            "Content-Type": "application/json",
-        },
-    })
+            method: "GET",
+            headers: {
+                'Auth-Token': localStorage.getItem('token'),
+                "Content-Type": "application/json",
+            },
+        })
         .then((response) => response.json())
         .then((result) => {
             console.log(result);
@@ -322,9 +325,9 @@ if (Body.getAttribute("data-page") === "Products") {
     const getProducts = () => {
 
         fetchApi('api/admin/shop/fetch_products', {
-            page,
-            cat: categoryFilter
-        })
+                page,
+                cat: categoryFilter
+            })
             .then(data => {
                 if (data.status_code === 200) {
                     productCount = data.product_count;
@@ -337,8 +340,8 @@ if (Body.getAttribute("data-page") === "Products") {
                 $('.delete-product').click(function (e) {
                     e.preventDefault();
                     fetchApi('api/admin/shop/del_product', {
-                        id: e.target.id
-                    })
+                            id: e.target.id
+                        })
                         .then(res => {
                             if (res.status_code === 200) {
                                 toast('محصول با موفقیت حذف شد', toastGreenColor);
@@ -443,8 +446,8 @@ if (Body.getAttribute("data-page") === "Products") {
     // get categories 
     const getCategories = () => {
         fetchApi('api/admin/shop/fetch_cat', {
-            page: 1
-        })
+                page: 1
+            })
             .then(res => {
                 res.data.forEach(item => {
                     $('#categories').append(`<option value="${item._id}" data-title="${item.title}" data-description="${item.dis}" data-img="${item.img}">${item.title}</option>`);
@@ -469,8 +472,8 @@ if (Body.getAttribute("data-page") === "Products") {
         e.preventDefault();
         $('#Products-table').html('');
         fetchApi(`api/admin/shop/search_product`, {
-            data: $('#search-text').val()
-        })
+                data: $('#search-text').val()
+            })
             .then(data => {
                 if (data.status_code == 200) {
                     showProductTable(data);
@@ -481,8 +484,8 @@ if (Body.getAttribute("data-page") === "Products") {
                 $('.delete-product').click(function (e) {
                     e.preventDefault();
                     fetchApi('api/admin/shop/del_product', {
-                        id: e.target.id
-                    })
+                            id: e.target.id
+                        })
                         .then(res => {
                             if (res.status_code === 200) {
                                 toast('محصول با موفقیت حذف شد', toastGreenColor);
@@ -549,7 +552,7 @@ if (Body.getAttribute("data-page") === "Product") {
                         error('oh no');
                     }
                 };
-                request.open('POST', `${RabetApi}api/admin/shop/upload_pro_img`,);
+                request.open('POST', `${RabetApi}api/admin/shop/upload_pro_img`, );
                 request.send(formData);
             },
             revert: async (uniqueFileId, load, error) => {
@@ -558,7 +561,7 @@ if (Body.getAttribute("data-page") === "Product") {
                 let lastPoint = picUrlDel.link.lastIndexOf('.');
                 let firtPoint = picUrlDel.link.lastIndexOf('/');
                 let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
-                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`, );
                 request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
                 request.send();
                 request.onreadystatechange = function () {
@@ -577,8 +580,8 @@ if (Body.getAttribute("data-page") === "Product") {
     // get categories 
     const getCategories = async () => {
         await fetchApi('api/admin/shop/fetch_cat', {
-            page: 1
-        })
+                page: 1
+            })
             .then(res => {
                 res.data.forEach(item => {
                     $('#categories').append(`<option value="${item._id}">${item.title}</option>`);
@@ -597,8 +600,8 @@ if (Body.getAttribute("data-page") === "Product") {
     $(document).ready(() => {
         if (productID) {
             fetchApi(`api/admin/shop/fetch_one_product`, {
-                id: productID
-            })
+                    id: productID
+                })
                 .then(data => {
                     $('#status-select').css({
                         display: ''
@@ -722,7 +725,9 @@ if (Body.getAttribute('data-page') === 'category') {
     // get categories 
     const getCategories = () => {
         loaderIn();
-        fetchApi('api/admin/shop/fetch_cat', { page: 1 })
+        fetchApi('api/admin/shop/fetch_cat', {
+                page: 1
+            })
             .then(res => {
                 loaderOut();
                 res.data.forEach(item => {
@@ -736,7 +741,10 @@ if (Body.getAttribute('data-page') === 'category') {
         e.preventDefault();
         loaderIn();
         if (updatingCategory) {
-            fetchApi('api/admin/shop/update_cat', { title: $('#title').val(), id: categoryIdToUpdate })
+            fetchApi('api/admin/shop/update_cat', {
+                    title: $('#title').val(),
+                    id: categoryIdToUpdate
+                })
                 .then(res => {
                     loaderOut();
                     if (res.status_code === 200) {
@@ -746,7 +754,9 @@ if (Body.getAttribute('data-page') === 'category') {
                     }
                 })
         } else {
-            fetchApi('api/admin/shop/add_cat', { title: $('#title').val() })
+            fetchApi('api/admin/shop/add_cat', {
+                    title: $('#title').val()
+                })
                 .then(res => {
                     loaderOut();
                     if (res.status_code === 200) {
@@ -777,7 +787,9 @@ if (Body.getAttribute('data-page') === 'category') {
     $('#delete-category').on('click', () => {
         const selectedCategoryId = $('#category-select option:selected').val();
         loaderIn();
-        fetchApi('api/admin/shop/del_cat', { id: selectedCategoryId })
+        fetchApi('api/admin/shop/del_cat', {
+                id: selectedCategoryId
+            })
             .then(res => {
                 loaderOut();
                 if (res.status_code === 200) {
@@ -825,8 +837,8 @@ if (Body.getAttribute('data-page') === 'Sliders') {
                 $('.delete-slider').on('click', e => {
                     loaderIn();
                     fetchApi('api/slider/admin/delet_slider', {
-                        id: e.target.id
-                    })
+                            id: e.target.id
+                        })
                         .then(res => {
                             loaderOut();
                             if (res.status_code === 200) {
@@ -912,7 +924,7 @@ if (Body.getAttribute('data-page') === 'Slider') {
                 let lastPoint = picUrlDel.link.lastIndexOf('.');
                 let firtPoint = picUrlDel.link.lastIndexOf('/');
                 let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
-                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`, );
                 request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
                 request.send();
                 request.onreadystatechange = function () {
@@ -962,7 +974,7 @@ if (Body.getAttribute('data-page') === 'Slider') {
                 let lastPoint = picUrlDel.link.lastIndexOf('.');
                 let firtPoint = picUrlDel.link.lastIndexOf('/');
                 let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
-                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
+                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`, );
                 request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
                 request.send();
                 request.onreadystatechange = function () {
@@ -1168,15 +1180,15 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
     }
     const DiscountCodeFetch = function () {
         fetch(`https://elpino-api.liara.run/api/discode/fetch`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                number: 500,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                },
+                body: JSON.stringify({
+                    number: 500,
+                })
             })
-        })
             .then((response) => response.json())
             .then((result) => {
                 DiscountCodeShowontable(result.data);
@@ -1188,17 +1200,17 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
 
     $("#discount-submit").on("click", () => {
         fetch(`https://elpino.liara.run/api/discode/add`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                code: $("#discount-code").val(),
-                date: $("#discount-percent").val(),
-                per: $("#datePicker").val(),
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                },
+                body: JSON.stringify({
+                    code: $("#discount-code").val(),
+                    date: $("#discount-percent").val(),
+                    per: $("#datePicker").val(),
+                })
             })
-        })
             .then((response) => response.json())
             .then((result) => {
                 console.log(result);
@@ -1283,16 +1295,16 @@ if (Body.getAttribute("data-page") === "Orders") {
 
     const getUserFromServer = function () {
         fetch('https://elpino-api.liara.run/api/admin/shop/fetch_order', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                type: "shop",
-                page: "1",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                },
+                body: JSON.stringify({
+                    type: "shop",
+                    page: "1",
+                })
             })
-        })
             .then((respone) => respone.json())
             .then((result) => {
                 Showproductintable(result.data)
@@ -1304,17 +1316,17 @@ if (Body.getAttribute("data-page") === "Orders") {
 
     document.getElementById("searchBtn").addEventListener("click", () => {
         fetch(`https://elpino-api.liara.run/api/admin/shop/fetch_order_search`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                data: $("#dataSearch").val(),
-                type: "shop",
-                page: 1,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                },
+                body: JSON.stringify({
+                    data: $("#dataSearch").val(),
+                    type: "shop",
+                    page: 1,
+                })
             })
-        })
             .then((response) => response.json())
             .then((result) => {
                 $("#users-table").html("")
@@ -1342,12 +1354,12 @@ if (Body.getAttribute("data-page") === "Settings") {
 
     const settingsedualtfetch = function () {
         fetch(`https://elpino-api.liara.run/api/admin/seting/fetch`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-        })
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                },
+            })
             .then((response) => response.json())
             .then((result) => {
                 console.log(result);
@@ -1360,16 +1372,16 @@ if (Body.getAttribute("data-page") === "Settings") {
 
     const Settingsadminfetch = function () {
         fetch(`https://elpino.liara.run/api/admin/seting/admin`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
-            },
-            body: JSON.stringify({
-                user: $("#admin-username").val(),
-                pass: $("#admin-password").val(),
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Auth-Token": "YTUEdfsdfsdRBbbb2tr2hrthRT2rth!BbBg@@)(999+_+_+)!NBVHGF",
+                },
+                body: JSON.stringify({
+                    user: $("#admin-username").val(),
+                    pass: $("#admin-password").val(),
+                })
             })
-        })
             .then((response) => response.json())
             .then((result) => {
                 if (result.status_code === 200) {
@@ -1400,14 +1412,14 @@ if (Body.getAttribute("QRCode") === "QRCode") {
     }
 
     const getfromserver = fetch(``, {
-        method: "",
-        headers: {
+            method: "",
+            headers: {
 
-        },
-        body: JSON.stringify({
+            },
+            body: JSON.stringify({
 
-        })
-    }).then((response) => response.json)
+            })
+        }).then((response) => response.json)
         .then((result) => {
             showontable(result);
         })
@@ -1444,16 +1456,16 @@ if (Body.getAttribute("data-page") === "Representatives") {
     }
     // accepted
     const getfromserver = function () {
-        fetch(`${RabetApi}/api/agent/admin/fetch_agent`, {
-            method: "POST",
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                number: page,
+        fetch(`${RabetApi}api/agent/admin/fetch_agent`, {
+                method: "POST",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    number: page,
+                })
             })
-        })
             .then((response => response.json()))
             .then((result => {
                 loaderOut();
@@ -1539,20 +1551,24 @@ if (Body.getAttribute("data-page") === "Representatives") {
     }
     // serach
     $("#searchBtn").click((e) => {
+        loaderIn()
         let mobileNum = $("#mobilenum").val()
         $("#table-show").html("");
         $("#pagination").html("");
-        fetch(`${RabetApi}`, {
-            method: "GET",
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-        })
+        fetch(`https://rabetettehad.herokuapp.com/api/agent/admin/fetch_agent_serach`, {
+                method: "POST",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    mobile: mobileNum
+                })
+            })
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 Showsearchtable(result.data)
+                loaderOut()
             })
             .then(() => {
                 $('.show-agent').on("click", (e) => {
@@ -1595,15 +1611,15 @@ if (Body.getAttribute("data-page") === "Representatives") {
         let usersCount;
         let page = 1;
         fetch(`${RabetApi}/api/agent/admin/fetch_agent_inprossess`, {
-            method: "POST",
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                number: page,
+                method: "POST",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    number: page,
+                })
             })
-        })
             .then((response => response.json()))
             .then((result => {
                 loaderOut();
@@ -1669,15 +1685,15 @@ if (Body.getAttribute("data-page") === "Representatives") {
     function reject(e) {
         let userID = e.id;
         fetch(`${RabetApi}api/agent/admin/delet_agent`, {
-            method: 'POST',
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: userID,
-            })
-        }).then((response) => response.json())
+                method: 'POST',
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: userID,
+                })
+            }).then((response) => response.json())
             .then((result) => {
                 console.log(result);
                 if (result.status_code === 200) {
@@ -1690,15 +1706,15 @@ if (Body.getAttribute("data-page") === "Representatives") {
         console.log(e.id);
         let userID = e.id;
         fetch(`${RabetApi}api/agent/admin/accept_agent`, {
-            method: 'POST',
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                idz: userID,
-            })
-        }).then((response) => response.json())
+                method: 'POST',
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    idz: userID,
+                })
+            }).then((response) => response.json())
             .then((result) => {
                 if (result.status_code === 200) {
                     window.location.reload();
@@ -1739,15 +1755,15 @@ if (Body.getAttribute("data-page") === "Representative") {
 
     const getfromserver = function () {
         fetch(`${RabetApi}/api/agent/admin/fetch_one`, {
-            method: "POST",
-            headers: {
-                'Auth-Token': localStorage.getItem('token'),
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: userId,
+                method: "POST",
+                headers: {
+                    'Auth-Token': localStorage.getItem('token'),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: userId,
+                })
             })
-        })
             .then((response) => response.json())
             .then((result) => {
                 ShowOnRepresentative(result.data)
