@@ -1,0 +1,91 @@
+@charset "UTF-8";
+@font-face {
+    font-family: Iran-sance-B;
+    src: url("../font/irsns-bold-fa.ttf") format("true type");
+    src: url("../font/irsns-bold-fa.woff") format("woff");
+}
+
+textarea {
+    resize: none;
+}
+
+.custom-alert {
+    font-family: Iran-sance-B;
+    position: fixed;
+    bottom: 50px;
+    left: 0;
+    background-color: #333;
+    color: #fff;
+    padding: 20px 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    z-index: 9999999;
+}
+
+.custom-alert p {
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 10px;
+}
+.produc-imgs {
+    position: relative;
+}
+.produc-imgs i {
+    color: red;
+    font-size: 20px;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+}
+.product-upload-gallery img {
+    width: 185px;
+    height: 200px;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1000000000000000;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+}
+.cv-spinner {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px #ddd solid;
+    border-top: 4px #2e93e6 solid;
+    border-radius: 50%;
+    animation: sp-anime 0.8s infinite linear;
+}
+@keyframes sp-anime {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.is-hide {
+    display: none;
+}
+
+.pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

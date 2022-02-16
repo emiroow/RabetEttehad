@@ -21,7 +21,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/jquery-spinner.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
 
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css">
@@ -45,6 +45,12 @@
 </head>
 
 <body dir="rtl" data-page="category">
+
+    <div id="overlay">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
 
     <div class="main-wrapper">
 
@@ -131,7 +137,7 @@
                                     placeholder="نام دسته بندی*">
                             </div>
                         </div>
-  
+
                         <div class="col-12 d-flex justify-content-center">
                             <button type="submit" class="button button-success col-3"
                                 id="submit-market-cat">افزودن</button>
@@ -144,10 +150,10 @@
                                 </select>
                             </div>
                             <div class="table-action-buttons">
-                                <button class="edit button button-box button-xs button-info" id="edit-category"><i
-                                        class="zmdi zmdi-edit"></i></button>
-                                <button class="delete button button-box button-xs button-danger" id="delete-category"><i
-                                        class="zmdi zmdi-delete"></i></button>
+                                <button type="button" class="edit button button-box button-xs button-info"
+                                    id="edit-category"><i class="zmdi zmdi-edit"></i></button>
+                                <button type="button" class="delete button button-box button-xs button-danger"
+                                    id="delete-category"><i class="zmdi zmdi-delete"></i></button>
                             </div>
                         </div>
                     </form>
@@ -176,7 +182,7 @@
 ============================================ -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!-- Global Vendor, plugins & Activation JS -->
-    <script src="assets/scripts/jquery-spinner.js"></script>
+
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>
