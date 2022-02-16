@@ -274,6 +274,7 @@ if (Body.getAttribute("data-page") === "Users") {
         document.getElementById("users-table").innerHTML = result;
     }
     $("#SearchBtn").on('click', () => {
+        loaderIn()
         $("#users-table").html("");
         $("#pagination").html("");
         let phoneNumber = $("#SearchText").val();
@@ -288,6 +289,8 @@ if (Body.getAttribute("data-page") === "Users") {
             .then((response) => response.json())
             .then((result) => {
                 searchtable(result.data);
+                loaderOut()
+
             })
 
     })
@@ -332,8 +335,11 @@ if (Body.getAttribute("data-page") === "Products") {
 
     // fetch to get Products
     const getProducts = () => {
-        loaderIn();
-        fetchApi('api/admin/shop/fetch_products', { page, cat: categoryFilter })
+
+        fetchApi('api/admin/shop/fetch_products', {
+            page,
+            cat: categoryFilter
+        })
             .then(data => {
                 loaderOut();
                 if (data.status_code === 200) {
@@ -737,7 +743,9 @@ if (Body.getAttribute('data-page') === 'category') {
     // get categories 
     const getCategories = () => {
         loaderIn();
-        fetchApi('api/admin/shop/fetch_cat', { page: 1 })
+        fetchApi('api/admin/shop/fetch_cat', {
+            page: 1
+        })
             .then(res => {
                 loaderOut();
                 res.data.forEach(item => {
@@ -751,7 +759,10 @@ if (Body.getAttribute('data-page') === 'category') {
         e.preventDefault();
         loaderIn();
         if (updatingCategory) {
-            fetchApi('api/admin/shop/update_cat', { title: $('#title').val(), id: categoryIdToUpdate })
+            fetchApi('api/admin/shop/update_cat', {
+                title: $('#title').val(),
+                id: categoryIdToUpdate
+            })
                 .then(res => {
                     loaderOut();
                     if (res.status_code === 200) {
@@ -761,7 +772,9 @@ if (Body.getAttribute('data-page') === 'category') {
                     }
                 })
         } else {
-            fetchApi('api/admin/shop/add_cat', { title: $('#title').val() })
+            fetchApi('api/admin/shop/add_cat', {
+                title: $('#title').val()
+            })
                 .then(res => {
                     loaderOut();
                     if (res.status_code === 200) {
@@ -792,7 +805,9 @@ if (Body.getAttribute('data-page') === 'category') {
     $('#delete-category').on('click', () => {
         const selectedCategoryId = $('#category-select option:selected').val();
         loaderIn();
-        fetchApi('api/admin/shop/del_cat', { id: selectedCategoryId })
+        fetchApi('api/admin/shop/del_cat', {
+            id: selectedCategoryId
+        })
             .then(res => {
                 loaderOut();
                 if (res.status_code === 200) {
@@ -1191,8 +1206,7 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
         $("#discount-table").html(result);
     }
     const DiscountCodeFetch = function () {
-        loaderIn();
-        fetchApi(`api/discode/fetch`, { number: 500 })
+        fetchApi('api/discode/fetch', { number: 500 })
             .then((result) => {
                 loaderOut();
                 DiscountCodeShowontable(result.data);
@@ -1447,7 +1461,7 @@ if (Body.getAttribute("data-page") === "Representatives") {
     }
     // accepted
     const getfromserver = function () {
-        fetch(`${RabetApi}/api/agent/admin/fetch_agent`, {
+        fetch(`${RabetApi}api/agent/admin/fetch_agent`, {
             method: "POST",
             headers: {
                 'Auth-Token': localStorage.getItem('token'),
@@ -1542,20 +1556,24 @@ if (Body.getAttribute("data-page") === "Representatives") {
     }
     // serach
     $("#searchBtn").click((e) => {
+        loaderIn()
         let mobileNum = $("#mobilenum").val()
         $("#table-show").html("");
         $("#pagination").html("");
-        fetch(`${RabetApi}`, {
-            method: "GET",
+        fetch(`https://rabetettehad.herokuapp.com/api/agent/admin/fetch_agent_serach`, {
+            method: "POST",
             headers: {
                 'Auth-Token': localStorage.getItem('token'),
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify({
+                mobile: mobileNum
+            })
         })
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 Showsearchtable(result.data)
+                loaderOut()
             })
             .then(() => {
                 $('.show-agent').on("click", (e) => {
