@@ -716,7 +716,7 @@ if (Body.getAttribute("data-page") === "Product") {
                 pics: picurl,
                 priceagent: parseInt($('#ProductPriceOff').val()),
                 priceagentoff: parseInt($('#ProductPriceagrntOff').val()),
-                Producttotal: $('#Producttotal').val(),
+                Producttotal: parseInt($("#Producttotal").val()),
                 isSpecial: $('#special-offer').prop('checked'),
             };
             console.log(body)
