@@ -632,7 +632,6 @@ if (Body.getAttribute("data-page") === "Product") {
                     $('#ProductPriceOff').val(data.priceoff);
                     $('#ProductPriceagrntOff').val(data.priceagentoff);
                     $('#ProductPriceagrnt').val(data.priceagent);
-
                     $('#Producttotal').val(data.Producttotal);
                     $('#special-offer').prop('checked', data.isSpecial);
                     picurl = [...data.pics];
@@ -673,6 +672,7 @@ if (Body.getAttribute("data-page") === "Product") {
     });
 
     $("#product-form").on("submit", (e) => {
+        
         e.preventDefault();
         loaderIn();
         if (productID) {
@@ -686,7 +686,7 @@ if (Body.getAttribute("data-page") === "Product") {
                 pics: picurl,
                 priceagent: parseInt($('#ProductPriceOff').val()),
                 priceagentoff: parseInt($('#ProductPriceagrntOff').val()),
-                Producttotal: $('#Producttotal').val(),
+                Producttotal: parseInt($("#Producttotal").val()),
                 isSpecial: $('#special-offer').prop('checked'),
                 status: $('#status-select option:selected').val() === 'true' ? true : false,
                 product_id: productID,

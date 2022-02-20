@@ -20,7 +20,6 @@ const menu = `
         <li><a href="Slider.html"><i class="fa fa-mobile"></i> <span> تعریف اسلایدر </span></a>
     </ul>
 </li>
-
 <li><a href="QRcode.html"><i class="fa fa-shopping-basket"></i> <span>QR کد</span></a></li>
 
 <li><a href="Settings.html"><i class="fa fa-sun-o"></i> <span>تنظیمات</span></a></li>
