@@ -1,4 +1,4 @@
-const RabetApi = `https://rabetettehad.herokuapp.com/`
+const RabetApi = `https://rabet.iran.liara.run/`
 const Body = document.querySelector("body");
 
 // loader fade in
@@ -57,8 +57,9 @@ const fetchApi = async (url, body) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Auth-Token': localStorage.getItem('token')
+                    'Auth-Token': localStorage.getItem('token'),
                 },
+                keepalive: true,
                 body: JSON.stringify(body),
             })
                 .then(respone => respone.json())
@@ -88,7 +89,7 @@ const fetchApi = async (url, body) => {
 // ========== login page ==========
 if (Body.getAttribute("data-page") === "Index") {
     document.getElementById("submit").addEventListener("click", async function () {
-
+        loaderIn();
         let username = document.getElementById("username").value;
         let password = document.getElementById("password").value;
 
@@ -105,7 +106,7 @@ if (Body.getAttribute("data-page") === "Index") {
             .then((respone) => respone.json())
             .then((result) => {
                 console.log(result);
-
+                loaderOut();
                 if (result.status_code === 200) {
                     localStorage.setItem("token", result.token);
                     window.location.href = "Dashboard.html";
@@ -122,7 +123,7 @@ if (Body.getAttribute("data-page") === "Index") {
 if (Body.getAttribute("data-page") === "Dashboard") {
 
     document.addEventListener("DOMContentLoaded", function () {
-
+        loaderIn();
 
         fetch(`${RabetApi}api/admin/dashboard`, {
             method: "POST",
@@ -130,14 +131,14 @@ if (Body.getAttribute("data-page") === "Dashboard") {
         })
             .then((respone) => respone.json())
             .then((result) => {
-                $("#numofproducts").html(result.adv);
+                console.log(result)
+                loaderOut();
+                $("#numofproducts").html(result.product);
                 $("#numofperson").html(result.user);
                 $("#numofseal").html(result.shop)
-                $("#pmofpersson").html(result.charge)
+                $("#contactform").html(result.contactform)
                 $("#numofAgent").html(result.agent)
 
-            }).catch((err) => {
-                console.log("هوووووووووووووویآح ، ریدی داداش");
             })
     });
 
@@ -332,10 +333,11 @@ if (Body.getAttribute("data-page") === "Products") {
     let page = 1;
     let productCount = 0;
     let categoryFilter = 'all';
+    let productIdToQrGenerate;
 
     // fetch to get Products
     const getProducts = () => {
-
+        loaderIn();
         fetchApi('api/admin/shop/fetch_products', {
             page,
             cat: categoryFilter
@@ -366,6 +368,9 @@ if (Body.getAttribute("data-page") === "Products") {
                             };
                         });
                 });
+                $('.add-qr').on('click', e => {
+                    productIdToQrGenerate = e.target.id;
+                })
             })
             // pagination control
             .then(() => {
@@ -429,7 +434,7 @@ if (Body.getAttribute("data-page") === "Products") {
                 `
             <tr>
                 <td>${idx + 1}</td>
-                <td><img src="${item.pics[0]}" alt="" width="100" class="product-image"></td>
+                <td><img src="${item.pics[0]}" alt="" style="max-width: 70px" width="70" height="70" class="product-image"></td>
                 <td>${item.title}</td>
                 <td>${item.subtitle}</td>
                 <td>${item.isSpecial ? 'بله' : 'خیر'}</td>
@@ -438,6 +443,11 @@ if (Body.getAttribute("data-page") === "Products") {
                 <td>${sliceNumber(item.priceagent)}</td>
                 <td>${sliceNumber(item.priceagentoff)}</td>
                 <td>${item.sell_count}</td>
+                <td>
+                    <button class="button button-xs button-primary button-outline add-qr" data-target="#add-qr-modal" data-toggle="modal" id="${item._id}">
+                        افزودن
+                    </button>
+                </td>
                 <td style="color: ${item.status ? 'green' : 'red'}">${item.status ? 'فعال' : 'غیرفعال'}</td>
                 <td>
                     <div class="table-action-buttons">
@@ -470,6 +480,14 @@ if (Body.getAttribute("data-page") === "Products") {
     $(document).ready(() => {
         getProducts();
         getCategories();
+
+        $('#start-date, #end-date').persianDatepicker({
+            observer: true,
+            initialValue: false,
+            viewMode: 'year',
+            format: 'YYYY/MM/DD',
+            altField: '.insurance_form_name-alt'
+        });
     })
     // get products by category filter
     $('#categories').on('change', () => {
@@ -513,7 +531,34 @@ if (Body.getAttribute("data-page") === "Products") {
         page = 1;
         $('#Products-table').html('');
         getProducts();
-    })
+    });
+    // add qr code
+    $('#add-qr-form').on('submit', e => {
+        e.preventDefault();
+
+        const body = {
+            start: fixNumbers($('#start-date').val()),
+            end: fixNumbers($('#end-date').val()),
+            count: parseInt($('#qr-count').val()),
+            title: $('#qr-title').val(),
+            product_id: productIdToQrGenerate,
+        };
+        console.log(body)
+        loaderIn();
+        $('#loader-text').html('در حال تولید QR Code \nلطفا منتظر بمانید'); 
+        fetchApi('api/qrcode/generator', body)
+            .then(res => {
+                loaderOut();
+                console.log(res)
+                if (res.status_code === 200) {
+                    toast('با موفقیت ثبت شد', toastGreenColor);
+                    window.location.href = res.URL;
+                    $('#close-modal').click();
+                } else if (res.status_code === 402) {
+                    toast(res.description_fa, toastRedColor);
+                }
+            })
+    });
 }
 // ========== Product page ==========
 if (Body.getAttribute("data-page") === "Product") {
@@ -672,7 +717,7 @@ if (Body.getAttribute("data-page") === "Product") {
     });
 
     $("#product-form").on("submit", (e) => {
-        
+
         e.preventDefault();
         loaderIn();
         if (productID) {
@@ -1213,7 +1258,7 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
                
             <tr>
                 <td>${radif}</td>
-                <td>${item.per * 100 }</td>
+                <td>${item.per * 100}</td>
                 <td>${item.code}</td>
                 <td>${item.dateTime_add.slice(0, 11)}</td>
                 <td>${item.date}</td>
@@ -1433,29 +1478,220 @@ if (Body.getAttribute("data-page") === "Settings") {
 
 }
 // ========== QRCode page ==========
-if (Body.getAttribute("QRCode") === "QRCode") {
+if (Body.getAttribute("data-page") === "QRCode") {
+    let page = 1;
+    let qrCount = 0;
+    let qrIdToUpdate;
+    let selectedCategory = 'all';
 
 
-
-
-    function showontable(result) {
-
+    function showontable(data) {
+        let result = '';
+        data.forEach((item, idx) => {
+            result += `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td>${item._id}</td>
+                    <td>${item.product.title}</td>
+                    <td>${item.start_date}</td>
+                    <td>${item.end_date}</td>
+                    <td style="color: ${item.used ? 'red' : 'green'}">${item.used ? 'مصرف شده' : 'مصرف نشده'}</td>
+                    <td>
+                        <button class="edit-qr button button-box button-xs button-primary ml-2 mr-2"
+                            data-startDate="${item.start_date}"
+                            data-endDate="${item.end_date}"
+                            id=${item._id}
+                            data-target="#single-qr-update-modal"
+                            data-toggle="modal"
+                        >
+                            <i class="edit-qr zmdi fa fa-pencil-square-o" 
+                                data-startDate="${item.start_date}"
+                                data-endDate="${item.end_date}"
+                                id=${item._id}
+                                data-target="#single-qr-update-modal"
+                                data-toggle="modal"
+                            ></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        })
+        $("#qr-table").html(result);
     }
 
-    const getfromserver = fetch(``, {
-        method: "",
-        headers: {
+    const getfromserver = () => {
+        loaderIn();
+        fetchApi(`api/qrcode/fetch`, { page, title: selectedCategory })
+            .then((result) => {
+                loaderOut();
+                showontable(result.data);
+                qrCount = result.qr_count;
+            })
+            .then(() => {
+                $('.edit-qr').on('click', e => {
+                    qrIdToUpdate = e.target.id;
+                    console.log($(e.target))
 
-        },
-        body: JSON.stringify({
+                    // $('#start-date').val('xxx');
+                    $('#start-date').val($(e.target).data('startdate'));
+                    $('#end-date').val($(e.target).data('enddate'));
+                });
+            })
+            .then(() => {
+                (function (containerID, itemCount) {
+                    var container = $(`#${containerID}`);
+                    var sources = function () {
+                        var result = [];
+                        for (var i = 1; i < itemCount; i++) {
+                            result.push(i);
+                        }
+                        return result;
+                    }();
+                    var options = {
+                        dataSource: sources,
+                        showGoInput: true,
+                        showGoButton: true,
+                        goButtonText: 'برو',
+                        pageSize: 12,
+                        pageNumber: page,
+                        prevText: '&raquo;',
+                        nextText: '&laquo;',
+                        callback: function (response, pagination) {
+                            var dataHtml = '<ul>';
+                            $.each(response, function (index, item) {
+                                dataHtml += '<li>' + item + '</li>';
+                            });
+                            dataHtml += '</ul>';
+                            container.prev().html(dataHtml);
+                        }
+                    };
+                    container.pagination(options);
+                    container.addHook('afterPageOnClick', (response, pagination) => {
+                        loaderIn();
+                        page = parseInt(pagination);
+                        getfromserver();
+                    })
+                    container.addHook('afterGoButtonOnClick', (response, pagination) => {
+                        loaderIn();
+                        page = parseInt(pagination);
+                        getfromserver();
+                    })
+                    container.addHook('afterPreviousOnClick', (response, pagination) => {
+                        loaderIn();
+                        page = parseInt(pagination);
+                        getfromserver();
+                    })
+                    container.addHook('afterNextOnClick', (response, pagination) => {
+                        loaderIn();
+                        page = parseInt(pagination);
+                        getfromserver();
+                    })
 
+                })('pagination', qrCount);
+            })
+    }
+
+    const getQrCategories = () => {
+        fetchApi('api/qrcode/fetch_titles', {})
+            .then(res => {
+                console.log(res)
+                res.data.map(item => {
+                    $('#qr-categroies, #modal-qr-categroies').append(`<option value="${item}">${item}</option>`);
+                });
+            });
+    }
+
+    $('#update-qr-form').on('submit', e => {
+        e.preventDefault();
+
+        const body = {
+            id: qrIdToUpdate,
+            startDate: $('#start-date').val(),
+            endDate: $('#end-date').val(),
+        }
+
+        console.log(body)
+    });
+
+    $(document).ready(() => {
+        getfromserver();
+        getQrCategories();
+        $('#start-date, #end-date, #group-start-date, #group-end-date').persianDatepicker({
+            observer: true,
+            initialValue: false,
+            viewMode: 'year',
+            format: 'YYYY/MM/DD',
+            altField: '.insurance_form_name-alt'
+        });
+    });
+
+    $('#qr-categroies').on('change', e => {
+        selectedCategory = $('#qr-categroies option:selected').val();
+        getfromserver();
+    });
+    // group qr code update 
+    $('#group-qr-update-form').on('submit', e => {
+        e.preventDefault();
+        const body = {
+            title: $('#modal-qr-categroies option:selected').val(),
+            start: fixNumbers($('#group-start-date').val()),
+            end: fixNumbers($('#group-end-date').val()),
+        }
+        console.log(body)
+        loaderIn();
+        fetchApi('api/qrcode/update_by_title', body)
+            .then(res => {
+                loaderOut();
+                console.log(res)
+                if (res.status_code === 200) {
+                    toast('با موفقیت ویرایش شد', toastGreenColor);
+                    $('#group-qr-update-modal-close').click();
+                    getfromserver();
+
+                } else if (res.status_code === 402) {
+                    toast(res.description_fa, toastRedColor);
+                };
+            });
+    })
+    // single qr code update
+    $('#single-qr-update-form').on('submit', e => {
+        e.preventDefault();
+        const body = {
+            qr_id: qrIdToUpdate,
+            start: fixNumbers($('#start-date').val()),
+            end: fixNumbers($('#end-date').val()),
+        }
+        console.log(body)
+        loaderIn();
+        fetchApi('api/qrcode/update_one', body)
+            .then(res => {
+                loaderOut();
+                console.log(res)
+                if (res.status_code === 200) {
+                    toast('با موفقیت ویرایش شد', toastGreenColor);
+                    $('#single-qr-update-modal-close').click();
+                    getfromserver();
+                } else if (res.status_code === 402) {
+                    toast(res.description_fa, toastRedColor);
+                };
+            });
+    })
+     // search qr by _id
+     $('#qr-search-form').on('submit', e => {
+        e.preventDefault();
+        loaderIn();
+        fetchApi('api/qrcode/fetch_search', {page, title: 'all', id: $('#search-text').val()})
+        .then(res => {
+            loaderOut();
+            $("#qr-table").html('');
+            showontable(res.data);
         })
-    }).then((response) => response.json)
-        .then((result) => {
-            showontable(result);
-        })
-
-    getfromserver()
+    })
+    // cancel search qr by _id
+    $('#qr-search-form').on('reset', e => {
+        page = 1;
+        getfromserver();
+    })
 }
 // ========== Representatives ==========
 if (Body.getAttribute("data-page") === "Representatives") {

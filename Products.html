@@ -18,7 +18,7 @@
     <!-- CSS
 	============================================ -->
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/toastify.css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
@@ -41,6 +41,9 @@
 
     <!-- Custom Style CSS Only For Demo Purpose -->
     <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
+
+    <link rel="stylesheet" href="assets/css/persian-datepicker.min.css">
+
     <link rel="stylesheet" href="assets/css/j-pagination.css" />
 </head>
 
@@ -49,7 +52,9 @@
     <div id="overlay">
         <div class="cv-spinner">
             <span class="spinner"></span>
+            <p id="loader-text"></p>
         </div>
+
     </div>
 
     <div class="main-wrapper">
@@ -122,74 +127,98 @@
                         </div>
                         <div class="box-body">
 
-
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="home6">
-                                    <div class="input-group row col-12 mb-25">
-                                        <a class="btn btn-primary col-2 mb-10" href="Product.html">
-                                            افزودن محصول
-                                        </a>
-                                        <form id="search-form" class="col-12 d-flex pr-0">
-                                            <input type="text" id="search-text" class="form-control col-lg-3"
-                                                placeholder="محصول مورد نظر خودرا جستجو کنید"
-                                                aria-describedby="basic-addon2">
-                                            <button type="submit" class="btn btn-primary"
-                                                style="border-radius: 0.4em 0em 0em 0.4em;">
-                                                <i class="fa fa-search"></i>
+                            <div class="modal fade col-12" id="add-qr-modal" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle"> افزودن QR Code</h5>
+                                            <button type="button" id="close-modal" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
                                             </button>
-
-                                            <button type="reset" class="btn btn-danger mr-5">
-                                                <i class="fa fa-close"></i>
-                                            </button>
+                                        </div>
+                                        <form id="add-qr-form">
+                                            <div class="modal-body">
+                                                <input type="number" max="200" required class="form-control mt-10"
+                                                    id="qr-count" placeholder="تعداد">
+                                                <input type="text" required class="form-control mt-10" id="qr-title"
+                                                    placeholder="عنوان">
+                                                <input type="text" required class="form-control mt-10" id="start-date"
+                                                    placeholder="تاریخ شروع">
+                                                <input type="text" required class="form-control mt-10" id="end-date"
+                                                    placeholder="تاریخ پایان">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="close-modal" class="btn btn-secondary ml-20"
+                                                    data-dismiss="modal">انصراف</button>
+                                                <button type="submit" class="btn btn-primary">تولید Qr Code</button>
+                                            </div>
                                         </form>
                                     </div>
-                                    <p class="titl mb-20">فیلتر بر اساس :</p>
-                                    <div class="col-lg-12 row mb-10">
-                                        <div class="col-lg-3">
-
-                                            <span class="title mb-20">دسته بندی:</span>
-
-                                            <div class="col-lg-12 mb-10 mt-10">
-                                                <select id="categories" class="form-control select2 ">
-                                                    <option value="all">همه</option>
-                                                </select>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <!--Manage Product List Start-->
-                                    <div class="col-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-vertical-middle">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ردیف</th>
-                                                        <th>عکس</th>
-                                                        <th>عنوان محصول</th>
-                                                        <th>زیرعنوان محصول</th>
-                                                        <th>ویژه</th>
-                                                        <th>قیمت</th>
-                                                        <th>قیمت با تخفیف</th>
-                                                        <th>قیمت برای نماینده</th>
-                                                        <th>قیمت با تخفیف برای نماینده</th>
-                                                        <th>تعداد فروش</th>
-                                                        <th>وضعیت</th>
-                                                        <th>عملیات</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="Products-table">
-
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!--Manage Product List End-->
-                                    <div class="pagination pb-20 d-flex justify-content-center">
-                                        <div id="pagination"></div>
-                                    </div>
                                 </div>
+                            </div>
 
+                            <div class="input-group row col-12 mb-25">
+                                <a class="btn btn-primary col-2 mb-10" href="Product.html">
+                                    افزودن محصول
+                                </a>
+                                <form id="search-form" class="col-12 d-flex pr-0">
+                                    <input type="text" id="search-text" class="form-control col-lg-3"
+                                        placeholder="محصول مورد نظر خودرا جستجو کنید" aria-describedby="basic-addon2">
+                                    <button type="submit" class="btn btn-primary"
+                                        style="border-radius: 0.4em 0em 0em 0.4em;">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+
+                                    <button type="reset" class="btn btn-danger mr-5">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <p class="titl mb-20">فیلتر بر اساس :</p>
+                            <div class="col-lg-12 row mb-10">
+                                <div class="col-lg-3">
+
+                                    <span class="title mb-20">دسته بندی:</span>
+
+                                    <div class="col-lg-12 mb-10 mt-10">
+                                        <select id="categories" class="form-control select2 ">
+                                            <option value="all">همه</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--Manage Product List Start-->
+                            <div class="col-12" style="overflow: auto;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ردیف</th>
+                                            <th>عکس</th>
+                                            <th>عنوان محصول</th>
+                                            <th>زیرعنوان محصول</th>
+                                            <th>ویژه</th>
+                                            <th>قیمت</th>
+                                            <th>قیمت با تخفیف</th>
+                                            <th>قیمت برای نماینده</th>
+                                            <th>قیمت با تخفیف برای نماینده</th>
+                                            <th>تعداد فروش</th>
+                                            <th>وضعیت</th>
+                                            <th>تولید Qr</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="Products-table">
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--Manage Product List End-->
+                            <div class="pagination pb-20 d-flex justify-content-center">
+                                <div id="pagination"></div>
                             </div>
                         </div>
                     </div>
@@ -215,34 +244,25 @@
 
     </div>
 
-    <!-- JS
-============================================ -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <!-- Global Vendor, plugins & Activation JS -->
-    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
-
-    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/vendor/popper.min.js"></script>
-    <script src="assets/js/vendor/bootstrap.min.js"></script>
-    <!--Plugins JS-->
-    <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="assets/js/plugins/tippy4.min.js.js"></script>
-    <!--Main JS-->
-    <script src="assets/js/main.js"></script>
-    <!-- Plugins & Activation JS For Only This Page -->
-    <script src="assets/js/plugins/nice-select/jquery.nice-select.min.js"></script>
-    <script src="assets/js/plugins/nice-select/niceSelect.active.js"></script>
-    <script src="assets/js/plugins/filepond/filepond.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond-plugin-image-exif-orientation.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond-plugin-image-preview.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond.active.js"></script>
-
-    <script src="assets/js/pagination.min.js"></script>
-
-    <script src="assets/scripts/script.js?v=1.0.5"></script>
-    <script src="assets/scripts/components.js?v=1.0.5"></script>
 </body>
+
+<script src="assets/js/plugins/filepond/filepond.min.js"></script>
+<script src="assets/js/plugins/filepond/filepond-plugin-image-exif-orientation.min.js"></script>
+<script src="assets/js/plugins/filepond/filepond-plugin-image-preview.min.js"></script>
+<script src="assets/js/plugins/filepond/filepond.active.js"></script>
+<script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
+<script src="assets/scripts/components.js?v=1.0.5"></script>
+<script type="text/javascript" src="assets/scripts/toastify.js"></script>
+<script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+<script src="assets/js/vendor/popper.min.js"></script>
+<script src="assets/js/vendor/bootstrap.min.js"></script>
+<script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="assets/js/plugins/tippy4.min.js.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/scripts/persian-date.min.js"></script>
+<script src="assets/scripts/persian-datepicker.min.js"></script>
+<script src="assets/js/pagination.min.js"></script>
+<script src="assets/scripts/script.js?v=1.0.5"></script>
 
 
 </html>

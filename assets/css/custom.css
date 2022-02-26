@@ -63,6 +63,7 @@ textarea {
 .cv-spinner {
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -73,6 +74,10 @@ textarea {
     border-top: 4px #2e93e6 solid;
     border-radius: 50%;
     animation: sp-anime 0.8s infinite linear;
+}
+#loader-text {
+    color: #fff;
+    margin: 20px 0;
 }
 @keyframes sp-anime {
     100% {

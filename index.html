@@ -16,7 +16,7 @@
 
     <!-- CSS
 	============================================ -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/toastify.css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css" />
@@ -70,10 +70,12 @@
                                 <form id="loginForm" onsubmit="return false;">
                                     <div class="row">
                                         <div class="col-12 mb-20">
-                                            <input id="username" class="form-control" type="text" placeholder="نام کاربری" required />
+                                            <input id="username" class="form-control" type="text"
+                                                placeholder="نام کاربری" required />
                                         </div>
                                         <div class="col-12 mb-5">
-                                            <input id="password" class="form-control" type="password" placeholder="رمز عبور" required />
+                                            <input id="password" class="form-control" type="password"
+                                                placeholder="رمز عبور" required />
                                             <div id="alert" style="color: red;" class="pt-3">
 
                                             </div>
@@ -81,7 +83,7 @@
 
                                         <div class="col-12 mt-5">
                                             <button id="submit" class="button button-primary button-outline">
-                                                         ورود
+                                                ورود
                                             </button>
                                         </div>
                                     </div>
@@ -103,22 +105,17 @@
         <!-- Content Body End -->
     </div>
 
-    <!-- JS
-============================================ -->
-
-    <!-- Global Vendor, plugins & Activation JS -->
-    
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/vendor/popper.min.js"></script>
-    <script src="assets/js/vendor/bootstrap.min.js"></script>
-    <!--Plugins JS-->
-    <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="assets/js/plugins/tippy4.min.js.js"></script>
-    <!--Main JS-->
-    <script src="assets/js/main.js"></script>
-    <script src="assets/scripts/script.js?v=1.0.5"></script>
 </body>
+
+<script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
+<script src="assets/scripts/components.js?v=1.0.5"></script>
+<script type="text/javascript" src="assets/scripts/toastify.js"></script>
+<script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+<script src="assets/js/vendor/popper.min.js"></script>
+<script src="assets/js/vendor/bootstrap.min.js"></script>
+<script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="assets/js/plugins/tippy4.min.js.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/scripts/script.js?v=1.0.5"></script>
 
 </html>
