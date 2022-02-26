@@ -1222,8 +1222,10 @@ if (Body.getAttribute('data-page') === 'About') {
     });
 
     $(document).ready(() => {
+        loaderIn();
         fetchApi('api/page/admin/fetch_page_about')
             .then(res => {
+                loaderOut();
                 console.log(res)
                 res.data.data.map(item => {
 
