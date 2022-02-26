@@ -879,8 +879,8 @@ if (Body.getAttribute('data-page') === 'Sliders') {
 }
 // ========== Slider page ==========
 if (Body.getAttribute('data-page') === 'Slider') {
-    let mobileSlider = 'https://www.seoptimer.com/blog/wp-content/uploads/2020/05/website-header-size.png';
-    let webSlider = 'https://static.vecteezy.com/system/resources/thumbnails/002/294/181/small/welcome-to-university-web-banner-design-free-vector.jpg';
+    let mobileSlider = '';
+    let webSlider = '';
 
     const MobileSliderPond = FilePond;
     const WebSliderPond = FilePond;
@@ -1213,7 +1213,7 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
                
             <tr>
                 <td>${radif}</td>
-                <td>${item.per}</td>
+                <td>${item.per * 100 }</td>
                 <td>${item.code}</td>
                 <td>${item.dateTime_add.slice(0, 11)}</td>
                 <td>${item.date}</td>
@@ -1221,7 +1221,7 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
                 <td>
                     <div class="table-action-buttons">
                         <button class="delete-discount button button-box button-xs button-danger" id="${item._id}">
-                            <i class="zmdi zmdi-delete delete-discount" id="${item._id}"></i>
+                            <i class="zmdi zmdi-delete" id="${item._id}"></i>
                         </button>
                     </div>
                 </td>
@@ -1240,10 +1240,10 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
             .then(() => {
                 $('.delete-discount').on('click', e => {
                     loaderIn();
-                    fetchApi('api/clubcode/delet', { code_id: e.target.id })
-                        .then(() => {
+                    fetchApi('api/discode/delet', { code_id: e.target.id })
+                        .then((result) => {
                             loaderOut();
-                            if (data.status_code == 200) {
+                            if (result.status_code == 200) {
                                 toast('کد با موفقیت حذف شد', toastGreenColor);
                                 DiscountCodeFetch();
                             }
@@ -1257,8 +1257,8 @@ if (Body.getAttribute("data-page") === "DiscountCode") {
     $("#discount-submit").on("click", () => {
         const body = {
             code: $("#discount-code").val(),
-            date: $("#discount-percent").val(),
-            per: fixNumbers($("#datePicker").val()),
+            date: fixNumbers($("#datePicker").val()),
+            per: $("#discount-percent").val(),
         }
         loaderIn();
         fetchApi(`api/discode/add`, body)
