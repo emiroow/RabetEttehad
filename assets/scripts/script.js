@@ -545,7 +545,7 @@ if (Body.getAttribute("data-page") === "Products") {
         };
         console.log(body)
         loaderIn();
-        $('#loader-text').html('در حال تولید QR Code \nلطفا منتظر بمانید'); 
+        $('#loader-text').html('در حال تولید QR Code \nلطفا منتظر بمانید');
         fetchApi('api/qrcode/generator', body)
             .then(res => {
                 loaderOut();
@@ -1082,144 +1082,180 @@ if (Body.getAttribute('data-page') === 'Slider') {
 };
 // ========== category page ==========
 if (Body.getAttribute('data-page') === 'About') {
-    const editor = new EditorJS({
-        holder: 'editor',
-        tunes: ['anyTuneName'],
-        tools: {
-            raw: RawTool,
+    // const editor = new EditorJS({
+    //     holder: 'editor',
+    //     tunes: ['anyTuneName'],
+    //     tools: {
+    //         raw: RawTool,
 
-            header: {
+    //         header: {
 
-                class: Header,
-                config: {
-                    placeholder: 'Enter a header',
-                    levels: [2, 3, 4],
-                    defaultLevel: 3
-                },
-            },
-            image: {
-                class: ImageTool,
-                config: {
-                    /**
-                     * Custom uploader
-                     */
-                    uploader: {
-                        /**
-                         * Upload file to the server and return an uploaded image data
-                         * @param {File} file - file selected from the device or pasted by drag-n-drop
-                         * @return {Promise.<{success, file: {url}}>}
-                         */
-                        async uploadByFile(file) {
-                            let link;
-                            const formData = new FormData();
-                            formData.append('file', file);
+    //             class: Header,
+    //             config: {
+    //                 placeholder: 'Enter a header',
+    //                 levels: [2, 3, 4],
+    //                 defaultLevel: 3
+    //             },
+    //         },
+    //         image: {
+    //             class: ImageTool,
+    //             config: {
+    //                 /**
+    //                  * Custom uploader
+    //                  */
+    //                 uploader: {
+    //                     /**
+    //                      * Upload file to the server and return an uploaded image data
+    //                      * @param {File} file - file selected from the device or pasted by drag-n-drop
+    //                      * @return {Promise.<{success, file: {url}}>}
+    //                      */
+    //                     async uploadByFile(file) {
+    //                         let link;
+    //                         const formData = new FormData();
+    //                         formData.append('file', file);
 
 
-                            const request = await fetch(`${RabetApi}api/admin/fileUpload/d=page`, {
-                                method: 'POST',
-                                body: formData,
-                            })
-                            const res = await request.json();
-                            console.log(res)
+    //                         const request = await fetch(`${RabetApi}api/admin/fileUpload/d=page`, {
+    //                             method: 'POST',
+    //                             body: formData,
+    //                         })
+    //                         const res = await request.json();
+    //                         console.log(res)
 
-                            return {
-                                success: 1,
-                                file: {
-                                    url: res.URL,
-                                }
-                            }
-                        },
-                    }
-                }
-            },
-            Color: {
-                class: ColorPlugin, // if load from CDN, please try: window.ColorPlugin
-                config: {
-                    colorCollections: ['#000000', '#FF1300', '#EC7878', '#9C27B0', '#673AB7', '#3F51B5', '#0070FF', '#03A9F4', '#00BCD4', '#4CAF50', '#8BC34A', '#CDDC39', '#FFF'],
-                    defaultColor: '#FF1300',
-                    type: 'text',
-                }
-            },
-            Marker: {
-                class: ColorPlugin, // if load from CDN, please try: window.ColorPlugin
-                config: {
-                    defaultColor: '#FFBF00',
-                    type: 'marker',
-                }
-            },
-            anyTuneName: {
+    //                         return {
+    //                             success: 1,
+    //                             file: {
+    //                                 url: res.URL,
+    //                             }
+    //                         }
+    //                     },
+    //                 }
+    //             }
+    //         },
+    //         Color: {
+    //             class: ColorPlugin, // if load from CDN, please try: window.ColorPlugin
+    //             config: {
+    //                 colorCollections: ['#000000', '#FF1300', '#EC7878', '#9C27B0', '#673AB7', '#3F51B5', '#0070FF', '#03A9F4', '#00BCD4', '#4CAF50', '#8BC34A', '#CDDC39', '#FFF'],
+    //                 defaultColor: '#FF1300',
+    //                 type: 'text',
+    //             }
+    //         },
+    //         Marker: {
+    //             class: ColorPlugin, // if load from CDN, please try: window.ColorPlugin
+    //             config: {
+    //                 defaultColor: '#FFBF00',
+    //                 type: 'marker',
+    //             }
+    //         },
+    //         anyTuneName: {
 
-                class: AlignmentBlockTune,
-                config: {
-                    default: "right",
-                    blocks: {
-                        header: 'center',
-                        list: 'right'
-                    }
-                },
-            },
-            list: {
-                class: List,
-                inlineToolbar: true,
-            },
-        }
-    });
+    //             class: AlignmentBlockTune,
+    //             config: {
+    //                 default: "right",
+    //                 blocks: {
+    //                     header: 'center',
+    //                     list: 'right'
+    //                 }
+    //             },
+    //         },
+    //         list: {
+    //             class: List,
+    //             inlineToolbar: true,
+    //         },
+    //     }
+    // });
 
-    const convertDataToHtml = (blocks) => {
-        var convertedHtml = "";
-        blocks.map(block => {
+    // const convertDataToHtml = (blocks) => {
+    //     var convertedHtml = "";
+    //     blocks.map(block => {
 
-            switch (block.type) {
-                case "header":
-                    convertedHtml += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
-                    break;
-                case "embded":
-                    convertedHtml += `<div><iframe width="560" height="315" src="${block.data.embed}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
-                    break;
-                case "paragraph":
-                    convertedHtml += `<p>${block.data.text}</p>`;
-                    break;
-                case "delimiter":
-                    convertedHtml += "<hr />";
-                    break;
-                case "raw":
-                    convertedHtml += block.data.html
-                    break;
-                case "image":
-                    convertedHtml += `<img class="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
-                    break;
-                case "list":
-                    convertedHtml += "<ul>";
-                    block.data.items.forEach(function (li) {
-                        convertedHtml += `<li>${li}</li>`;
+    //         switch (block.type) {
+    //             case "header":
+    //                 convertedHtml += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
+    //                 break;
+    //             case "embded":
+    //                 convertedHtml += `<div><iframe width="560" height="315" src="${block.data.embed}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
+    //                 break;
+    //             case "paragraph":
+    //                 convertedHtml += `<p>${block.data.text}</p>`;
+    //                 break;
+    //             case "delimiter":
+    //                 convertedHtml += "<hr />";
+    //                 break;
+    //             case "raw":
+    //                 convertedHtml += block.data.html
+    //                 break;
+    //             case "image":
+    //                 convertedHtml += `<img class="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+    //                 break;
+    //             case "list":
+    //                 convertedHtml += "<ul>";
+    //                 block.data.items.forEach(function (li) {
+    //                     convertedHtml += `<li>${li}</li>`;
+    //                 });
+    //                 convertedHtml += "</ul>";
+    //                 break;
+    //             default:
+    //                 console.log("Unknown block type", block.type);
+    //                 break;
+    //         }
+    //     });
+    //     return convertedHtml;
+    // }
+
+
+   
+
+    var toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+
+        [{ 'header': 1 }, { 'header': 2 }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'direction': 'rtl' }],
+
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        ['link', 'image', 'video'],
+
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+
+        ['clean']
+    ];
+
+
+    Quill.register("modules/imageUploader", ImageUploader);
+
+    var quill = new Quill('#editor', {
+        modules: {
+            toolbar: toolbarOptions,
+            imageUploader: {
+                upload: (file) => {
+                    return new Promise(async (resolve, reject) => {
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+
+                        const request = await fetch(`${RabetApi}api/admin/fileUpload/d=page`, {
+                            method: 'POST',
+                            body: formData,
+                        })
+                        const res = await request.json();
+                        console.log(res)
+
+                        resolve(res.URL);
                     });
-                    convertedHtml += "</ul>";
-                    break;
-                default:
-                    console.log("Unknown block type", block.type);
-                    break;
+                }
             }
-        });
-        return convertedHtml;
-    }
-
-    $('#submit-editor').on('click', () => {
-        editor.save().then((outputData) => {
-            fetchApi('api/page/admin/update_page', { data: outputData.blocks, html: convertDataToHtml(outputData.blocks) })
-                .then(res => {
-                    console.log(res)
-                    if (res.status_code === 200) {
-
-                        toast('با موفقیت ثبت شد', toastGreenColor);
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 2000);
-                    }
-                })
-        }).catch((error) => {
-            console.log('Saving failed: ', error)
-        });
+        },
+        theme: 'snow'
     });
+
 
     $(document).ready(() => {
         loaderIn();
@@ -1227,25 +1263,42 @@ if (Body.getAttribute('data-page') === 'About') {
             .then(res => {
                 loaderOut();
                 console.log(res)
-                res.data.data.map(item => {
+                quill.setContents(res.data.data)
+                // .map(item => {
 
-                    if (item.type === 'image') {
-                        editor.blocks.insert('image', {
-                            file: {
-                                url: item.data.file.url
-                            },
-                            caption: item.data.caption,
-                            withBorder: item.data.withBorder,
-                            withBackground: item.data.withBackground,
-                            stretched: item.data.stretched
-                        })
-                    } else {
-                        editor.blocks.insert(item.type, item.data)
-                    }
-                })
+                //     if (item.type === 'image') {
+                //         editor.blocks.insert('image', {
+                //             file: {
+                //                 url: item.data.file.url
+                //             },
+                //             caption: item.data.caption,
+                //             withBorder: item.data.withBorder,
+                //             withBackground: item.data.withBackground,
+                //             stretched: item.data.stretched
+                //         })
+                //     } else {
+                //         editor.blocks.insert(item.type, item.data)
+                //     }
+                // })
 
             })
     })
+
+    $('#submit-editor').on('click', () => {
+        fetchApi('api/page/admin/update_page', { data: quill.getContents(), html: quill.root.innerHTML })
+            .then(res => {
+                console.log(res)
+                if (res.status_code === 200) {
+
+                    toast('با موفقیت ثبت شد', toastGreenColor);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                }
+            })
+    });
+
+
 }
 // ========== DiscountCode page ==========
 if (Body.getAttribute("data-page") === "DiscountCode") {
@@ -1678,16 +1731,16 @@ if (Body.getAttribute("data-page") === "QRCode") {
                 };
             });
     })
-     // search qr by _id
-     $('#qr-search-form').on('submit', e => {
+    // search qr by _id
+    $('#qr-search-form').on('submit', e => {
         e.preventDefault();
         loaderIn();
-        fetchApi('api/qrcode/fetch_search', {page, title: 'all', id: $('#search-text').val()})
-        .then(res => {
-            loaderOut();
-            $("#qr-table").html('');
-            showontable(res.data);
-        })
+        fetchApi('api/qrcode/fetch_search', { page, title: 'all', id: $('#search-text').val() })
+            .then(res => {
+                loaderOut();
+                $("#qr-table").html('');
+                showontable(res.data);
+            })
     })
     // cancel search qr by _id
     $('#qr-search-form').on('reset', e => {
