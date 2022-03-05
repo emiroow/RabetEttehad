@@ -41,9 +41,11 @@
     <!-- Custom Style CSS Only For Demo Purpose -->
     <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
 
+    <link rel="stylesheet" href="assets/css/j-pagination.css" />
+
 </head>
 
-<body dir="rtl">
+<body dir="rtl" data-page="LotteryCode">
 
     <div id="overlay">
         <div class="cv-spinner">
@@ -130,38 +132,34 @@
 
                     <div class="box-body">
 
-                        <div class="input-group row col-lg-3">
+                        <!-- <div class="input-group row col-lg-3">
                             <input type="text" class="form-control" placeholder="شماره مورد نظر خودرا جستجو کنید"
                                 aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" style="border-radius: 0.4em 0em 0em 0.4em;"><i
                                         class="fa fa-search"></i></button>
                             </div>
-                        </div>
+                        </div> -->
 
                         <table class="table  data-table ">
                             <thead>
                                 <tr>
                                     <th>ردیف</th>
-                                    <th>نام کابر</th>
-                                    <th>شماره همراه</th>
-                                    <th>شهر</th>
-                                    <th>تاریخ ثبت نام</th>
-                                    <th>آدرس</th>
+                                    <th>عنوان</th>
+                                    <th>نام محصول</th>
+                                    <th>شروع گارانتی</th>
+                                    <th>پایان گارانتی</th>
+                                    <th>تاریخ ثبت کد</th>
+                                    <th>شناسه</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>جعفر عباسی</td>
-                                    <td>معماری سیستم</td>
-                                    <td>ارومیه</td>
-                                    <td>2011/04/25</td>
-                                    <td>آدرس</td>
-                                </tr>
+                            <tbody id="codes-table">
+                             
                             </tbody>
                         </table>
-
+                        <div class="pagination pb-20 d-flex justify-content-center">
+                            <div id="pagination"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,15 +183,16 @@
 </body>
 
 <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
-<script src="assets/scripts/components.js?v=1.0.9"></script>
+<script src="assets/scripts/components.js?v=1.1.0"></script>
 <script src="assets/scripts/toastify.js"></script>
 <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
 <script src="assets/js/vendor/popper.min.js"></script>
 <script src="assets/js/vendor/bootstrap.min.js"></script>
 <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
 <script src="assets/js/plugins/tippy4.min.js.js"></script>
+<script src="assets/js/pagination.min.js"></script>
 <script src="assets/js/main.js"></script>
-<script src="assets/scripts/script.js?v=1.0.9"></script>
+<script src="assets/scripts/script.js?v=1.1.0"></script>
 
 
 </html>

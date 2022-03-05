@@ -924,35 +924,16 @@ if (Body.getAttribute('data-page') === 'Sliders') {
 }
 // ========== Slider page ==========
 if (Body.getAttribute('data-page') === 'Slider') {
-    let mobileSlider = '';
-    let webSlider = '';
+    let sliderLinks = [];
 
-    const MobileSliderPond = FilePond;
-    const WebSliderPond = FilePond;
-
-    MobileSliderPond.registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,
-        FilePondPluginImageValidateSize, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
-    WebSliderPond.registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,
+    FilePond.registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,
         FilePondPluginImageValidateSize, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
-    MobileSliderPond.create($('#mobile-slider-file-pond')[0], {
+    FilePond.create($('#slider-file-pond')[0], {
         imagePreviewHeight: 140,
-        imageValidateSizeMaxWidth: 500,
-        imageValidateSizeMaxHeight: 500,
-        imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
         acceptedFileTypes: ['image/png', 'image/jpeg'],
-        maxFileSize: '500KB',
     });
-    WebSliderPond.create($('#web-slider-file-pond')[0], {
-        imagePreviewHeight: 140,
-        imageValidateSizeMaxWidth: 500,
-        imageValidateSizeMaxHeight: 500,
-        imageValidateSizeLabelExpectedMaxSize: 'سایز عکس ها تا 500 * 500',
-        acceptedFileTypes: ['image/png'],
-        maxFileSize: '500KB',
-    });
-
-    MobileSliderPond.setOptions({
+    FilePond.setOptions({
         server: {
             process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
                 const formData = new FormData();
@@ -961,59 +942,7 @@ if (Body.getAttribute('data-page') === 'Slider') {
                 request.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         let picReqJson = JSON.parse(request.responseText);
-                        console.log(request.responseText)
-                        mobileSlider = picReqJson.link;
-                    }
-                };
-                request.upload.onprogress = (e) => {
-                    progress(e.lengthComputable, e.loaded, e.total);
-                };
-                request.onload = function () {
-                    if (request.status >= 200 && request.status < 300) {
-                        // the load method accepts either a string (id) or an object
-                        load(request.responseText);
-                    } else {
-                        // Can call the error method if something is wrong, should exit after
-                        error('oh no');
-                    }
-                };
-                // request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
-                request.open('POST', `${RabetApi}api/admin/fileUpload/d=page`, true);
-                request.send(formData);
-            },
-            revert: async (uniqueFileId, load, error) => {
-                const request = new XMLHttpRequest();
-                let picUrlDel = JSON.parse(uniqueFileId);
-                let lastPoint = picUrlDel.link.lastIndexOf('.');
-                let firtPoint = picUrlDel.link.lastIndexOf('/');
-                let id = picUrlDel.link.slice(firtPoint + 1, lastPoint);
-                let result = await request.open('DELETE', `${RabetApi}/api/user/pro_img/del/${id}`,);
-                request.setRequestHeader('Auth-Token', localStorage.getItem('token'))
-                request.send();
-                request.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        picurl.splice(picurl.indexOf(picUrlDel.link), 1);
-                    }
-                };
-                // Can call the error method if something is wrong, should exit after
-                error('oh my goodness');
-                // Should call the load method when done, no parameters required
-                load();
-            }
-        }
-    });
-    WebSliderPond.setOptions({
-        server: {
-            process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
-                const formData = new FormData();
-                formData.append('file', file);
-                const request = new XMLHttpRequest();
-                request.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        let picReqJson = JSON.parse(request.responseText);
-                        console.log(request.responseText)
-                        webSlider = picReqJson.link;
-
+                        sliderLinks.push(picReqJson.URL);
                     }
                 };
                 request.upload.onprogress = (e) => {
@@ -1055,15 +984,15 @@ if (Body.getAttribute('data-page') === 'Slider') {
 
     $('#slider-form').on('submit', e => {
         e.preventDefault();
-
-        if (mobileSlider && webSlider) {
+        if (sliderLinks.length === 2) {
             loaderIn();
             const body = {
                 title: $('#title').val(),
                 url: $('#url').val(),
-                site_img: webSlider,
-                mobile_img: mobileSlider,
+                mobile_img: sliderLinks[0],
+                site_img: sliderLinks[1],
             };
+            console.log(body)
             fetchApi('api/slider/admin/add_slider', body)
                 .then(res => {
                     loaderOut();
@@ -1072,7 +1001,7 @@ if (Body.getAttribute('data-page') === 'Slider') {
                         setTimeout(() => {
                             window.location.href = 'Sliders.html';
                         }, 2000);
-                    }
+                    };
                 })
 
         } else {
@@ -1082,130 +1011,6 @@ if (Body.getAttribute('data-page') === 'Slider') {
 };
 // ========== category page ==========
 if (Body.getAttribute('data-page') === 'About') {
-    // const editor = new EditorJS({
-    //     holder: 'editor',
-    //     tunes: ['anyTuneName'],
-    //     tools: {
-    //         raw: RawTool,
-
-    //         header: {
-
-    //             class: Header,
-    //             config: {
-    //                 placeholder: 'Enter a header',
-    //                 levels: [2, 3, 4],
-    //                 defaultLevel: 3
-    //             },
-    //         },
-    //         image: {
-    //             class: ImageTool,
-    //             config: {
-    //                 /**
-    //                  * Custom uploader
-    //                  */
-    //                 uploader: {
-    //                     /**
-    //                      * Upload file to the server and return an uploaded image data
-    //                      * @param {File} file - file selected from the device or pasted by drag-n-drop
-    //                      * @return {Promise.<{success, file: {url}}>}
-    //                      */
-    //                     async uploadByFile(file) {
-    //                         let link;
-    //                         const formData = new FormData();
-    //                         formData.append('file', file);
-
-
-    //                         const request = await fetch(`${RabetApi}api/admin/fileUpload/d=page`, {
-    //                             method: 'POST',
-    //                             body: formData,
-    //                         })
-    //                         const res = await request.json();
-    //                         console.log(res)
-
-    //                         return {
-    //                             success: 1,
-    //                             file: {
-    //                                 url: res.URL,
-    //                             }
-    //                         }
-    //                     },
-    //                 }
-    //             }
-    //         },
-    //         Color: {
-    //             class: ColorPlugin, // if load from CDN, please try: window.ColorPlugin
-    //             config: {
-    //                 colorCollections: ['#000000', '#FF1300', '#EC7878', '#9C27B0', '#673AB7', '#3F51B5', '#0070FF', '#03A9F4', '#00BCD4', '#4CAF50', '#8BC34A', '#CDDC39', '#FFF'],
-    //                 defaultColor: '#FF1300',
-    //                 type: 'text',
-    //             }
-    //         },
-    //         Marker: {
-    //             class: ColorPlugin, // if load from CDN, please try: window.ColorPlugin
-    //             config: {
-    //                 defaultColor: '#FFBF00',
-    //                 type: 'marker',
-    //             }
-    //         },
-    //         anyTuneName: {
-
-    //             class: AlignmentBlockTune,
-    //             config: {
-    //                 default: "right",
-    //                 blocks: {
-    //                     header: 'center',
-    //                     list: 'right'
-    //                 }
-    //             },
-    //         },
-    //         list: {
-    //             class: List,
-    //             inlineToolbar: true,
-    //         },
-    //     }
-    // });
-
-    // const convertDataToHtml = (blocks) => {
-    //     var convertedHtml = "";
-    //     blocks.map(block => {
-
-    //         switch (block.type) {
-    //             case "header":
-    //                 convertedHtml += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
-    //                 break;
-    //             case "embded":
-    //                 convertedHtml += `<div><iframe width="560" height="315" src="${block.data.embed}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
-    //                 break;
-    //             case "paragraph":
-    //                 convertedHtml += `<p>${block.data.text}</p>`;
-    //                 break;
-    //             case "delimiter":
-    //                 convertedHtml += "<hr />";
-    //                 break;
-    //             case "raw":
-    //                 convertedHtml += block.data.html
-    //                 break;
-    //             case "image":
-    //                 convertedHtml += `<img class="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
-    //                 break;
-    //             case "list":
-    //                 convertedHtml += "<ul>";
-    //                 block.data.items.forEach(function (li) {
-    //                     convertedHtml += `<li>${li}</li>`;
-    //                 });
-    //                 convertedHtml += "</ul>";
-    //                 break;
-    //             default:
-    //                 console.log("Unknown block type", block.type);
-    //                 break;
-    //         }
-    //     });
-    //     return convertedHtml;
-    // }
-
-
-   
-
     var toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
@@ -1227,7 +1032,6 @@ if (Body.getAttribute('data-page') === 'About') {
 
         ['clean']
     ];
-
 
     Quill.register("modules/imageUploader", ImageUploader);
 
@@ -1256,31 +1060,13 @@ if (Body.getAttribute('data-page') === 'About') {
         theme: 'snow'
     });
 
-
     $(document).ready(() => {
         loaderIn();
         fetchApi('api/page/admin/fetch_page_about')
             .then(res => {
                 loaderOut();
-                console.log(res)
-                quill.setContents(res.data.data)
-                // .map(item => {
-
-                //     if (item.type === 'image') {
-                //         editor.blocks.insert('image', {
-                //             file: {
-                //                 url: item.data.file.url
-                //             },
-                //             caption: item.data.caption,
-                //             withBorder: item.data.withBorder,
-                //             withBackground: item.data.withBackground,
-                //             stretched: item.data.stretched
-                //         })
-                //     } else {
-                //         editor.blocks.insert(item.type, item.data)
-                //     }
-                // })
-
+                console.log(res);
+                quill.setContents(res.data.data);
             })
     })
 
@@ -1297,8 +1083,6 @@ if (Body.getAttribute('data-page') === 'About') {
                 }
             })
     });
-
-
 }
 // ========== DiscountCode page ==========
 if (Body.getAttribute("data-page") === "DiscountCode") {
@@ -1472,6 +1256,90 @@ if (Body.getAttribute("data-page") === "Orders") {
             });
     })
 }
+// ========== Orders page ==========
+if (Body.getAttribute("data-page") === "LotteryCode") {
+    let page = 1;
+    let codeCount;
+
+    const showOnTable = data => {
+        let result = "";
+        data.forEach((item, index) => {
+            result += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.data.title}</td>
+                <td><a class="button button-sm button-outline button-info" href="Product.html?${item.data.product._id}">${item.data.product.title}</a></td>
+                <td>${item.data.start_date}</td>
+                <td>${item.data.end_date}</td>
+                <td>${item.dateTime.slice(0, 16).split(" ").join(" | ")}</td>
+                <td>${item._id}</td>
+            </tr>
+            `;
+        })
+        $("#codes-table").html(result)
+    }
+    const getCodes = () => {
+        loaderIn();
+        fetchApi('api/qrcode/fetch_submited_qr_code', { page })
+            .then(res => {
+                console.log(res)
+                loaderOut();
+                codeCount = res.qr_count;
+                showOnTable(res.data)
+            })
+            .then(() => {
+                (function (containerID, count) {
+                    var container = $(`#${containerID}`);
+                    var sources = (function () {
+                        var result = [];
+                        for (var i = 1; i < count; i++) {
+                            result.push(i);
+                        }
+                        return result;
+                    })();
+                    var options = {
+                        dataSource: sources,
+                        showGoInput: true,
+                        showGoButton: true,
+                        goButtonText: "برو",
+                        pageSize: 12,
+                        pageNumber: page,
+                        prevText: "&raquo;",
+                        nextText: "&laquo;",
+                        callback: function (response, pagination) {
+                            var dataHtml = "<ul>";
+                            $.each(response, function (index, item) {
+                                dataHtml += "<li>" + item + "</li>";
+                            });
+                            dataHtml += "</ul>";
+                            container.prev().html(dataHtml);
+                        },
+                    };
+                    container.pagination(options);
+                    container.addHook("afterPageOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getCodes();
+                    });
+                    container.addHook("afterGoButtonOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getCodes();
+                    });
+                    container.addHook("afterPreviousOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getCodes();
+                    });
+                    container.addHook("afterNextOnClick", (response, pagination) => {
+                        page = parseInt(pagination);
+                        getCodes();
+                    });
+                })("pagination", codeCount);
+            })
+    }
+
+    $(document).ready(() => {
+        getCodes();
+    })
+}
 // ========== Settings page ==========
 if (Body.getAttribute("data-page") === "Settings") {
     const Showpass = document.querySelector("#showpass");
@@ -1529,6 +1397,18 @@ if (Body.getAttribute("data-page") === "Settings") {
                     fetchDefaultSettings();
                 }
             })
+    })
+    // download box
+    $('#download-form').on('submit', e => {
+        e.preventDefault();
+        loaderIn();
+        fetchApi(`manage/data/download/${$('#download-box-select option:selected').val()}`, {})
+        .then(res => {
+            loaderOut();
+            if (res.status_code === 200) {
+                window.location.href = res.link;
+            }
+        })
     })
 
 }
@@ -1864,7 +1744,7 @@ if (Body.getAttribute("data-page") === "Representatives") {
             <td >
                 <button class="show-agent button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
                     <i class="show-agent fa fa-eye" id=${item._id}></i>
-                </a>
+                </button>
             </td>
         </tr>
             `;
@@ -1920,6 +1800,9 @@ if (Body.getAttribute("data-page") === "Representatives") {
                     </button>
                     <button onclick="reject(this)" class="show-reject button button-box button-xs button-danger ml-2 mr-2" id=${item._id}>
                         <i class="show-reject fa fa-times" id=${item._id}></i>
+                    </button>
+                    <button onclick="reject(this)" class="show-agent button button-box button-xs button-info ml-2 mr-2" id=${item._id}>
+                        <i class="show-agent fa fa-eye" id=${item._id}></i>
                     </button>
                 </td>
             </tr>
@@ -2043,9 +1926,7 @@ if (Body.getAttribute("data-page") === "Representatives") {
                 }
             })
     }
-
 }
-
 // ========== Representative ==========
 if (Body.getAttribute("data-page") === "Representative") {
 
@@ -2072,10 +1953,10 @@ if (Body.getAttribute("data-page") === "Representative") {
         $("#state").html(data.state)
         $("#tell").html(data.tell)
         $("#shopAddress").html(data.shopAddress)
-
     }
 
     const getfromserver = function () {
+        loaderIn();
         fetch(`${RabetApi}/api/agent/admin/fetch_one`, {
             method: "POST",
             headers: {
@@ -2088,6 +1969,7 @@ if (Body.getAttribute("data-page") === "Representative") {
         })
             .then((response) => response.json())
             .then((result) => {
+                loaderOut();
                 ShowOnRepresentative(result.data)
             })
     }
