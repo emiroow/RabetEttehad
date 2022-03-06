@@ -6,7 +6,7 @@ const menu = `
             <ul class="side-header-sub-menu">
                 <li><a href="Product.html"><i class="fa fa-plus"></i> <span>افزودن محصول</span></a></li>
                 <li><a href="Products.html"><i class="fa fa-shopping-cart"></i> <span>مشاهده محصولات</span></a></li>
-                <li><a href="category.html"><i class="fa fa-server"></i> <span>دسته بندی</span></a></li>
+                <li><a href="Category.html"><i class="fa fa-server"></i> <span>دسته بندی</span></a></li>
                 <li><a href="QRcode.html"><i class="fa fa-qrcode"></i> <span>مشاهده QR کد</span></a></li>
             </ul>
         </li>

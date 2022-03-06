@@ -146,7 +146,7 @@ if (Body.getAttribute("data-page") === "Dashboard") {
 }
 // ========== Users page ==========
 if (Body.getAttribute("data-page") === "Users") {
-    loaderIn();
+    
     let usersCount;
     let page = 1;
     const showProductTable = function (data) {
@@ -175,6 +175,7 @@ if (Body.getAttribute("data-page") === "Users") {
     };
 
     const getUserFromServer = () => {
+        loaderIn();
         fetch(`${RabetApi}api/admin/fetchalluser/number=${page}`, {
             method: "GET",
             headers: {
@@ -238,7 +239,7 @@ if (Body.getAttribute("data-page") === "Users") {
             })
             .then(() => {
                 $('.Edite-advertise').on("click", (e) => {
-                    window.location.href = `user.html?${e.target.id}`
+                    window.location.href = `User.html?${e.target.id}`
                 })
             })
 
@@ -298,7 +299,7 @@ if (Body.getAttribute("data-page") === "Users") {
 }
 // ========== User page ==========
 if (Body.getAttribute("data-page") === "User") {
-
+    loaderIn();
     let userId = document.URL.split('?')[1]
     fetch(`${RabetApi}api/admin/fetchuser/one/id=${userId}`, {
         method: "GET",
@@ -309,6 +310,7 @@ if (Body.getAttribute("data-page") === "User") {
     })
         .then((response) => response.json())
         .then((result) => {
+            loaderOut();
             console.log(result);
             $("#user-name").html(result.data[0].name);
             $('#user-phone').html(result.data[0].phoneNumber);
@@ -318,7 +320,7 @@ if (Body.getAttribute("data-page") === "User") {
             let radif = 1;
             result.data[0].adress.forEach(item => {
                 $('.info-address').append(`
-                <h4>آدرس ${radif}: ${item}</h4>
+                <h4>آدرس ${radif}: ${item.address}</h4>
 
                 `);
                 radif++;
