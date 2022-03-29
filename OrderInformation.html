@@ -1,49 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="en">
 
-
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>اطلاعات سفارش</title>
     <meta name="robots" content="noindex, follow" />
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico" />
 
     <!-- CSS
 	============================================ -->
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/custom.css" />
 
     <!-- Icon Font CSS -->
-    <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="assets/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/vendor/themify-icons.css">
-    <link rel="stylesheet" href="assets/css/vendor/cryptocurrency-icons.css">
+    <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css" />
+    <link rel="stylesheet" href="assets/css/vendor/font-awesome.min.css" />
+    <link rel="stylesheet" href="assets/css/vendor/themify-icons.css" />
+    <link rel="stylesheet" href="assets/css/vendor/cryptocurrency-icons.css" />
 
     <!-- Plugins CSS -->
-    <link rel="stylesheet" href="assets/css/plugins/plugins.css">
+    <link rel="stylesheet" href="assets/css/plugins/plugins.css" />
 
     <!-- Helper CSS -->
-    <link rel="stylesheet" href="assets/css/helper.css">
+    <link rel="stylesheet" href="assets/css/helper.css" />
 
     <!-- Main Style CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css" />
 
     <!-- Custom Style CSS Only For Demo Purpose -->
-    <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
-
+    <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css" />
 </head>
 
-<body dir="rtl">
-
+<body dir="rtl" data-page="OrderInformation">
     <div id="overlay">
         <div class="cv-spinner">
             <span class="spinner"></span>
@@ -51,17 +48,14 @@
     </div>
 
     <div class="main-wrapper">
-
-
         <!-- Header Section Start -->
         <div class="header-section">
             <div class="container-fluid">
                 <div class="row justify-content-between align-items-center">
-
                     <!-- Header Logo (Header Left) Start -->
                     <div class="header-logo col-auto">
                         <a href="index.html">
-                            <img src="assets/images/logo/logo.png" alt="" style="max-width:210px;">
+                            <img src="assets/images/logo/logo.png" alt="" style="max-width: 210px" />
                             <!-- <img src="assets/images/logo/logo-light.png" class="logo-light" alt=""> -->
                         </a>
                     </div>
@@ -70,36 +64,33 @@
                     <!-- Header Right Start -->
                     <div class="header-right flex-grow-1 col-auto">
                         <div class="row justify-content-between align-items-center">
-
                             <!-- Side Header Toggle & Search Start -->
                             <div class="col-auto">
                                 <div class="row align-items-center">
-
                                     <!--Side Header Toggle-->
-                                    <div class="col-auto"><button class="side-header-toggle"><i
-                                                class="zmdi zmdi-menu"></i></button></div>
-
+                                    <div class="col-auto">
+                                        <button class="side-header-toggle">
+                                            <i class="zmdi zmdi-menu"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Side Header Toggle & Search End -->
                         </div>
                     </div>
                     <!-- Header Right End -->
-
                 </div>
             </div>
         </div>
         <!-- Header Section End -->
         <!-- Side Header Start -->
         <div class="side-header show">
-            <button class="side-header-close"><i class="zmdi zmdi-close"></i></button>
+            <button class="side-header-close">
+                <i class="zmdi zmdi-close"></i>
+            </button>
             <!-- Side Header Inner Start -->
             <div class="side-header-inner custom-scroll">
-
-                <nav class="side-header-menu" id="side-header-menu">
-
-                </nav>
-
+                <nav class="side-header-menu" id="side-header-menu"></nav>
             </div>
             <!-- Side Header Inner End -->
         </div>
@@ -107,10 +98,8 @@
 
         <!-- Content Body Start -->
         <div class="content-body">
-
             <!-- Page Headings Start -->
             <div class="row justify-content-between align-items-center mb-10">
-
                 <!-- Page Heading Start -->
                 <div class="col-12 col-lg-auto mb-20">
                     <div class="page-heading">
@@ -118,20 +107,21 @@
                     </div>
                 </div>
                 <!-- Page Heading End -->
-
             </div>
             <!-- Page Headings End -->
             <!--Order Details Head Start-->
             <div class="col-12 mb-30">
                 <div class="row mbn-15">
                     <div class="col-12 col-md-4 mb-15">
-                        <h4 class="text-primary fw-600 m-0">سفارش ID# MSP40022</h4>
+                        سفارش
+                        <h4 class="text-primary fw-600 m-0" id="shopNumber"></h4>
                     </div>
-                    <div class="text-left text-md-center col-12 col-md-4 mb-15"><span>وضعیت: <span
-                                class="badge badge-round badge-success">حمل دریایی</span></span>
+                    <div class="text-left text-md-center col-12 col-md-4 mb-15">
+                        <span>وضعیت:
+                            <span class="badge badge-round badge-success" id="shopPay"></span></span>
                     </div>
                     <div class="text-left text-md-right col-12 col-md-4 mb-15">
-                        <p>خرداد 1398</p>
+                        <p id="shopDate"></p>
                     </div>
                 </div>
             </div>
@@ -140,52 +130,31 @@
             <!--Order Details Customer Information Start-->
             <div class="col-12 mb-30">
                 <div class="order-details-customer-info row mbn-20">
-
                     <!--Billing Info Start-->
                     <div class="col-lg-4 col-md-6 col-12 mb-20">
                         <h4 class="mb-25">اطلاعات صورتحساب</h4>
                         <ul>
-                            <li> <span>نام</span> <span>جعفر عباسی</span> </li>
-                            <li> <span>کشور</span> <span>ایران</span> </li>
-                            <li> <span>آدرس</span> <span>خیابان دانش <br>شرکت آدومکس 5.</span> </li>
-                            <li> <span>استان</span> <span>ارومیه</span> </li>
-                            <li> <span>شهر</span> <span>شاهین دژ</span> </li>
-                            <li> <span>ایمیل</span> <span>domain@mail.com</span> </li>
-                            <li> <span>تلفن</span> <span>+1 022 3665 88</span> </li>
+                            <li><span>نام</span> <span id="shopNameOrder"></span></li>
+                            <li><span>آدرس</span> <span id="shopAddress"></span></li>
+                            <li><span>تلفن</span> <span id="shopPhoneNumber"></span></li>
                         </ul>
                     </div>
                     <!--Billing Info End-->
-
-                    <!--Shipping Info Start-->
-                    <div class="col-lg-4 col-md-6 col-12 mb-20">
-                        <h4 class="mb-25">اطلاعات حمل و نقل</h4>
-                        <ul>
-                            <li> <span>نام</span> <span>جعفر عباسی</span> </li>
-                            <li> <span>کشور</span> <span>ایران</span> </li>
-                            <li> <span>آدرس</span> <span>خیابان دانش <br>شرکت آدومکس 5.</span> </li>
-                            <li> <span>استان</span> <span>ارومیه</span> </li>
-                            <li> <span>شهر</span> <span>شاهین دژ</span> </li>
-                            <li> <span>ایمیل</span> <span>domain@mail.com</span> </li>
-                            <li> <span>تلفن</span> <span>+1 022 3665 88</span> </li>
-                        </ul>
-                    </div>
-                    <!--Shipping Info End-->
 
                     <!--Purchase Info Start-->
                     <div class="col-lg-4 col-md-6 col-12 mb-20">
                         <h4 class="mb-25">اطلاعات خرید</h4>
                         <ul>
-                            <li> <span>آیتم ها</span> <span>03</span> </li>
-                            <li> <span>قیمت</span> <span>5400.00 تومان</span> </li>
-                            <li> <span>حمل دریایی</span> <span>50.00 تومان</span> </li>
-                            <li> <span>تخفیف</span> <span>40.00 تومان</span> </li>
-                            <li> <span>مجموع</span> <span>5410.00 تومان</span> </li>
-                            <li> <span class="h5 fw-600">وضعیت</span> <span class="h5 fw-600 text-success">پرداخت
-                                    شده</span> </li>
+                            <li><span>آیتم ها</span> <span id="shopListCount"></span></li>
+                            <li><span>قیمت</span> <span id="shopPrice"></span></li>
+                            <li><span>توضیحات</span> <span id="shopDiscription"></span></li>
+                            <li>
+                                <span class="h5 fw-600">وضعیت</span>
+                                <span class="h5 fw-600 text-success" id="shopStatus">پرداخت شده</span>
+                            </li>
                         </ul>
                     </div>
                     <!--Purchase Info End-->
-
                 </div>
             </div>
             <!--Order Details Customer Information Start-->
@@ -201,57 +170,35 @@
                                 <th>نام محصول</th>
                                 <th>قیمت</th>
                                 <th>تعداد</th>
-                                <th>تاریخ سفارش</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>#MSP40022</td>
-                                <td><img src="assets/images/product/list-product-1.jpg" alt=""
-                                        class="product-image rounded-circle"></td>
-                                <td><a href="#">Spro 4 لپ تاپ</a></td>
-                                <td>600.00 تومان</td>
-                                <td>03 pyc</td>
-                                <td>13 Feb 2018</td>
-                            </tr>
-                            <tr>
-                                <td>#MSP40023</td>
-                                <td><img src="assets/images/product/list-product-2.jpg" alt=""
-                                        class="product-image rounded-circle"></td>
-                                <td><a href="#">Spro 4 لپ تاپ</a></td>
-                                <td>600.00 تومان</td>
-                                <td>03 pyc</td>
-                                <td>13 Feb 2018</td>
-                            </tr>
-                            <tr>
-                                <td>#MSP40024</td>
-                                <td><img src="assets/images/product/list-product-3.jpg" alt=""
-                                        class="product-image rounded-circle"></td>
-                                <td><a href="#">Spro 4 لپ تاپ</a></td>
-                                <td>600.00 تومان</td>
-                                <td>03 pyc</td>
-                                <td>13 Feb 2018</td>
-                            </tr>
+                        <tbody id="productList">
+
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            <div class="col-lg-4 col-md-6 col-12 mb-20">
+                <label for="">وضعیت سفارش</label>
+                <select name="" id="shopState" class="form-control">
+                    <option value="0">انتخاب کنید</option>
+                    <option value="کنسل شد">کنسل شد</option>
+                    <option value="در حال آماده سازی">در حال آماده سازی</option>
+                    <option value="در حال ارسال">در حال ارسال</option>
+                    <option value="تحویل داده شد">تحویل داده شد</option>
+                    <option value="تحویل پست شد">تحویل پست شد</option>
+                </select>
+                <button class="btn btn-info mt-20" id="submitStateOrder">
+                    ثبت
+                </button>
+            </div>
             <!--Order Details List End-->
 
             <div class="row col-lg-12">
-                <button id="print-button" type="button" class="btn btn-info mt-20">چاپ</button>
-                <div class="d-flex justify-content-end" style="margin-right: auto;">
-
-                    <button class="button button-outline button-primary mt-30 ml-10 mr-0" data-toggle="modal"
-                        data-target="#accept-modal">
-                        تایید
-                    </button>
-                    <button class="button button-outline button-danger mt-30 ml-10 mr-0" data-toggle="modal"
-                        data-target="#reject-modal">
-                        رد
-                    </button>
-
-                </div>
+                <button id="print-button" type="button" class="btn btn-info mt-20" onclick="window.print()">
+                    چاپ
+                </button>
             </div>
         </div>
         <!-- Content Body End -->
@@ -259,22 +206,19 @@
         <!-- Footer Section Start -->
         <div class="footer-section">
             <div class="container-fluid">
-
                 <div class="footer-copyright text-center">
-                    <p class="text-body-light">1400 &copy; <a href="https://platinco.ir/">استدیو طراحی پلاتین</a></p>
+                    <p class="text-body-light">
+                        1400 &copy; <a href="https://platinco.ir/">استدیو طراحی پلاتین</a>
+                    </p>
                 </div>
-
             </div>
         </div>
         <!-- Footer Section End -->
-
     </div>
-
-
 </body>
 
 <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
-<script src="assets/scripts/components.js?v=1.1.1"></script>
+<script src="assets/scripts/components.js?v=1.0.9"></script>
 <script src="assets/scripts/toastify.js"></script>
 <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
 <script src="assets/js/vendor/popper.min.js"></script>
@@ -282,6 +226,6 @@
 <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
 <script src="assets/js/plugins/tippy4.min.js.js"></script>
 <script src="assets/js/main.js"></script>
-<script src="assets/scripts/script.js?v=1.1.1"></script>
+<script src="assets/scripts/script.js?v=1.0.9"></script>
 
 </html>

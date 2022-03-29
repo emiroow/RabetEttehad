@@ -146,7 +146,7 @@ if (Body.getAttribute("data-page") === "Dashboard") {
 }
 // ========== Users page ==========
 if (Body.getAttribute("data-page") === "Users") {
-    
+
     let usersCount;
     let page = 1;
     const showProductTable = function (data) {
@@ -594,7 +594,7 @@ if (Body.getAttribute("data-page") === "Product") {
                 request.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         let picReqJson = JSON.parse(request.responseText);
-                        picurl.push(picReqJson.link);
+                        picurl.push(picReqJson.URL);
                         console.log(picurl)
                     }
                 };
@@ -610,7 +610,7 @@ if (Body.getAttribute("data-page") === "Product") {
                         error('oh no');
                     }
                 };
-                request.open('POST', `${RabetApi}api/admin/shop/upload_pro_img`,);
+                request.open('POST', `${RabetApi}api/admin/fileUpload/d=gallery`,);
                 request.send(formData);
             },
             revert: async (uniqueFileId, load, error) => {
@@ -676,9 +676,10 @@ if (Body.getAttribute("data-page") === "Product") {
                     $("#ProductPriceOff").val(data.priceoff);
                     $("#ProductDis").val(data.details);
                     $('#categories option:selected').val(data.category);
-                    $('#ProductPriceOff').val(data.priceoff);
-                    $('#ProductPriceagrntOff').val(data.priceagentoff);
-                    $('#ProductPriceagrnt').val(data.priceagent);
+                    $('#ProductPriceagent').val(data.priceoff);
+                    $('#ProductPriceagentOff').val(data.priceagentoff);
+                    $('#ProductPriceagent').val(data.priceagent);
+
                     $('#Producttotal').val(data.Producttotal);
                     $('#special-offer').prop('checked', data.isSpecial);
                     picurl = [...data.pics];
@@ -726,13 +727,13 @@ if (Body.getAttribute("data-page") === "Product") {
             const body = {
                 title: $("#ProductTitle").val(),
                 subtitle: $("#ProductSubTitle").val(),
-                price: parseInt($("#ProductPrice").val()),
-                priceoff: parseInt($("#ProductPriceOff").val()),
                 details: $("#ProductDis").val(),
                 category: $('#categories option:selected').val(),
                 pics: picurl,
-                priceagent: parseInt($('#ProductPriceOff').val()),
-                priceagentoff: parseInt($('#ProductPriceagrntOff').val()),
+                price: parseInt($("#ProductPrice").val()),
+                priceoff: parseInt($("#ProductPriceOff").val()),
+                priceagent: parseInt($('#ProductPriceagent').val()),
+                priceagentoff: parseInt($('#ProductPriceagentOff').val()),
                 Producttotal: parseInt($("#Producttotal").val()),
                 isSpecial: $('#special-offer').prop('checked'),
                 status: $('#status-select option:selected').val() === 'true' ? true : false,
@@ -756,13 +757,13 @@ if (Body.getAttribute("data-page") === "Product") {
             const body = {
                 title: $("#ProductTitle").val(),
                 subtitle: $("#ProductSubTitle").val(),
-                price: parseInt($("#ProductPrice").val()),
-                priceoff: parseInt($("#ProductPriceOff").val()),
                 details: $("#ProductDis").val(),
                 category: $('#categories option:selected').val(),
                 pics: picurl,
-                priceagent: parseInt($('#ProductPriceOff').val()),
-                priceagentoff: parseInt($('#ProductPriceagrntOff').val()),
+                price: parseInt($("#ProductPrice").val()),
+                priceoff: parseInt($("#ProductPriceOff").val()),
+                priceagent: parseInt($('#ProductPriceagent').val()),
+                priceagentoff: parseInt($('#ProductPriceagentOff').val()),
                 Producttotal: parseInt($("#Producttotal").val()),
                 isSpecial: $('#special-offer').prop('checked'),
             };
@@ -1220,12 +1221,9 @@ if (Body.getAttribute("data-page") === "Orders") {
                 <td>${item.localid}</td>
                 <td>${item.address}</td>
                 <td class="d-flex justify-content-center">
-                        <button class="Edite-advertise button button-box button-xs button-primary ml-2 mr-2" id=${item._id}>
+                    <a class="Edite-advertise button button-box button-xs button-primary ml-2 mr-2" href="OrderInformation.html?${item._id}">
                         <i class="Edite-advertise zmdi fa fa-pencil-square-o" id=${item._id}></i>
-                    </button>
-                    <button class="reject-adver remove button button-box button-xs button-danger">
-                        <i class="reject-adver fa fa-trash-o"></i>
-                    </button>
+                    </a>
                 </td>
             </tr>
             `;
@@ -1257,6 +1255,93 @@ if (Body.getAttribute("data-page") === "Orders") {
                 Showproductintable(result.data);
             });
     })
+}
+// 
+if (Body.getAttribute("data-page") === "OrderInformation") {
+    let page = 1;
+
+    const id = location.href.slice(location.href.indexOf("?") + 1);
+    console.log(id);
+
+    const Showproductintable = function (data) {
+        console.log(data);
+        $("#shopNumber").html(data.localid);
+        $("#shopPay").html(data.pay_types);
+        $("#shopStatus").html(data.order_state);
+        $("#shopDate").html(data.dateTime.substr(0, 10));
+        $("#shopNameOrder").html(data.username);
+        $("#shopAddress").html(data.address);
+        $("#shopPhoneNumber").html(data.phone_number);
+        $("#shopPrice").html(data.total_mony);
+        $("#shopListCount").html(data.product_list.length);
+        $("#shopDiscription").html(data.dis);
+
+        let result = "";
+        data.product_list.map((product) => {
+            result += `
+          <tr>
+              <td>${product.pro_id.substr(0, 10)}</td>
+              <td>
+              <img
+                  src="${product.pics[0]}"
+                  alt=""
+                  class="product-image rounded-circle"
+                  style="width: 50px"
+              />
+              </td>
+              <td><a href="#">${product.name}</a></td>
+              <td>${product.mony_total} تومان</td>
+              <td>${product.count}</td>
+          </tr>
+          `;
+        });
+        $("#productList").html(result);
+    };
+
+    const getUserFromServer = function () {
+        loaderIn();
+        fetchApi("api/admin/shop/fetch_order_one", { id }).then((result) => {
+            console.log(result);
+            loaderOut();
+            Showproductintable(result.data[0]);
+        });
+    };
+
+    let state = "";
+    $("#shopState").on("change", (e) => {
+        console.log(e.target.value);
+        state = e.target.value;
+    });
+
+    $("#submitStateOrder").on("click", (e) => {
+        if (state.length > 0) {
+            fetchApi("api/admin/shop/order_update", {
+                id,
+                state,
+            }).then((result) => {
+                if (result.description == "done!") {
+                    location.reload();
+                }
+            });
+        }
+    });
+
+    $(document).ready(() => {
+        getUserFromServer();
+    });
+    // search order by phone number
+    $("#searchBtn").on("click", () => {
+        loaderIn();
+        fetchApi("api/admin/shop/fetch_order_search", {
+            data: $("#dataSearch").val(),
+            type: "shop",
+            page: 1,
+        }).then((result) => {
+            loaderOut();
+            $("#users-table").html("");
+            Showproductintable(result.data);
+        });
+    });
 }
 // ========== Orders page ==========
 if (Body.getAttribute("data-page") === "LotteryCode") {
@@ -1405,12 +1490,12 @@ if (Body.getAttribute("data-page") === "Settings") {
         e.preventDefault();
         loaderIn();
         fetchApi(`manage/data/download/${$('#download-box-select option:selected').val()}`, {})
-        .then(res => {
-            loaderOut();
-            if (res.status_code === 200) {
-                window.location.href = res.link;
-            }
-        })
+            .then(res => {
+                loaderOut();
+                if (res.status_code === 200) {
+                    window.location.href = res.link;
+                }
+            })
     })
 
 }
